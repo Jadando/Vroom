@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword} from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, getAuth} from "firebase/auth";
 import { auth } from '../../firebaseConnection'
 
 export default function Login() {
     const navigation = useNavigation();
-    const [email, setEmail] = useState('joaohjh005@gmail.com');
+    const [email, setEmail] = useState('joao.adriano@gmail.com');
     const [senha, setSenha] = useState('1234567');
 
     function validarEmail(email) {
@@ -29,6 +29,7 @@ export default function Login() {
                         const errorCode = error.code;
                         const errorMessage = error.message;
                     });
+                    
             }
         }
     }

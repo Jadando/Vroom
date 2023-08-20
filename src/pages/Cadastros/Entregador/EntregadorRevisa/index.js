@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
+import { getDatabase, ref, set } from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default function EntregadorRevisa({ route }) {
   const navigation = useNavigation();
@@ -31,10 +33,35 @@ export default function EntregadorRevisa({ route }) {
       endereco !== '' &&
       numero !== ''
     ) {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+          if (user) {
+              const uid = user.uid;
+              writeUserData()
+              function writeUserData(){
+                  const db = getDatabase();
+                  set(ref(db, 'Entregador/' + uid), {
+                      nome:nome,
+                      telefone:telefone,
+                      cep:cep,
+                      cpf:cpf,
+                      estado:estado,
+                      cidade:cidade,
+                      bairro:bairro,
+                      endereco:endereco,
+                      numero:numero,
+                      dtNasc:dtNasc,
+                      nomeEmpresa:nomeEmpresa,
+                  });
+              }
+          } else {
+              console.log('erro ao encontrar usuario')
+          }
+      });
       navigation.dispatch(StackActions.popToTop());
-    } else {
+  } else {
       alert('Campos obrigatórios não preenchidos');
-    }
+  }
   }
 
   return (

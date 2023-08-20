@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useColorScheme } from 'react-native';
 import { ThemeProvider } from 'styled-components';
-import firebase from './src/firebaseConnection';
 import theme from './src/theme'
 
 import Login from './src/pages/Login';
@@ -90,7 +89,7 @@ export default function App() {
     <ThemeProvider theme={{}}>
       <NavigationContainer>
       <Stack.Navigator
-        initialRouteName='Login'
+        initialRouteName='CadastroCliente'
         screenOptions={{
           headerShown: false
         }}

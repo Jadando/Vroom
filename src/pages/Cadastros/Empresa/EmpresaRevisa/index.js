@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
+import { getDatabase, ref, set } from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default function EmpresaRevisa({ route }) {
   const navigation = useNavigation();
@@ -29,6 +31,29 @@ export default function EmpresaRevisa({ route }) {
       endereco !== '' &&
       numero !== ''
     ) {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const uid = user.uid;
+          writeUserData()
+          function writeUserData() {
+            const db = getDatabase();
+            set(ref(db, 'Empresa/' + uid), {
+              cnpj: cnpj,
+              nome: nomeEmpresa,
+              telefone: telefone,
+              cep: cep,
+              estado: estado,
+              cidade: cidade,
+              bairro: bairro,
+              endereco: endereco,
+              numero: numero,
+            });
+          }
+        } else {
+          console.log('erro ao encontrar usuario')
+        }
+      });
       navigation.dispatch(StackActions.popToTop());
     } else {
       alert('Campos obrigatórios não preenchidos');

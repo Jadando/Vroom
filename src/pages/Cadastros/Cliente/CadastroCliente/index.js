@@ -6,14 +6,14 @@ import { TextInputMask } from 'react-native-masked-text';
 export default function CadastroCliente() {
   const navigation = useNavigation();
 
-  const [nome, setNome] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [cep, setCep] = useState('');
-  const [estado, setEstado] = useState('');
-  const [cidade, setCidade] = useState('');
-  const [bairro, setBairro] = useState('');
-  const [endereco, setEndereco] = useState('');
-  const [numero, setNumero] = useState('');
+  const [nome, setNome] = useState('jaoao');
+  const [telefone, setTelefone] = useState('1898180400');
+  const [cep, setCep] = useState('11730000');
+  const [estado, setEstado] = useState('sp');
+  const [cidade, setCidade] = useState('sao paulo');
+  const [bairro, setBairro] = useState('teste city');
+  const [endereco, setEndereco] = useState('rua nao sei');
+  const [numero, setNumero] = useState('321');
 
   function verificaInput() {
     if (
