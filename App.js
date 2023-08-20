@@ -20,7 +20,7 @@ import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
+alert('teste')
 const icons = {
   Home: {
     name: 'ios-home'
