@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
-import { getDatabase, ref, set } from "firebase/database";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { collection, addDoc, getFirestore } from "firebase/firestore";
 
 export default function EmpresaRevisa({ route }) {
   const navigation = useNavigation();
@@ -19,7 +18,7 @@ export default function EmpresaRevisa({ route }) {
   const [endereco, setEndereco] = useState(route.params?.endereco || '');
   const [numero, setNumero] = useState(route.params?.numero || '');
 
-  function verificaInput() {
+  async function verificaInput() {
     if (
       cnpj !== '' &&
       nomeEmpresa !== '' &&
@@ -31,29 +30,22 @@ export default function EmpresaRevisa({ route }) {
       endereco !== '' &&
       numero !== ''
     ) {
-      const auth = getAuth();
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          const uid = user.uid;
-          writeUserData()
-          function writeUserData() {
-            const db = getDatabase();
-            set(ref(db, 'Empresa/' + uid), {
-              cnpj: cnpj,
-              nome: nomeEmpresa,
-              telefone: telefone,
-              cep: cep,
-              estado: estado,
-              cidade: cidade,
-              bairro: bairro,
-              endereco: endereco,
-              numero: numero,
-            });
-          }
-        } else {
-          console.log('erro ao encontrar usuario')
-        }
-      });
+      const db = getFirestore()
+      try {
+        await addDoc(collection(db, "users"), {
+          cnpj: cnpj,
+          nome: nomeEmpresa,
+          telefone: telefone,
+          cep: cep,
+          estado: estado,
+          cidade: cidade,
+          bairro: bairro,
+          endereco: endereco,
+          numero: numero,
+        });
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
       navigation.dispatch(StackActions.popToTop());
     } else {
       alert('Campos obrigatórios não preenchidos');

@@ -7,6 +7,7 @@ import { useColorScheme } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import theme from './src/theme'
 
+import Teste from './src/pages/Teste';
 import Login from './src/pages/Login';
 import Home from './src/pages/Home';
 import Cadastro from './src/pages/Cadastros/Cadastro';
@@ -38,7 +39,7 @@ const icons = {
 
 function Tabs() {
   return (
-      <Tab.Navigator
+    <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
           const { name } = icons[route.name];
@@ -66,16 +67,16 @@ function Tabs() {
           },
           null,
         ],
-          tabBarLabelStyle: {
-            fontSize: 15,
-          },
-        })}
-      >
-        <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
-        <Tab.Screen name="Buscar" component={CadastroCliente} options={{ headerShown: false }} />
-        <Tab.Screen name="Pedidos" component={Login} options={{ headerShown: false }} />
-        <Tab.Screen name="Perfil" component={Cadastro} options={{ headerShown: false }} />
-      </Tab.Navigator>
+        tabBarLabelStyle: {
+          fontSize: 15,
+        },
+      })}
+    >
+      <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
+      <Tab.Screen name="Buscar" component={CadastroCliente} options={{ headerShown: false }} />
+      <Tab.Screen name="Pedidos" component={Login} options={{ headerShown: false }} />
+      <Tab.Screen name="Perfil" component={Cadastro} options={{ headerShown: false }} />
+    </Tab.Navigator>
 
 
   );
@@ -88,55 +89,59 @@ export default function App() {
   return (
     <ThemeProvider theme={{}}>
       <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName='CadastroCliente'
-        screenOptions={{
-          headerShown: false
-        }}
-      >
-        <Stack.Screen
-          name='Login'
-          component={Login}
-        />
-        <Stack.Screen
-          name='Cadastro'
-          component={Cadastro}
-        />
-        <Stack.Screen
-          name='CadastroCliente'
-          component={CadastroCliente}
-        />
-        <Stack.Screen
-          name='ClienteRevisa'
-          component={ClienteRevisa}
-        />
-        <Stack.Screen
-          name='CadastroEmpresa'
-          component={CadastroEmpresa}
-        />
-        <Stack.Screen
-          name='EmpresaRevisa'
-          component={EmpresaRevisa}
-        />
-        <Stack.Screen
-          name='CadastroEntregador'
-          component={CadastroEntregador}
-        />
-        <Stack.Screen
-          name='EntregadorRevisa'
-          component={EntregadorRevisa}
-        />
-        <Stack.Screen
-          name='Afiliado'
-          component={Afiliado}
-        />
-        <Stack.Screen
-          name='Home'
-          component={Tabs}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+        <Stack.Navigator
+          initialRouteName='Teste'
+          screenOptions={{
+            headerShown: false
+          }}
+        >
+          <Stack.Screen
+            name='Teste'
+            component={Teste}
+          />
+          <Stack.Screen
+            name='Login'
+            component={Login}
+          />
+          <Stack.Screen
+            name='Cadastro'
+            component={Cadastro}
+          />
+          <Stack.Screen
+            name='CadastroCliente'
+            component={CadastroCliente}
+          />
+          <Stack.Screen
+            name='ClienteRevisa'
+            component={ClienteRevisa}
+          />
+          <Stack.Screen
+            name='CadastroEmpresa'
+            component={CadastroEmpresa}
+          />
+          <Stack.Screen
+            name='EmpresaRevisa'
+            component={EmpresaRevisa}
+          />
+          <Stack.Screen
+            name='CadastroEntregador'
+            component={CadastroEntregador}
+          />
+          <Stack.Screen
+            name='EntregadorRevisa'
+            component={EntregadorRevisa}
+          />
+          <Stack.Screen
+            name='Afiliado'
+            component={Afiliado}
+          />
+          <Stack.Screen
+            name='Home'
+            component={Tabs}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </ThemeProvider>
-    
+
   );
 }

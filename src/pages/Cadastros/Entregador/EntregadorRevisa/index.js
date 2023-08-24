@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
-import { getDatabase, ref, set } from "firebase/database";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { collection, addDoc, getFirestore } from "firebase/firestore";
 
 export default function EntregadorRevisa({ route }) {
   const navigation = useNavigation();
@@ -21,7 +20,7 @@ export default function EntregadorRevisa({ route }) {
   const [endereco, setEndereco] = useState(route.params?.endereco || '');
   const [numero, setNumero] = useState(route.params?.numero || '');
 
-  function verificaInput() {
+  async function verificaInput() {
     if (
       cpf !== '' &&
       nome !== '' &&
@@ -33,35 +32,28 @@ export default function EntregadorRevisa({ route }) {
       endereco !== '' &&
       numero !== ''
     ) {
-      const auth = getAuth();
-      onAuthStateChanged(auth, (user) => {
-          if (user) {
-              const uid = user.uid;
-              writeUserData()
-              function writeUserData(){
-                  const db = getDatabase();
-                  set(ref(db, 'Entregador/' + uid), {
-                      nome:nome,
-                      telefone:telefone,
-                      cep:cep,
-                      cpf:cpf,
-                      estado:estado,
-                      cidade:cidade,
-                      bairro:bairro,
-                      endereco:endereco,
-                      numero:numero,
-                      dtNasc:dtNasc,
-                      nomeEmpresa:nomeEmpresa,
-                  });
-              }
-          } else {
-              console.log('erro ao encontrar usuario')
-          }
-      });
+      const db = getFirestore()
+      try {
+        await addDoc(collection(db, "users"), {
+          nome: nome,
+          telefone: telefone,
+          cep: cep,
+          cpf: cpf,
+          estado: estado,
+          cidade: cidade,
+          bairro: bairro,
+          endereco: endereco,
+          numero: numero,
+          dtNasc: dtNasc,
+          nomeEmpresa: nomeEmpresa,
+        });
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
       navigation.dispatch(StackActions.popToTop());
-  } else {
+    } else {
       alert('Campos obrigatórios não preenchidos');
-  }
+    }
   }
 
   return (
@@ -212,19 +204,19 @@ export default function EntregadorRevisa({ route }) {
           </View>
         </View>
         <View style={styles.buttons}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Afiliado')}
-              style={styles.cadastrar}
-            >
-              <Text style={styles.cadastrarText}>Voltar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={verificaInput}
-              style={styles.cadastrar}
-            >
-              <Text style={styles.cadastrarText}>Próxima etapa</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Afiliado')}
+            style={styles.cadastrar}
+          >
+            <Text style={styles.cadastrarText}>Voltar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={verificaInput}
+            style={styles.cadastrar}
+          >
+            <Text style={styles.cadastrarText}>Próxima etapa</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
@@ -342,7 +334,7 @@ const styles = StyleSheet.create({
   buttons: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    
+
   },
   mainEmpresa: {
     padding: 30,
@@ -351,5 +343,5 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderRadius: 15,
     marginBottom: 30
-},
+  },
 });
