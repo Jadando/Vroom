@@ -12,7 +12,7 @@ import { collection, getDocs, getFirestore } from "firebase/firestore";
 //donwload
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
-
+Teste
 export default function Teste() {
 
     const navigation = useNavigation();
