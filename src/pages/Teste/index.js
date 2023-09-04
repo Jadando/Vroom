@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, {useState } from 'react';
 import { Button, StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
 
 //select
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 //upload de imagem
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-import * as ImagePicker from 'expo-image-picker';
+//import { getStorage, ref, uploadBytes } from "firebase/storage";
+//import * as ImagePicker from 'expo-image-picker';
+//import * as FileSystem from 'expo-file-system';
+//donwload
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 
 export default function Teste() {
@@ -15,33 +19,44 @@ export default function Teste() {
     const [cidade, setCidade] = useState();
     const [cep, setCep] = useState();
     const [nome, setNome] = useState();
-    const [imageUri, setImageUri] = useState(null); // Estado para armazenar o URI da imagem selecionada
+    
+    const [imageUrl, setImageUrl] = useState(null);
+    const [imageUri, setImageUri] = useState(null);
 
     const chooseImageFromGallery = async () => {
         try {
-            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-            if (status !== 'granted') {
-                console.error('A permissão para acessar a galeria foi negada');
-                return;
-            }
-
-            const result = await ImagePicker.launchImageLibraryAsync();
-
-            if (!result.canceled) {
-                setImageUri(result.assets);
-            }
+          const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      
+          if (status !== 'granted') {
+            console.error('A permissão para acessar a galeria foi negada');
+            return;
+          }
+      
+          const result = await ImagePicker.launchImageLibraryAsync();
+      
+          if (!result.canceled) {
+            const localUri = result.assets[0].uri;
+      
+            // Lê o arquivo da imagem como uma string base64 diretamente
+            const imageFile = await FileSystem.readAsStringAsync(localUri, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+      
+            // Armazena a string base64 na variável de estado imageUrl
+            setImageUrl(`data:image/jpeg;base64,${imageFile}`);
+          }
         } catch (error) {
-            console.error('Erro ao escolher a imagem:', error);
+          console.error('Erro ao escolher a imagem:', error);
         }
-    };
-
+      };
+      
     const uploadImageToFirebase = async () => {
-        if (imageUri) {
+
+        if (imageUrl) {
             try {
                 const storage = getStorage();
-                const storageRef = ref(storage, 'caminho/no/firebase/imagem.jpg');
-                await uploadBytes(storageRef, imageUri);
+                const storageRef = ref(storage, 'caminho/no/firebase/imagem.png');
+                await uploadBytes(storageRef, imageUrl);
                 console.log('Arquivo enviado com sucesso!');
             } catch (error) {
                 console.error('Erro ao enviar o arquivo:', error);
@@ -49,101 +64,118 @@ export default function Teste() {
         }
     };
 
-
     async function validarLogin() {
-          const db = getFirestore();
-          const querySnapshot = await getDocs(collection(db, "users"));
-          const dataArray = [];
+        const db = getFirestore();
+        const querySnapshot = await getDocs(collection(db, "users"));
+        const dataArray = [];
 
-          querySnapshot.forEach((doc) => {
-             const userData = doc.data();
-             dataArray.push({ id: doc.id, ...userData });
+        querySnapshot.forEach((doc) => {
+            const userData = doc.data();
+            dataArray.push({ id: doc.id, ...userData });
 
             setNome(userData.nome);
             setCep(userData.cep);
             setCidade(userData.cidade);
         });
 
-         console.log(dataArray);
+        console.log(dataArray);
+    }
+   async function imagem() {
+        try {
+            const storage = getStorage();
+            const imageRef = ref(storage, 'caminho/no/firebase/imagem.png');
+            const url = await getDownloadURL(imageRef);
+    
+            // Recupere a string da URL
+            const response = await fetch(url);
+            const imageString = await response.text();
+    
+            // Converta a string em uma imagem PNG
+            const image = await ImageUtils.base64ToImage(imageString);
+    
+            setImageUri(image.assets);
+          } catch (error) {
+            console.error('Erro ao recuperar a URL da imagem:', error);
+          }
     }
 
 
     return (
         <View style={styles.container}>
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            overScrollMode='never'
-        >
-            <View style={styles.logoTop}>
-                <Image source={require('../../img/logo.png')} />
-            </View>
-            <View>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                overScrollMode='never'
+            >
+                <View style={styles.logoTop}>
+                    <Image style={{ width: 200, height: 200 }} source={{ uri: imageUri }} />
+                </View>
+                <View>
                     <Button title="Escolher Imagem" onPress={chooseImageFromGallery} />
-                    {imageUri && (
+                    {imageUrl && (
                         <Button title="Enviar Imagem" onPress={uploadImageToFirebase} />
                     )}
                 </View>
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.inputEmail}
-                    value={cidade}
-                    //onChangeText={(text) => setEmail(text)}
-                    //keyboardType='email-address'
-                    placeholder="Email"
-                />
-                <TextInput
-                    style={styles.inputSenha}
-                   // secureTextEntry={true}
-                    value={cep}
-                   // onChangeText={(text) => setSenha(text)}
-                    placeholder="Senha"
-                />
-            </View>
-            <TouchableOpacity style={styles.recuperarSenha}>
-                <Text>Esqueceu a senha?</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                style={styles.logar}
-                onPress={validarLogin}>
-                <Text style={styles.logarText}>Entrar</Text>
-            </TouchableOpacity>
-
-            <View style={styles.separador}>
-                <View style={styles.separadorLinha}></View>
-                <Text style={{ fontSize: 20, elevation: 1 }}>{''} ou {''}</Text>
-                <View style={styles.separadorLinha}></View>
-            </View>
-
-            <View style={styles.loginLogos}>
-                <TouchableOpacity>
-                    <Image style={{ width: 40, height: 40 }} source={require('../../img/google.png')} />
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.inputEmail}
+                        value={cidade}
+                        //onChangeText={(text) => setEmail(text)}
+                        //keyboardType='email-address'
+                        placeholder="Email"
+                    />
+                    <TextInput
+                        style={styles.inputSenha}
+                        // secureTextEntry={true}
+                        value={cep}
+                        // onChangeText={(text) => setSenha(text)}
+                        placeholder="Senha"
+                    />
+                </View>
+                <TouchableOpacity style={styles.recuperarSenha}>
+                    <Text>Esqueceu a senha?</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity>
-                    <Image style={{ width: 40, height: 40 }} source={require('../../img/face.png')} />
+                <TouchableOpacity
+                    style={styles.logar}
+                    onPress={validarLogin}>
+                    <Text style={styles.logarText}>Entrar</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity>
-                    <Image style={{ width: 40, height: 40 }} source={require('../../img/apple.png')} />
-                </TouchableOpacity>
-            </View>
-            <Text style={{ alignSelf: 'center', fontSize: 18 }}>Não possui conta?</Text>
-            <TouchableOpacity
-                style={{ alignSelf: 'center' }}
-                onPress={() => navigation.navigate('Cadastro')}
-            >
-                <Text style={{ fontSize: 18 }}>Cadastre-se</Text>
-            </TouchableOpacity>
+                <View style={styles.separador}>
+                    <View style={styles.separadorLinha}></View>
+                    <Text style={{ fontSize: 20, elevation: 1 }}>{''} ou {''}</Text>
+                    <View style={styles.separadorLinha}></View>
+                </View>
 
-            <View style={styles.footer}>
-                <Text style={styles.copy}>
-                    Copyright © 2023 Data Explores {'\n'}
-                    todos direitos reservados
-                </Text>
-            </View>
-        </ScrollView>
-    </View>
+                <View style={styles.loginLogos}>
+                    <TouchableOpacity>
+                        <Image style={{ width: 40, height: 40 }} source={require('../../img/google.png')} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Image style={{ width: 40, height: 40 }} source={require('../../img/face.png')} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={imagem} >
+                        <Image style={{ width: 40, height: 40 }} source={require('../../img/apple.png')} />
+                    </TouchableOpacity>
+                </View>
+                <Text style={{ alignSelf: 'center', fontSize: 18 }}>Não possui conta?</Text>
+                <TouchableOpacity
+                    style={{ alignSelf: 'center' }}
+                    onPress={() => navigation.navigate('Cadastro')}
+                >
+                    <Text style={{ fontSize: 18 }}>Cadastre-se</Text>
+                </TouchableOpacity>
+
+                <View style={styles.footer}>
+                    <Text style={styles.copy}>
+                        Copyright © 2023 Data Explores {'\n'}
+                        todos direitos reservados
+                    </Text>
+                </View>
+            </ScrollView>
+        </View>
     );
 };
 
