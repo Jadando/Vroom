@@ -80,7 +80,6 @@ export default function Teste() {
 
         console.log(dataArray);
     }
-    alert
    async function imagem() {
         try {
             const storage = getStorage();
