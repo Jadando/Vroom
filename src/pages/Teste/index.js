@@ -6,13 +6,14 @@ import { useNavigation } from '@react-navigation/native';
 //select
 //import { collection, getDocs, getFirestore } from "firebase/firestore";
 //upload de imagem
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
+//import { getStorage, ref, uploadBytes } from "firebase/storage";
+//import * as ImagePicker from 'expo-image-picker';
+//import * as FileSystem from 'expo-file-system';
 //donwload
-//import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+//import  ImageUtils from 'expo-image-utils';
 
-Teste
+
 export default function Teste() {
 
     const navigation = useNavigation();
@@ -20,7 +21,7 @@ export default function Teste() {
     const [cep, setCep] = useState();
     const [nome, setNome] = useState();
     
-    const [imageUrl, setImageUrl] = useState(null);
+    const [imageUrl, setImageUrl] = useState(imageUri);
     const [imageUri, setImageUri] = useState(null);
 
     const chooseImageFromGallery = async () => {
@@ -85,12 +86,11 @@ export default function Teste() {
             const storage = getStorage();
             const imageRef = ref(storage, 'caminho/no/firebase/imagem.png');
             const url = await getDownloadURL(imageRef);
-    
+            console.log('estive aqui')
             // Recupere a string da URL
             const response = await fetch(url);
             const imageString = await response.text();
-    
-            // Converta a string em uma imagem PNG
+            console.log(imageString)
             const image = await ImageUtils.base64ToImage(imageString);
     
             setImageUri(image.assets);
