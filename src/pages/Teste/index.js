@@ -4,13 +4,13 @@ import { useNavigation } from '@react-navigation/native';
 
 
 //select
-import { collection, getDocs, getFirestore } from "firebase/firestore";
+//import { collection, getDocs, getFirestore } from "firebase/firestore";
 //upload de imagem
-//import { getStorage, ref, uploadBytes } from "firebase/storage";
-//import * as ImagePicker from 'expo-image-picker';
-//import * as FileSystem from 'expo-file-system';
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 //donwload
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+//import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 Teste
 export default function Teste() {
@@ -41,7 +41,7 @@ export default function Teste() {
             const imageFile = await FileSystem.readAsStringAsync(localUri, {
               encoding: FileSystem.EncodingType.Base64,
             });
-      
+            console.log(imageFile)
             // Armazena a string base64 na variável de estado imageUrl
             setImageUrl(`data:image/jpeg;base64,${imageFile}`);
           }
