@@ -84,16 +84,11 @@ export default function Teste() {
    async function imagem() {
         try {
             const storage = getStorage();
-            const imageRef = ref(storage, 'caminho/no/firebase/imagem.png');
+            const imageRef = ref(storage, 'caminho/imagem');
             const url = await getDownloadURL(imageRef);
-            console.log('estive aqui')
-            // Recupere a string da URL
-            const response = await fetch(url);
-            const imageString = await response.text();
-            console.log(imageString)
-            const image = await ImageUtils.base64ToImage(imageString);
-    
-            setImageUri(image.assets);
+            console.log(url)
+
+            setImageUri(url.assets);
           } catch (error) {
             console.error('Erro ao recuperar a URL da imagem:', error);
           }
