@@ -37,6 +37,7 @@ const icons = {
   }
 }
 
+
 function Tabs() {
   return (
     <Tab.Navigator
