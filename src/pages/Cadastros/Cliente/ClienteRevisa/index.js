@@ -15,6 +15,9 @@ export default function ClienteRevisa({ route }) {
     const [bairro, setBairro] = useState(route.params?.bairro || '');
     const [endereco, setEndereco] = useState(route.params?.endereco || '');
     const [numero, setNumero] = useState(route.params?.numero || '');
+    //const data = new Date()
+    //data.getDate
+    //console.log(data)
     async function verificaInput() {
         if (
             nome !== '' &&
@@ -28,6 +31,9 @@ export default function ClienteRevisa({ route }) {
         ) {
             const db = getFirestore()
             try {
+                const agora = new Date();
+                const dataHoraBrasilia = agora.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+                console.log(dataHoraBrasilia);
                 await addDoc(collection(db, "users"), {
                     nome: nome,
                     telefone: telefone,
@@ -37,6 +43,7 @@ export default function ClienteRevisa({ route }) {
                     bairro: bairro,
                     endereco: endereco,
                     numero: numero,
+                    date: dataHoraBrasilia,
                 });
             } catch (e) {
                 console.error("Error adding document: ", e);

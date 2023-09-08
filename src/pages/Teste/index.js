@@ -4,12 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 
 
 //select
-//import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 //upload de imagem
 //import { getStorage, ref, uploadString } from "firebase/storage";
 //import * as ImagePicker from 'expo-image-picker';
 //import * as FileSystem from 'expo-file-system';
-//import { encode } from 'base-64';
+import { encode } from 'base-64';
 //donwload
 //import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 //import  ImageUtils from 'expo-image-utils';
@@ -20,7 +20,7 @@ export default function Teste() {
     const navigation = useNavigation();
     const [cidade, setCidade] = useState();
     const [cep, setCep] = useState();
-    const [nome, setNome] = useState();
+    //const [nome, setNome] = useState();
 
     const [imageUrl, setImageUrl] = useState(null);
     const [imageUri, setImageUri] = useState(null);
@@ -74,9 +74,9 @@ export default function Teste() {
             const userData = doc.data();
             dataArray.push({ id: doc.id, ...userData });
 
-            setNome(userData.nome);
             setCep(userData.cep);
-            setCidade(userData.cidade);
+            setCidade(userData.date);
+            console.log(cidade)
         });
 
         console.log(dataArray);

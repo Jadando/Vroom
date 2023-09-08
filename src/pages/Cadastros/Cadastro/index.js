@@ -31,6 +31,7 @@ export default function Cadastro() {
           .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
+            
             // ...
             setModalVisible(true);
           })

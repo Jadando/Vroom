@@ -20,15 +20,17 @@ export default function Login() {
                 const auth = getAuth();
                 signInWithEmailAndPassword(auth, email, senha)
                     .then((userCredential) => {
-                        console.log('estive aqui')
                         // Signed in 
                         const user = userCredential.user;
                         // ...
-                        navigation.navigate('Home')
+                        console.log(user)
+                        console.log('estive aqui')
+                        //navigation.navigate('Home')
                     })
                     .catch((error) => {
                         const errorCode = error.code;
                         const errorMessage = error.message;
+
                     });
                     
             }
