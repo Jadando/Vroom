@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useColorScheme } from 'react-native';
 import { ThemeProvider } from 'styled-components';
-import theme from './src/theme'
+//import {Color} from './src/theme'
 
 import Teste from './src/pages/Teste';
 import Login from './src/pages/Login';
@@ -84,9 +84,27 @@ function Tabs() {
 }
 
 export default function App() {
-
   const deviceTheme = useColorScheme();
-  console.log(deviceTheme);
+  const [Theme, setTheme] = useState(null);
+  const Color = {
+    Dark: {
+      background: '#121212',
+      color: '#f2f2f2',
+    },
+    Light: {
+      background: '#121212',
+      color: '#121212',
+    },
+  };
+
+  useEffect(() => {
+    if (deviceTheme === 'light') {
+      setTheme(Color.Light);
+      console.log(Theme)
+    } else {
+      setTheme(Color.Dark);
+    }
+  }, [deviceTheme]);
   return (
     <ThemeProvider theme={{}}>
       <NavigationContainer>

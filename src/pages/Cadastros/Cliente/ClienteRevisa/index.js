@@ -43,7 +43,7 @@ export default function ClienteRevisa({ route }) {
                     bairro: bairro,
                     endereco: endereco,
                     numero: numero,
-                    date: dataHoraBrasilia,
+                    dataHora: dataHoraBrasilia,
                 });
             } catch (e) {
                 console.error("Error adding document: ", e);

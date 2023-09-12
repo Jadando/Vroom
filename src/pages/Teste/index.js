@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
+import { DarkTheme, useNavigation } from '@react-navigation/native';
+//teste color
+import {Theme} from '../../../App.js';
 
 //select
 import { collection, getDocs, getFirestore } from "firebase/firestore";
@@ -10,6 +11,7 @@ import { collection, getDocs, getFirestore } from "firebase/firestore";
 //import * as ImagePicker from 'expo-image-picker';
 //import * as FileSystem from 'expo-file-system';
 import { encode } from 'base-64';
+import Color from '../../theme/index.js';
 //donwload
 //import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 //import  ImageUtils from 'expo-image-utils';
@@ -75,7 +77,7 @@ export default function Teste() {
             dataArray.push({ id: doc.id, ...userData });
 
             setCep(userData.cep);
-            setCidade(userData.date);
+            setCidade(userData.dataHora);
             console.log(cidade)
         });
 
@@ -95,7 +97,15 @@ export default function Teste() {
             console.error('Erro ao recuperar a URL da imagem:', error);
         }
     }
+    function link() {
+        const clienteId = 123; // ID do cliente
+        const empresaId = 456; // ID da empresa
 
+        // Gera a URL
+        const url = `https://meuapp.com/cliente/${clienteId}/empresa/${empresaId}`;
+        alert(url)
+        console.log(url);
+    }
     return (
         <View style={styles.container}>
             <ScrollView
@@ -148,7 +158,7 @@ export default function Teste() {
                         <Image style={{ width: 40, height: 40 }} source={require('../../img/google.png')} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={link}>
                         <Image style={{ width: 40, height: 40 }} source={require('../../img/face.png')} />
                     </TouchableOpacity>
 
@@ -177,6 +187,7 @@ export default function Teste() {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor:Theme.background,
         flex: 1,
         paddingTop: '10%',
     },
