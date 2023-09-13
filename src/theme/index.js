@@ -1,7 +1,7 @@
 export const Color = {
     Dark: {
       background: '#121212',
-      color: '#f2f2f2',
+      color: '#121212',
     },
     Light: {
       background: '#121212',
@@ -9,5 +9,5 @@ export const Color = {
     },
   };
   
-  //export default Color;
+  export default Color;
   

@@ -5,7 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useColorScheme } from 'react-native';
 import { ThemeProvider } from 'styled-components';
-//import {Color} from './src/theme'
+import {Color} from './src/theme'
+
 
 import Teste from './src/pages/Teste';
 import Login from './src/pages/Login';
@@ -85,28 +86,12 @@ function Tabs() {
 
 export default function App() {
   const deviceTheme = useColorScheme();
-  const [Theme, setTheme] = useState(null);
-  const Color = {
-    Dark: {
-      background: '#121212',
-      color: '#f2f2f2',
-    },
-    Light: {
-      background: '#121212',
-      color: '#121212',
-    },
-  };
-
+  const [Tema, setTheme] = useState(deviceTheme === 'light' ? Color.Light : Color.Dark);
   useEffect(() => {
-    if (deviceTheme === 'light') {
-      setTheme(Color.Light);
-      console.log(Theme)
-    } else {
-      setTheme(Color.Dark);
-    }
+    setTheme(deviceTheme === 'light' ? Color.Light : Color.Dark);
   }, [deviceTheme]);
   return (
-    <ThemeProvider theme={{}}>
+    <ThemeProvider theme={{Tema}}>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName='Teste'

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme } from 'react-native';
-import { DarkTheme, useNavigation } from '@react-navigation/native';
+import { Button, StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 //teste color
-import {Theme} from '../../../App.js';
+import { useTheme } from 'styled-components';
+
+
 
 //select
 import { collection, getDocs, getFirestore } from "firebase/firestore";
@@ -11,14 +13,15 @@ import { collection, getDocs, getFirestore } from "firebase/firestore";
 //import * as ImagePicker from 'expo-image-picker';
 //import * as FileSystem from 'expo-file-system';
 import { encode } from 'base-64';
-import Color from '../../theme/index.js';
 //donwload
 //import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 //import  ImageUtils from 'expo-image-utils';
 
 
 export default function Teste() {
-
+    const tema = useTheme();
+console.log(tema)
+  
     const navigation = useNavigation();
     const [cidade, setCidade] = useState();
     const [cep, setCep] = useState();
@@ -187,7 +190,7 @@ export default function Teste() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor:Theme.background,
+     //   color:tema.background,
         flex: 1,
         paddingTop: '10%',
     },
@@ -268,4 +271,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 15
     },
-});
+})
