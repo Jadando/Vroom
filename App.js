@@ -87,6 +87,7 @@ function Tabs() {
 export default function App() {
   const deviceTheme = useColorScheme();
   const [Tema, setTheme] = useState(deviceTheme === 'light' ? Color.Light : Color.Dark);
+  console.log(Tema)
   useEffect(() => {
     setTheme(deviceTheme === 'light' ? Color.Light : Color.Dark);
   }, [deviceTheme]);

@@ -4,7 +4,7 @@ export const Color = {
       color: '#121212',
     },
     Light: {
-      background: '#121212',
+      background: '#f2f2f2',
       color: '#121212',
     },
   };

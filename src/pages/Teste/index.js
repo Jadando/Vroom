@@ -10,7 +10,7 @@ import { useTheme } from 'styled-components';
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 //upload de imagem
 //import { getStorage, ref, uploadString } from "firebase/storage";
-//import * as ImagePicker from 'expo-image-picker';
+//import * as ImagePicker from 'expo-image-picker';   
 //import * as FileSystem from 'expo-file-system';
 import { encode } from 'base-64';
 //donwload
@@ -20,8 +20,8 @@ import { encode } from 'base-64';
 
 export default function Teste() {
     const tema = useTheme();
-console.log(tema)
-  
+    const styles = getstyles(tema);
+
     const navigation = useNavigation();
     const [cidade, setCidade] = useState();
     const [cep, setCep] = useState();
@@ -188,9 +188,9 @@ console.log(tema)
     );
 };
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
     container: {
-     //   color:tema.background,
+        backgroundColor: tema.Tema.background,
         flex: 1,
         paddingTop: '10%',
     },
