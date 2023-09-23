@@ -1,4 +1,4 @@
 @echo off
 
 echo Instalando ImagePicker...
-npm install ImagePicker
+npm i react-native-image-picker

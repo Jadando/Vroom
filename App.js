@@ -9,6 +9,8 @@ import {Color} from './src/theme'
 
 
 import Teste from './src/pages/Teste';
+import Mapa from './src/pages/Teste/Mapa';
+import Drop from './src/pages/Teste/Drop';
 import Login from './src/pages/Login';
 import Home from './src/pages/Home';
 import Cadastro from './src/pages/Cadastros/Cadastro';
@@ -95,11 +97,19 @@ export default function App() {
     <ThemeProvider theme={{Tema}}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Teste'
+          initialRouteName='Login'
           screenOptions={{
             headerShown: false
           }}
         >
+           <Stack.Screen
+            name='Drop'
+            component={Drop}
+          />
+           <Stack.Screen
+            name='Mapa'
+            component={Mapa}
+          />
           <Stack.Screen
             name='Teste'
             component={Teste}

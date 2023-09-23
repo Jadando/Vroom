@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 //teste color
 import { useTheme } from 'styled-components';
 
+//Login google
 
 
 //select
@@ -109,6 +110,8 @@ export default function Teste() {
         alert(url)
         console.log(url);
     }
+
+
     return (
         <View style={styles.container}>
             <ScrollView
@@ -161,7 +164,7 @@ export default function Teste() {
                         <Image style={{ width: 40, height: 40 }} source={require('../../img/google.png')} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={link}>
+                    <TouchableOpacity onPress={openGoogleAuthentication}>
                         <Image style={{ width: 40, height: 40 }} source={require('../../img/face.png')} />
                     </TouchableOpacity>
 
@@ -193,6 +196,9 @@ const getstyles = (tema) => StyleSheet.create({
         backgroundColor: tema.Tema.background,
         flex: 1,
         paddingTop: '10%',
+    },
+    map: {
+        flex: 1
     },
     logoTop: {
         height: 200,
