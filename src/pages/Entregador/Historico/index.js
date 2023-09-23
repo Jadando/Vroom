@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 export default function Pedidos() {
+    const tema = useTheme();
+    const styles = getstyles(tema);
     return (
 
         <View style={styles.container}>
@@ -57,7 +59,7 @@ export default function Pedidos() {
     );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
     container: {
         felx: 1,
         alignContent: 'center',

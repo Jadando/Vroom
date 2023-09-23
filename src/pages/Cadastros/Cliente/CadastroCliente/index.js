@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
+import { useTheme } from 'styled-components';
 
 export default function CadastroCliente() {
   const navigation = useNavigation();
+  const tema = useTheme();
+  const styles = getstyles(tema);
 
   const [nome, setNome] = useState('jaoao');
   const [telefone, setTelefone] = useState('1898180400');
@@ -149,7 +152,7 @@ export default function CadastroCliente() {
   );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',

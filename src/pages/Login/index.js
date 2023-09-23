@@ -3,9 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView,
 import { useNavigation } from '@react-navigation/native';
 import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, getAuth} from "firebase/auth";
 import { auth } from '../../firebaseConnection'
+import { useTheme } from 'styled-components';
 
 export default function Login() {
     const navigation = useNavigation();
+    const tema = useTheme();
+    const styles = getstyles(tema);
     const [email, setEmail] = useState('joao.adriano@gmail.com');
     const [senha, setSenha] = useState('1234567');
 
@@ -25,7 +28,7 @@ export default function Login() {
                         // ...
                         console.log(user)
                         console.log('estive aqui')
-                        //navigation.navigate('Home')
+                       // navigation.navigate('Home')
                     })
                     .catch((error) => {
                         const errorCode = error.code;
@@ -136,8 +139,8 @@ export default function Login() {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
+    
+const getstyles = (tema) => StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: '10%',
@@ -179,6 +182,7 @@ const styles = StyleSheet.create({
     logar: {
         height: 50,
         width: 250,
+        backgroundColor: '#ffc000',
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',

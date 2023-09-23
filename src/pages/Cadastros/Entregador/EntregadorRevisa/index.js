@@ -3,10 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { useTheme } from 'styled-components';
 
 export default function EntregadorRevisa({ route }) {
   const navigation = useNavigation();
-
+  const tema = useTheme();
+  const styles = getstyles(tema);
   const [cnpj, setCnpj] = useState(route.params?.cnpj || '');
   const [nomeEmpresa, setNomeEmpresa] = useState(route.params?.nomeEmpresa || '');
   const [cpf, setCpf] = useState(route.params?.cpf || '');
@@ -222,7 +224,7 @@ export default function EntregadorRevisa({ route }) {
   );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
   container: {
     flex: 1,
     alignContent: 'center',

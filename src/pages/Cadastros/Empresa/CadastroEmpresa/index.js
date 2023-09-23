@@ -5,6 +5,8 @@ import { TextInputMask } from 'react-native-masked-text';
 
 export default function CadastroEmpresa() {
   const navigation = useNavigation();
+  const tema = useTheme();
+  const styles = getstyles(tema);
 
   const [cnpj, setCnpj] = useState('');
   const [nomeEmpresa, setNomeEmpresa] = useState('');
@@ -168,7 +170,7 @@ export default function CadastroEmpresa() {
   );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',

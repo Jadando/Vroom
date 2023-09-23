@@ -2,16 +2,19 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTheme } from 'styled-components';
 
 
 export default function Config() {
     const navigation = useNavigation();
+    const tema = useTheme();
+    const styles = getstyles(tema);
     return (
 
         <View style={styles.container}>
             <View style={styles.config}>
                 <Text style={styles.configText}>Configurações</Text>
-                <Icon name='cog' size={30} color='#000' />
+                <Icon name='cog' size={30} color={tema.Tema.color} />
             </View>
 
             <View style={styles.btnArea}>
@@ -41,13 +44,13 @@ export default function Config() {
     );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
     container: {
         felx: 1,
         alignContent: 'center',
         alignItems: 'center',
         paddingTop: 15,
-        backgroundColor: '#fff'
+        backgroundColor: tema.Tema.background
     },
     config: {
         marginTop: 50,
@@ -57,11 +60,13 @@ const styles = StyleSheet.create({
     },
     configText: {
         fontSize: 20,
-        marginRight: 15
+        marginRight: 15,
+        color: tema.Tema.color
     },
     configContent:{
         fontSize: 18,
         marginBottom: 20,
+        color: tema.Tema.color
 },
     btnArea: {
         marginTop: 100,

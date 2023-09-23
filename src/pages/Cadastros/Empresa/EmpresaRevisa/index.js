@@ -6,6 +6,8 @@ import { collection, addDoc, getFirestore } from "firebase/firestore";
 
 export default function EmpresaRevisa({ route }) {
   const navigation = useNavigation();
+  const tema = useTheme();
+  const styles = getstyles(tema);
 
   const [cnpj, setCnpj] = useState(route.params?.cnpj || '');
   const [nomeEmpresa, setNomeEmpresa] = useState(route.params?.nomeEmpresa || '');
@@ -173,7 +175,7 @@ export default function EmpresaRevisa({ route }) {
   );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
   container: {
     flex: 1,
     alignContent: 'center',

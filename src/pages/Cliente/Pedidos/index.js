@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTheme } from 'styled-components';
 
 
 export default function Pedidos() {
+    const tema = useTheme();
+    const styles = getstyles(tema);
     return (
 
         <View style={styles.container}>
@@ -13,7 +16,7 @@ export default function Pedidos() {
                     <Text style={styles.title}>
                         Seu endereço
                     </Text>
-                    <Icon name='chevron-down' size={30} />
+                    <Icon name='chevron-down' size={30} color={tema.Tema.color}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
             </View>
@@ -21,7 +24,7 @@ export default function Pedidos() {
             <View style={styles.pedidos}>
                 <Text style={styles.pedidosText}>Histórico de pedidos</Text>
                 <View style={styles.pedidosClock}>
-                    <Icon name='time-outline' size={30} color='#000' />
+                    <Icon name='time-outline' size={30} color={tema.Tema.color} />
                 </View>
             </View>
 
@@ -34,7 +37,7 @@ export default function Pedidos() {
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
                             </View>
-                            <Text>
+                            <Text style={styles.Text}>
                                 Luzia Hamburgers {'\n'}
                                 Ultimo pedido dia: 11/04/2023
                             </Text>
@@ -42,7 +45,7 @@ export default function Pedidos() {
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
                             </View>
-                            <Text>
+                            <Text style={styles.Text}>
                                 Mix Shakes {'\n'}
                                 Ultimo pedido dia: 09/04/2023
                             </Text>
@@ -50,7 +53,7 @@ export default function Pedidos() {
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
                             </View>
-                            <Text>
+                            <Text style={styles.Text}>
                                 JusFarma {'\n'}
                                 Ultimo pedido dia: 28/03/2023
                             </Text>
@@ -63,14 +66,17 @@ export default function Pedidos() {
     );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
     container: {
         felx: 1,
         alignContent: 'center',
         alignItems: 'center',
         paddingTop: 15,
-        backgroundColor: '#ffffffff'
+        backgroundColor: tema.Tema.background
     },
+    Text: {
+        color: tema.Tema.color,
+      },
     header: {
         flexDirection: 'row',
         width: '100%',
@@ -91,6 +97,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
+        color: tema.Tema.color
     },
     pedidos: {
         flexDirection: 'row',
@@ -101,10 +108,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     pedidosText: {
-        fontSize: 20
+        fontSize: 20,
+        color: tema.Tema.color
     },
     pedidosClock: {
-        marginLeft: 10
+        marginLeft: 10,
     },
     recents: {
         alignSelf: 'flex-start',
@@ -124,7 +132,7 @@ const styles = StyleSheet.create({
     },
     recentsContent: {
         flexDirection: 'row',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: tema.Tema.content,
         padding: 20,
         width: 320,
         height: 80,

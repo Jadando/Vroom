@@ -5,12 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useColorScheme } from 'react-native';
 import { ThemeProvider } from 'styled-components';
-import {Color} from './src/theme'
-
+import { Color } from './src/theme'
+import { useTheme } from 'styled-components';
 
 import Teste from './src/pages/Teste';
 import Mapa from './src/pages/Teste/Mapa';
-import Drop from './src/pages/Teste/Drop';
 import Login from './src/pages/Login';
 import Home from './src/pages/Cliente/Home';
 import Search from './src/pages/Cliente/Search';
@@ -46,12 +45,13 @@ const icons = {
 
 
 function Tabs() {
+  const tema = useTheme();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color }) => {
+        tabBarIcon: ({ focused }) => {
           const { name } = icons[route.name];
-          return <Icon name={name} color={color} size={25} />;
+          return <Icon name={name} color={focused ? '#ffc000' : tema.Tema.color} size={25} />;
         },
         tabBarActiveTintColor: '#ffc000',
         tabBarItemStyle: {
@@ -62,7 +62,7 @@ function Tabs() {
             display: 'flex',
             elevation: 10,
             height: 60,
-            backgroundColor: '#f2f2f2',
+            backgroundColor: tema.Tema.content,
             paddingBottom: 5,
             paddingTop: 5,
             shadowColor: '#000',
@@ -81,9 +81,9 @@ function Tabs() {
       })}
     >
       <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
-      <Tab.Screen name="Buscar" component={CadastroCliente} options={{ headerShown: false }} />
-      <Tab.Screen name="Pedidos" component={Login} options={{ headerShown: false }} />
-      <Tab.Screen name="Perfil" component={Cadastro} options={{ headerShown: false }} />
+      <Tab.Screen name="Buscar" component={Search} options={{ headerShown: false }} />
+      <Tab.Screen name="Pedidos" component={Pedidos} options={{ headerShown: false }} />
+      <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />
     </Tab.Navigator>
 
 
@@ -98,19 +98,23 @@ export default function App() {
     setTheme(deviceTheme === 'light' ? Color.Light : Color.Dark);
   }, [deviceTheme]);
   return (
-    <ThemeProvider theme={{Tema}}>
+    <ThemeProvider theme={{ Tema }}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Login'
+          initialRouteName='Config'
           screenOptions={{
             headerShown: false
           }}
         >
-           <Stack.Screen
-            name='Drop'
-            component={Drop}
+          <Stack.Screen
+            name='Config'
+            component={Config}
           />
-           <Stack.Screen
+          <Stack.Screen
+            name='Search'
+            component={Search}
+          />
+          <Stack.Screen
             name='Mapa'
             component={Mapa}
           />

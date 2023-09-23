@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import { useTheme } from 'styled-components';
 
 export default function Search() {
+    const tema = useTheme();
+    const styles = getstyles(tema);
     return (
 
         <View style={styles.container}>
@@ -13,18 +15,19 @@ export default function Search() {
                     <Text style={styles.title}>
                         Seu endereço
                     </Text>
-                    <Icon name='chevron-down' size={30} />
+                    <Icon name='chevron-down' size={30} color ={tema.Tema.color}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
             </View>
 
             <View style={styles.search}>
                 <View style={styles.searchLupe}>
-                    <Icon name='search' size={25} color='#2a2a2a' />
+                    <Icon name='search' size={25} color={tema.Tema.color} />
                 </View>
                 <TextInput
-                    placeholder="Buscar estabelecimentos"
-                    style={{ fontSize: 18 }}
+                placeholder="Buscar estabelecimentos" 
+                style={{fontSize: 18, color: tema.Tema.color }}
+                placeholderTextColor={tema.Tema.color}
                 />
             </View>
 
@@ -40,7 +43,7 @@ export default function Search() {
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
                             </View>
-                            <Text>
+                            <Text style={styles.Text}>
                                 Luzia Hamburgers {'\n'}
                                 Ultimo pedido dia: 11/04/2023
                             </Text>
@@ -48,7 +51,7 @@ export default function Search() {
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
                             </View>
-                            <Text>
+                            <Text style={styles.Text}>
                                 Mix Shakes {'\n'}
                                 Ultimo pedido dia: 09/04/2023
                             </Text>
@@ -56,7 +59,7 @@ export default function Search() {
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
                             </View>
-                            <Text>
+                            <Text style={styles.Text}>
                                 JusFarma {'\n'}
                                 Ultimo pedido dia: 28/03/2023
                             </Text>
@@ -69,14 +72,17 @@ export default function Search() {
     );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
     container: {
         felx: 1,
         alignContent: 'center',
         alignItems: 'center',
         paddingTop: 15,
-        backgroundColor: '#ffffffff'
+        backgroundColor: tema.Tema.background
     },
+    Text: {
+        color: tema.Tema.color,
+      },
     header: {
         flexDirection: 'row',
         width: '100%',
@@ -97,19 +103,20 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
+        color: tema.Tema.color
     },
     search: {
         flexDirection: 'row',
         alignContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: tema.Tema.content,
         padding: 10,
         borderRadius: 10,
         width: '80%',
         marginBottom: 30,
     },
     searchLupe: {
-        marginRight: 15
+        marginRight: 15,
     },
     recents: {
         alignSelf: 'flex-start',
@@ -118,7 +125,8 @@ const styles = StyleSheet.create({
     recentsTitle: {
         fontSize: 20,
         alignSelf: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+        color: tema.Tema.color,
     },
     recentsContainer: {
         flex: 1,
@@ -129,7 +137,7 @@ const styles = StyleSheet.create({
     },
     recentsContent: {
         flexDirection: 'row',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: tema.Tema.content, 
         padding: 20,
         width: 320,
         height: 80,

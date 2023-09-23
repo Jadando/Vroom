@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTheme } from 'styled-components';
 
 
 export default function Perfil() {
     const navigation = useNavigation();
+    const tema = useTheme();
+    const styles = getstyles(tema);
     return (
 
         <View style={styles.container}>
@@ -45,13 +48,13 @@ export default function Perfil() {
     );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
     container: {
         felx: 1,
         alignContent: 'center',
         alignItems: 'center',
         paddingTop: 25,
-        backgroundColor: '#fff'
+        backgroundColor: tema.Tema.background
     },
     header: {
         flexDirection: 'row',
@@ -79,7 +82,8 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     userInfo: {
-        fontSize: 20
+        fontSize: 20,
+        color: tema.Tema.color
     },
     btnArea: {
         marginTop: 50,

@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
+import { useTheme } from 'styled-components';
 
 export default function Afiliado({ route }) {
     const navigation = useNavigation();
+    const tema = useTheme();
+    const styles = getstyles(tema);
 
     const [cpf, setCpf] = useState(route.params?.cpf || '');
     const [nome, setNome] = useState(route.params?.nome || '');
@@ -134,7 +137,7 @@ export default function Afiliado({ route }) {
     );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',

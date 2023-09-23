@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useTheme } from 'styled-components';
 
 export default function Cadastro() {
   const navigation = useNavigation();
+  const tema = useTheme();
+  const styles = getstyles(tema);
 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -150,7 +153,7 @@ export default function Cadastro() {
   );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: '15%',

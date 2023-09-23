@@ -3,10 +3,13 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { useTheme } from 'styled-components';
 
 export default function ClienteRevisa({ route }) {
     const navigation = useNavigation();
-
+    const tema = useTheme();
+    const styles = getstyles(tema);
+    
     const [nome, setNome] = useState(route.params?.nome || '');
     const [telefone, setTelefone] = useState(route.params?.telefone || '');
     const [cep, setCep] = useState(route.params?.cep || '');
@@ -163,7 +166,7 @@ export default function ClienteRevisa({ route }) {
     );
 }
 
-const styles = StyleSheet.create({
+const getstyles = (tema) => StyleSheet.create({
     container: {
         flex: 1,
         alignContent: 'center',
