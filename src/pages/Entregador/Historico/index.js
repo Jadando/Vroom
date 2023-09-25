@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 export default function Pedidos() {
+    
     const tema = useTheme();
     const styles = getstyles(tema);
     return (

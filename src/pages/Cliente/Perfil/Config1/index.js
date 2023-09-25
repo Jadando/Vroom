@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
-
+import { useTema } from '../../../../theme';
 
 export default function Config() {
-    const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
+    const { TrocaLight, TrocaDark } = useTema();
+    function Light() {
+        TrocaLight();
+    }
+    function Dark() {
+        TrocaDark();
+    }
     return (
-
         <View style={styles.container}>
             <View style={styles.config}>
                 <Text style={styles.configText}>Configurações</Text>
-                <Icon name='cog' size={30} color={tema.Tema.color} />
+                <Icon name='cog' size={30} color={tema.color} />
             </View>
 
             <View style={styles.btnArea}>
@@ -22,31 +27,34 @@ export default function Config() {
                     Tema
                 </Text>
                 <View style={styles.tema}>
-                <TouchableOpacity style={styles.btnTema}>
-                <Icon name='sunny' size={30} color='#000' />
-                    <Text style={styles.btnText}>Claro</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btnTema}>
-                <Icon name='moon' size={30} color='#000' />
-                    <Text style={styles.btnText}>Escuro</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={Light}
+                        style={styles.btnTema}>
+                        <Icon name='sunny' size={30} color='#000' />
+                        <Text style={styles.btnText}>Claro</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={Dark}
+                        style={styles.btnTema}>
+                        <Icon name='moon' size={30} color='#000' />
+                        <Text style={styles.btnText}>Escuro</Text>
+                    </TouchableOpacity>
                 </View>
                 <Text style={styles.configContent}>
                     Senha
                 </Text>
-                <TouchableOpacity 
-                style={styles.button}>
+                <TouchableOpacity
+                    style={styles.button}>
                     <Text style={styles.btnText}>Alterar senha</Text>
                 </TouchableOpacity>
             </View>
-
         </View>
     );
 }
 
 const getstyles = (tema) => StyleSheet.create({
     container: {
-        felx: 1,
+        flex: 1,
         alignContent: 'center',
         alignItems: 'center',
         paddingTop: 15,
@@ -63,11 +71,11 @@ const getstyles = (tema) => StyleSheet.create({
         marginRight: 15,
         color: tema.Tema.color
     },
-    configContent:{
+    configContent: {
         fontSize: 18,
         marginBottom: 20,
         color: tema.Tema.color
-},
+    },
     btnArea: {
         marginTop: 100,
         width: '100%',
@@ -107,4 +115,4 @@ const getstyles = (tema) => StyleSheet.create({
     tema: {
         flexDirection: 'row'
     },
-})
+});

@@ -3,9 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useColorScheme } from 'react-native';
 import { ThemeProvider } from 'styled-components';
-import { Color } from './src/theme'
+import { useTema } from './src/theme'
 import { useTheme } from 'styled-components';
 
 import Teste from './src/pages/Teste';
@@ -24,6 +23,7 @@ import EmpresaRevisa from './src/pages/Cadastros/Empresa/EmpresaRevisa';
 import CadastroEntregador from './src/pages/Cadastros/Entregador/CadastroEntregador';
 import EntregadorRevisa from './src/pages/Cadastros/Entregador/EntregadorRevisa';
 import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
+import { Children } from 'react/cjs/react.production.min';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -91,12 +91,7 @@ function Tabs() {
 }
 
 export default function App() {
-  const deviceTheme = useColorScheme();
-  const [Tema, setTheme] = useState(deviceTheme === 'light' ? Color.Light : Color.Dark);
-  console.log(Tema)
-  useEffect(() => {
-    setTheme(deviceTheme === 'light' ? Color.Light : Color.Dark);
-  }, [deviceTheme]);
+  const {Tema} = useTema();
   return (
     <ThemeProvider theme={{ Tema }}>
       <NavigationContainer>
@@ -109,6 +104,7 @@ export default function App() {
           <Stack.Screen
             name='Config'
             component={Config}
+            initialParams={{ Tema: Tema }}
           />
           <Stack.Screen
             name='Search'
