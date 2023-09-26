@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import { useTema } from '../../../../theme';
 
+
 export default function Config() {
     const tema = useTheme();
     const styles = getstyles(tema);

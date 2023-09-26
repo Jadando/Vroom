@@ -1,5 +1,6 @@
 import { useColorScheme } from 'react-native';
-import React, { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect } from 'react';
+import { ThemeProvider } from 'styled-components';
 
 export const Color = {
   Dark: {
@@ -13,23 +14,30 @@ export const Color = {
   },
 };
 
-export function useTema() {
-  const deviceTheme = useColorScheme();
-  const [Tema, setTheme] = useState(deviceTheme === 'light' ? Color.Light : Color.Dark);
 
-   useEffect(() => {
-      setTheme(deviceTheme === 'light' ? Color.Light : Color.Dark);
-   }, []);
+export function useTema() {
+  const [Tema, setTema] = useState(Color.Light);
 
   const TrocaLight = () => {
-    setTheme(Color.Light);
-    console.log("branco");
+    setTema(Color.Light);
+    console.log("Tema alterado para claro");
   }
 
   const TrocaDark = () => {
-    setTheme(Color.Dark);
-    console.log("Preto");
+    setTema(Color.Dark);
+    console.log("Tema alterado para escuro");
   }
 
-  return {Tema, TrocaLight, TrocaDark };
+  return { Tema, TrocaLight, TrocaDark };
+}
+
+// Componente ThemeProviderWrapper que recebe children e aplica o tema
+export function ThemeProviderWrapper({ children }) {
+//  const { Tema } = useTema();
+
+  return (
+    <ThemeProvider theme={Color.Light}>
+      {children}
+    </ThemeProvider>
+  );
 }

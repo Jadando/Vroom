@@ -3,9 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { ThemeProvider } from 'styled-components';
-import { useTema } from './src/theme'
+import { ThemeProviderWrapper } from './src/theme';
 import { useTheme } from 'styled-components';
+import { Color } from './src/theme';
+
+
 
 import Teste from './src/pages/Teste';
 import Mapa from './src/pages/Teste/Mapa';
@@ -23,7 +25,8 @@ import EmpresaRevisa from './src/pages/Cadastros/Empresa/EmpresaRevisa';
 import CadastroEntregador from './src/pages/Cadastros/Entregador/CadastroEntregador';
 import EntregadorRevisa from './src/pages/Cadastros/Entregador/EntregadorRevisa';
 import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
-import { Children } from 'react/cjs/react.production.min';
+import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -91,9 +94,9 @@ function Tabs() {
 }
 
 export default function App() {
-  const {Tema} = useTema();
+
   return (
-    <ThemeProvider theme={{ Tema }}>
+    <ThemeProviderWrapper>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName='Config'
@@ -104,7 +107,6 @@ export default function App() {
           <Stack.Screen
             name='Config'
             component={Config}
-            initialParams={{ Tema: Tema }}
           />
           <Stack.Screen
             name='Search'
@@ -160,7 +162,7 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </ThemeProvider>
+    </ThemeProviderWrapper>
 
   );
 }
