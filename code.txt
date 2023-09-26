@@ -1,0 +1,21 @@
+export function useTema() {
+  const deviceTheme = useColorScheme();
+  const [Tema, setTheme] = useState('light');
+  //useEffect(() => {
+  //     setTheme(deviceTheme === 'light' ? Color.Light : Color.Dark);
+  //}, []);
+
+  const TrocaLight = () => {
+    setTheme(Color.Light);
+    console.log(Tema)
+    console.log("Tema alterado para claro");
+  }
+
+  const TrocaDark = () => {
+    setTheme(Color.Dark);
+    console.log(Tema)
+    console.log("Tema alterado para escuro");
+  }
+
+  return { Tema, TrocaLight, TrocaDark };
+}
