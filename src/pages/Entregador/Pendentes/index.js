@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-export default function Historico() {
+export default function Pendentes() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -12,7 +12,7 @@ export default function Historico() {
             </View>
 
             <View style={styles.pedidos}>
-                <Text style={styles.pedidosText}>Histórico de entregas</Text>
+                <Text style={styles.pedidosText}>Entregas pendentes</Text>
                 <View style={styles.pedidosClock}>
                     <Icon name='time-outline' size={30} color='#000' />
                 </View>
