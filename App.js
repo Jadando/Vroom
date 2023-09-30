@@ -25,7 +25,7 @@ import EmpresaRevisa from './src/pages/Cadastros/Empresa/EmpresaRevisa';
 import CadastroEntregador from './src/pages/Cadastros/Entregador/CadastroEntregador';
 import EntregadorRevisa from './src/pages/Cadastros/Entregador/EntregadorRevisa';
 import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
-import ConfigEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
+import PerfilEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
 import AceitarEntrega from './src/pages/Entregador/AceitarEntrega';
 import Historico from './src/pages/Entregador/Historico';
 import Pendentes from './src/pages/Entregador/Pendentes';
