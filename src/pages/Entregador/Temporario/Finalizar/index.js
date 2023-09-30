@@ -99,6 +99,14 @@ export default function FinalizarEntrega() {
                             )}
                         </Mapbox.MapView>
                     </View>
+                    <View style={styles.recentsContent}>
+                        <View style={styles.recentsImages}>
+                        </View>
+                        <Text>
+                            Nome do cliente {'\n'}
+                            Pedro
+                        </Text>
+                    </View>
                     <View style={styles.comanda}>
                         <Text style={styles.comandaTitle}>Comanda do pedido:</Text>
                         <View style={styles.comandaDescription}>
@@ -389,7 +397,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     expandedMap: {
-        
          elevation: 10
     },
 })
