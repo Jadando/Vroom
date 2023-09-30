@@ -25,6 +25,7 @@ import EmpresaRevisa from './src/pages/Cadastros/Empresa/EmpresaRevisa';
 import CadastroEntregador from './src/pages/Cadastros/Entregador/CadastroEntregador';
 import EntregadorRevisa from './src/pages/Cadastros/Entregador/EntregadorRevisa';
 import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
+import ConfigEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
 
 
 
@@ -37,11 +38,15 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Mapa'
+          initialRouteName='ConfigEmpresa'
           screenOptions={{
             headerShown: false
           }}
         >
+              <Stack.Screen
+            name='ConfigEmpresa'
+            component={ConfigEmpresa}
+          />
           <Stack.Screen
             name='Drop'
             component={Drop}
