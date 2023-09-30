@@ -6,8 +6,6 @@ import { useTema } from './src/theme';
 import { ThemeProvider } from 'styled-components';
 import { Tabs } from './src/pages/BottomTab';
 
-
-
 import Teste from './src/pages/Teste';
 import Mapa from './src/pages/Teste/Mapa';
 import Drop from './src/pages/Teste/Drop';
@@ -25,12 +23,10 @@ import EmpresaRevisa from './src/pages/Cadastros/Empresa/EmpresaRevisa';
 import CadastroEntregador from './src/pages/Cadastros/Entregador/CadastroEntregador';
 import EntregadorRevisa from './src/pages/Cadastros/Entregador/EntregadorRevisa';
 import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
-import PerfilEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
+import PerfilEmpresa from './src/pages/Empresa/Perfil';
 import AceitarEntrega from './src/pages/Entregador/AceitarEntrega';
 import Historico from './src/pages/Entregador/Historico';
 import Pendentes from './src/pages/Entregador/Pendentes';
-
-
 
 const Stack = createStackNavigator();
 
@@ -59,8 +55,8 @@ export default function App() {
             component={Pendentes}
           />
               <Stack.Screen
-            name='ConfigEmpresa'
-            component={ConfigEmpresa}
+            name='PerfilEmpresa'
+            component={PerfilEmpresa}
           />
           <Stack.Screen
             name='Drop'
