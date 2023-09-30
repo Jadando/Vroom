@@ -9,7 +9,11 @@
     "splash": {
       "image": "./assets/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "updates": {
+        "enabled": true,
+        "fallbackToCacheTimeout": 0
+      }
     },
     "assetBundlePatterns": [
       "**/*"
@@ -36,17 +40,6 @@
           "RNMapboxMapsDownloadToken": "sk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1tbmlqNGYwN2MyMnFtcDl0OGp5bGh5In0.ov0__pXbmfC6op7cyZW7Pg"
         }
       ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "dc8f3db3-a90d-4f67-8e30-789825b44fb1"
-      }
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/dc8f3db3-a90d-4f67-8e30-789825b44fb1"
-    }
+    ]
   }
 }
