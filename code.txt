@@ -19,3 +19,68 @@ export function useTema() {
 
   return { Tema, TrocaLight, TrocaDark };
 }
+
+
+
+//esse que vou trocar 
+
+export function useTema() {
+  const [Tema, setTema] = useState(Color.Light);
+
+  const TrocaLight = () => {
+    setTema(Color.Light);
+    console.log("Tema alterado para claro");
+  }
+
+  const TrocaDark = () => {
+    setTema(Color.Dark);
+    console.log("Tema alterado para escuro");
+  }
+
+  return { Tema, TrocaLight, TrocaDark };
+}
+
+// Componente ThemeProviderWrapper que recebe children e aplica o tema
+export function ThemeProviderWrapper({ children }) {
+//  const { Tema } = useTema();
+
+  return (
+    <ThemeProvider theme={Color.Light}>
+      {children}
+    </ThemeProvider>
+  );
+}
+
+
+    const [location, setLocation] = useState(null);
+    console.log(location)
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+        })();
+    }, []);
+
+
+ region={{
+                                            latitude: location ? location.coords.latitude : 0,
+                                            longitude: location ? location.coords.longitude : 0,
+                                            latitudeDelta: 0.0922,
+                                            longitudeDelta: 0.0421,
+                                        }}
+                                    >
+                                        {location && (
+                                            <MapView.Marker
+                                                coordinate={{
+                                                    latitude: location.coords.latitude,
+                                                    longitude: location.coords.longitude,
+                                                }}
+                                                title="Minha localização"
+                                            />
+                                        )}

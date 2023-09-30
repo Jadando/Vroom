@@ -3,14 +3,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { ThemeProviderWrapper } from './src/theme';
-import { useTheme } from 'styled-components';
-import { Color } from './src/theme';
+import { ThemeProviderWrapper, useTema } from './src/theme';
+import { useTheme, ThemeProvider } from 'styled-components';
 
 
 
 import Teste from './src/pages/Teste';
 import Mapa from './src/pages/Teste/Mapa';
+import Drop from './src/pages/Teste/Drop';
 import Login from './src/pages/Login';
 import Home from './src/pages/Cliente/Home';
 import Search from './src/pages/Cliente/Search';
@@ -25,7 +25,6 @@ import EmpresaRevisa from './src/pages/Cadastros/Empresa/EmpresaRevisa';
 import CadastroEntregador from './src/pages/Cadastros/Entregador/CadastroEntregador';
 import EntregadorRevisa from './src/pages/Cadastros/Entregador/EntregadorRevisa';
 import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
-import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 
 
 const Stack = createStackNavigator();
@@ -94,16 +93,24 @@ function Tabs() {
 }
 
 export default function App() {
-
+  const Tema = useTema()
   return (
-    <ThemeProviderWrapper>
+    <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Config'
+          initialRouteName='Drop'
           screenOptions={{
             headerShown: false
           }}
         >
+               <Stack.Screen
+            name='Pedidos'
+            component={Pedidos}
+          />
+          <Stack.Screen
+            name='Drop'
+            component={Drop}
+          />
           <Stack.Screen
             name='Config'
             component={Config}
@@ -160,9 +167,10 @@ export default function App() {
             name='Home'
             component={Tabs}
           />
+
         </Stack.Navigator>
       </NavigationContainer>
-    </ThemeProviderWrapper>
+    </ThemeProvider>
 
   );
 }

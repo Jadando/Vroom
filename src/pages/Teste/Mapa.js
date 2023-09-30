@@ -7,7 +7,7 @@ Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMn
 const Mapa = () => {
   return (
     <View style={styles.page}>
-      <View style={styles.container}>
+      <View style={styles.teste}>
         <Mapbox.MapView style={styles.map} />
       </View>
     </View>
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  container: {
+  teste: {
     height: 300,
     width: 300,
   },
