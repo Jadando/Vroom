@@ -17,10 +17,12 @@ export default function Login() {
         return regex.test(email);
     }
 
-    function validarLogin() {
-        navigation.navigate('Home')
+  async function validarLogin() {
+        console.log("partir 1")
         if (email !== '' && senha !== '') {
+            console.log("partir 2")
             if (validarEmail(email)) {
+                console.log("partir 3")
                 const auth = getAuth();
                 signInWithEmailAndPassword(auth, email, senha)
                     .then((userCredential) => {
@@ -28,7 +30,7 @@ export default function Login() {
                         const user = userCredential.user;
                         // ...
                         console.log(user)
-                        console.log('estive aqui')
+                        console.log("partir 4")
                       //  navigation.navigate('Home')
                     })
                     .catch((error) => {
@@ -65,9 +67,6 @@ export default function Login() {
             });
 
     }
-    const provider = new GoogleAuthProvider();
-    //const auth = getAuth();
-    // signInWithPopup(auth, provider)
     return (
         <View style={styles.container}>
             <ScrollView

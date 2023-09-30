@@ -1,32 +1,103 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import Mapbox from '@rnmapbox/maps';
+import React, { useState } from "react";
+import { StyleSheet, Text, View, PermissionsAndroid, Button, Platform } from "react-native";
 
-Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
+export default function App() {
+  const [currentLatitude, setCurrentLatitude] = useState('');
+  const [currentLongitude, setCurrentLongitude] = useState('');
+  const [watchID, setWatchID] = useState(0);
 
-const Mapa = () => {
+  const callLocation = () => {
+    console.log("teste")
+    if(Platform.OS === 'ios') {
+      getLocation();
+    } else {
+      const requestLocationPermission = async () => {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: "Permissão de Acesso à Localização",
+            message: "Este aplicativo precisa acessar sua localização.",
+            buttonNeutral: "Pergunte-me depois",
+            buttonNegative: "Cancelar",
+            buttonPositive: "OK"
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          getLocation();
+        } else {
+          alert('Permissão de Localização negada');
+        }
+      };
+      requestLocationPermission();
+    }
+  }
+  
+  const getLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const currentLatitude = JSON.stringify(position.coords.latitude);
+        const currentLongitude = JSON.stringify(position.coords.longitude);
+        setCurrentLatitude(currentLatitude);
+        setCurrentLongitude(currentLongitude);
+      },
+      (error) => alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+    const watchID = navigator.geolocation.watchPosition((position) => {
+      const currentLatitude = JSON.stringify(position.coords.latitude);
+      const currentLongitude = JSON.stringify(position.coords.longitude);
+      setCurrentLatitude(currentLatitude);
+      setCurrentLongitude(currentLongitude);
+    });
+    setWatchID(watchID);
+  }
+
+  const clearLocation = () => {
+    navigator.geolocation.clearWatch(watchID);
+  }
+
   return (
-    <View style={styles.page}>
-      <View style={styles.teste}>
-        <Mapbox.MapView style={styles.map} />
+    <View style={styles.container}>
+      <Text style = {styles.boldText}>
+        Você está Aqui
+      </Text>
+      <Text style={styles.text}>
+        Latitude: {currentLatitude}
+      </Text>
+      <Text style={styles.text}>
+        Longitude: {currentLongitude}
+      </Text>
+      <View style={styles.button}>
+        <Button title="Obter Localização" onPress={callLocation}/>
+      </View>
+      <View style={styles.button}>
+        <Button title="Cancelar Monitoração" onPress={clearLocation}/>
       </View>
     </View>
   );
 }
 
-export default Mapa;
-
 const styles = StyleSheet.create({
-  page: {
+  container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent:'center',
+    marginTop: 50,
+    padding:16,
+    backgroundColor:'white',
   },
-  teste: {
-    height: 300,
-    width: 300,
+  boldText: {
+    fontSize: 30,
+    color: 'red',
   },
-  map: {
-    flex: 1
+  text: {    
+    alignItems: 'center',
+    justifyContent:'center',
+    marginTop: 15,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent:'center',
+    marginTop: 15,
   }
 });

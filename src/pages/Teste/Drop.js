@@ -13,7 +13,6 @@ export default function Drop() {
     const tema = useTheme();
     const styles = getstyles(tema);
     const [location, setLocation] = useState(null);
-    console.log(location)
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
@@ -22,10 +21,11 @@ export default function Drop() {
                 return;
             }
 
-            let location = await Location.getCurrentPositionAsync({});
+            const Location = await Location.getCurrentPositionAsync({});
             setLocation(location);
         })();
     }, []);
+    console.log(location)
     return (
 
         <View style={styles.container}>

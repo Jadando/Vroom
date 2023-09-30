@@ -37,11 +37,15 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Login'
+          initialRouteName='Mapa'
           screenOptions={{
             headerShown: false
           }}
         >
+          <Stack.Screen
+            name='Drop'
+            component={Drop}
+          />
           <Stack.Screen
             name='Config'
             component={Config}
