@@ -18,6 +18,7 @@ export default function Login() {
     }
 
     function validarLogin() {
+        navigation.navigate('Home')
         if (email !== '' && senha !== '') {
             if (validarEmail(email)) {
                 const auth = getAuth();
@@ -28,7 +29,7 @@ export default function Login() {
                         // ...
                         console.log(user)
                         console.log('estive aqui')
-                        navigation.navigate('Home')
+                      //  navigation.navigate('Home')
                     })
                     .catch((error) => {
                         const errorCode = error.code;
