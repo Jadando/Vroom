@@ -1,153 +1,128 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useTheme } from 'styled-components';
 
-export default function ConfigEmpresa() {
-  const navigation = useNavigation();
-  const [isLogoutModalVisible, setLogoutModalVisible] = useState(false);
 
-  const handleLogout = () => {
-    setLogoutModalVisible(true);
-  };
+export default function PerfilEmpresa() {
+    const navigation = useNavigation();
+    const tema = useTheme();
+    const styles = getstyles(tema);
+    return (
 
-  const ConfirmLogout = () => {
-    setLogoutModalVisible(false);
-    navigation.navigate('Login')
-  };
-
-  const handleCancelLogout = () => {
-    setLogoutModalVisible(false);
-  };
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.contentContainer}>
-        <View style={styles.profileContainer}>
-          <Image source={require('../../../../../perfil.jpg')} style={styles.profileImage} />
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.entregadorName}>Nome da Empresa</Text>
-        </View>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Editar Perfil</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Meus Dados</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Entregadores</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Configurações</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleLogout}>
-          <Text style={styles.buttonText}>Sair da Conta</Text>
-        </TouchableOpacity>
-      </View>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isLogoutModalVisible}
-        onRequestClose={handleCancelLogout}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalText}>
-              Tem certeza que deseja sair de sua conta?
-            </Text>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.modalButton} onPress={ConfirmLogout}>
-                <Text style={styles.buttonText}>Sim</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.modalButton} onPress={handleCancelLogout}>
-                <Text style={styles.buttonText}>Não</Text>
-              </TouchableOpacity>
+        <ScrollView
+        showsVerticalScrollIndicator={false}
+        overScrollMode='never'
+        >
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <TouchableOpacity>
+                    <Icon name='notifications' size={30} color='#ffc000' />
+                </TouchableOpacity>
             </View>
-          </View>
+
+            <View style={styles.user}>
+                <View style={styles.userImg}>
+                    <Image
+                        // style={{width: }}
+                        source={require('../../../img/perfil.jpg')} />
+                </View>
+                <Text style={styles.userInfo}>Nome do usuário</Text>
+            </View>
+
+            <View style={styles.btnArea}>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.btnText}>Editar perfil</Text>
+                    <Icon name='person-outline' size={30} color='#000' />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.btnText}>Meus dados</Text>
+                    <Icon name='information' size={30} color='#000' />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.btnText}>Entregadores</Text>
+                    <Icon name='bicycle-outline' size={30} color='#000' />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('Config')}
+                    style={styles.button}>
+                    <Text style={styles.btnText}>Configurações</Text>
+                    <Icon name='cog' size={30} color='#000' />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => navigation.navigate('Login')}>
+                    <Text style={styles.btnText}>Sair da conta</Text>
+                    <Icon name='log-out-outline' size={30} color='#000' />
+                </TouchableOpacity>
+            </View>
+
         </View>
-      </Modal>
-    </View>
-  );
-};
+        </ScrollView>
+    );
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  contentContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  profileContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#FFC000',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  profileImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-  },
-  textContainer: {
-    marginLeft: 9,
-  },
-  entregadorName: {
-    fontSize: 23,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  buttonContainer: {
-    marginTop: 30,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  button: {
-    backgroundColor: '#FFC000',
-    paddingVertical: 20,
-    paddingHorizontal: 100,
-    borderRadius: 10,
-    marginBottom: 20,
-    elevation: 5,
-    shadowColor: 'rgba(0, 0, 0, 0.1)',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  modalText: {
-    fontSize: 18,
-    marginBottom: 20,
-  },
-  modalButton: {
-    backgroundColor: '#FFC000',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginHorizontal: 10,
-  },
-});
-
+const getstyles = (tema) => StyleSheet.create({
+    container: {
+        felx: 1,
+        alignContent: 'center',
+        alignItems: 'center',
+        paddingTop: 25,
+        backgroundColor: tema.Tema.background
+    },
+    header: {
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: '5%',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        alignContent: 'center',
+        marginBottom: 30,
+        paddingRight: 20,
+    },
+    user: {
+        flexDirection: 'row',
+        alignContent: 'center',
+        alignItems: 'center'
+    },
+    userImg: {
+        backgroundColor: '#d1d3d4ff',
+        marginRight: 20,
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        alignContent: 'center',
+        alignItems: 'center',
+        paddingTop: 10,
+        overflow: 'hidden',
+    },
+    userInfo: {
+        fontSize: 20,
+        color: tema.Tema.color
+    },
+    btnArea: {
+        marginTop: 50,
+        width: '100%',
+        alignContent: 'center',
+        alignItems: 'center',
+        height: '100%'
+    },
+    button: {
+        flexDirection: 'row',
+        marginBottom: 30,
+        backgroundColor: '#ffc000',
+        borderRadius: 10,
+        padding: 10,
+        alignContent: 'center',
+        alignItems: 'center',
+        width: '50%',
+        height: 60,
+        justifyContent: 'center',
+        elevation: 2,
+    },
+    btnText: {
+        fontSize: 18,
+        marginRight: 15,
+    },
+})
