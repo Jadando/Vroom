@@ -29,20 +29,20 @@ export default function Cadastro() {
 
     if (senha === senhaConfirma && senha !== '' && senhaConfirma !== '' && email !== '') {
       if (validarEmail(email)) {
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, email, senha)
-          .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            
-            // ...
-            setModalVisible(true);
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ..
-          });
+        // const auth = getAuth();
+        // createUserWithEmailAndPassword(auth, email, senha)
+        //   .then((userCredential) => {
+        //     // Signed in 
+        //     const user = userCredential.user;
+
+        //     // ...
+        //     setModalVisible(true);
+        //   })
+        //   .catch((error) => {
+        //     const errorCode = error.code;
+        //     const errorMessage = error.message;
+        //     // ..
+        //   });
       } else {
         alert('Formato de email inválido');
       }

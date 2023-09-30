@@ -32,25 +32,25 @@ export default function ClienteRevisa({ route }) {
             endereco !== '' &&
             numero !== ''
         ) {
-            const db = getFirestore()
-            try {
-                const agora = new Date();
-                const dataHoraBrasilia = agora.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-                console.log(dataHoraBrasilia);
-                await addDoc(collection(db, "users"), {
-                    nome: nome,
-                    telefone: telefone,
-                    cep: cep,
-                    estado: estado,
-                    cidade: cidade,
-                    bairro: bairro,
-                    endereco: endereco,
-                    numero: numero,
-                    dataHora: dataHoraBrasilia,
-                });
-            } catch (e) {
-                console.error("Error adding document: ", e);
-            }
+        //     const db = getFirestore()
+        //     try {
+        //         const agora = new Date();
+        //         const dataHoraBrasilia = agora.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+        //         console.log(dataHoraBrasilia);
+        //         await addDoc(collection(db, "users"), {
+        //             nome: nome,
+        //             telefone: telefone,
+        //             cep: cep,
+        //             estado: estado,
+        //             cidade: cidade,
+        //             bairro: bairro,
+        //             endereco: endereco,
+        //             numero: numero,
+        //             dataHora: dataHoraBrasilia,
+        //         });
+        //   } catch (e) {
+        //         console.error("Error adding document: ", e);
+        //     }
 
         } else {
             alert('Campos obrigatórios não preenchidos');

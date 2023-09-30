@@ -32,22 +32,22 @@ export default function EmpresaRevisa({ route }) {
       endereco !== '' &&
       numero !== ''
     ) {
-      const db = getFirestore()
-      try {
-        await addDoc(collection(db, "users"), {
-          cnpj: cnpj,
-          nome: nomeEmpresa,
-          telefone: telefone,
-          cep: cep,
-          estado: estado,
-          cidade: cidade,
-          bairro: bairro,
-          endereco: endereco,
-          numero: numero,
-        });
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
+      // const db = getFirestore()
+      // try {
+      //   await addDoc(collection(db, "users"), {
+      //     cnpj: cnpj,
+      //     nome: nomeEmpresa,
+      //     telefone: telefone,
+      //     cep: cep,
+      //     estado: estado,
+      //     cidade: cidade,
+      //     bairro: bairro,
+      //     endereco: endereco,
+      //     numero: numero,
+      //   });
+      // } catch (e) {
+      //   console.error("Error adding document: ", e);
+      // }
       navigation.dispatch(StackActions.popToTop());
     } else {
       alert('Campos obrigatórios não preenchidos');

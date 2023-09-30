@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, getAuth} from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import { auth } from '../../firebaseConnection'
 import { useTheme } from 'styled-components';
 
@@ -9,36 +9,38 @@ export default function Login() {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [email, setEmail] = useState('joao.adriano@gmail.com');
-    const [senha, setSenha] = useState('1234567');
+    const [email, setEmail] = useState('vroomde@gmail.com');
+    const [senha, setSenha] = useState('vroom123');
 
     function validarEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     }
 
-  async function validarLogin() {
-        console.log("partir 1")
+    async function validarLogin() {
         if (email !== '' && senha !== '') {
-            console.log("partir 2")
             if (validarEmail(email)) {
-                console.log("partir 3")
-                const auth = getAuth();
-                signInWithEmailAndPassword(auth, email, senha)
-                    .then((userCredential) => {
-                        // Signed in 
-                        const user = userCredential.user;
-                        // ...
-                        console.log(user)
-                        console.log("partir 4")
-                      //  navigation.navigate('Home')
-                    })
-                    .catch((error) => {
-                        const errorCode = error.code;
-                        const errorMessage = error.message;
+                if(email==='vroomde@gmail.com'||senha==='vroom123'){
+                    navigation.navigate('Home')
+                }
+                else{
+                    alert("email ou senha incorreto")
+                }
+                // const auth = getAuth();
+                // signInWithEmailAndPassword(auth, email, senha)
+                //     .then((userCredential) => {
+                //         // Signed in 
+                //         const user = userCredential.user;
+                //         // ...
+                //         console.log(user)
+                //         console.log("partir 4")
+                //         //  navigation.navigate('Home')
+                //     })
+                //     .catch((error) => {
+                //         const errorCode = error.code;
+                //         const errorMessage = error.message;
 
-                    });
-                    
+                //     });
             }
         }
     }
@@ -139,7 +141,7 @@ export default function Login() {
         </View>
     );
 };
-    
+
 const getstyles = (tema) => StyleSheet.create({
     container: {
         flex: 1,

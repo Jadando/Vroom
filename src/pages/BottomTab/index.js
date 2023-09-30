@@ -6,25 +6,37 @@ import Home from '../Cliente/Home';
 import Search from '../Cliente/Search';
 import Perfil from '../Cliente/Perfil';
 import Pedidos from '../Cliente/Pedidos';
+import AceitarEntrega from '../Entregador/AceitarEntrega';
+import Historico from '../Entregador/Historico';
+import Pendentes from '../Entregador/Pendentes';
 
 const Tab = createBottomTabNavigator();
 const icons = {
-  Home: {
-    name: 'ios-home'
-  },
-  Buscar: {
-    name: 'search'
-  },
-  Pedidos: {
-    name: 'clipboard'
-  },
-  Perfil: {
-    name: 'person'
-  }
+    Home: {
+        name: 'ios-home'
+    },
+    Buscar: {
+        name: 'search'
+    },
+    Pedidos: {
+        name: 'clipboard'
+    },
+    Perfil: {
+        name: 'person'
+    },
+    Historico: {
+        name: 'ios-home'
+    },
+    Pendentes: {
+        name: 'ios-home'
+    },
+    AceitarEntrega: {
+        name: 'ios-home'
+    },
 }
 export function Tabs() {
     const tema = useTheme();
-    return(
+    return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused }) => {
@@ -101,9 +113,9 @@ export function TabsEntregador() {
                 },
             })}
         >
-            <Tab.Screen name="AceitaEntrega" component={AceitaEntrega} options={{ headerShown: false }} />
             <Tab.Screen name="Historico" component={Historico} options={{ headerShown: false }} />
             <Tab.Screen name="Pendentes" component={Pendentes} options={{ headerShown: false }} />
+            <Tab.Screen name="AceitarEntrega" component={AceitarEntrega} options={{ headerShown: false }} />
         </Tab.Navigator>
 
 

@@ -34,24 +34,24 @@ export default function EntregadorRevisa({ route }) {
       endereco !== '' &&
       numero !== ''
     ) {
-      const db = getFirestore()
-      try {
-        await addDoc(collection(db, "users"), {
-          nome: nome,
-          telefone: telefone,
-          cep: cep,
-          cpf: cpf,
-          estado: estado,
-          cidade: cidade,
-          bairro: bairro,
-          endereco: endereco,
-          numero: numero,
-          dtNasc: dtNasc,
-          nomeEmpresa: nomeEmpresa,
-        });
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
+      // const db = getFirestore()
+      // try {
+      //   await addDoc(collection(db, "users"), {
+      //     nome: nome,
+      //     telefone: telefone,
+      //     cep: cep,
+      //     cpf: cpf,
+      //     estado: estado,
+      //     cidade: cidade,
+      //     bairro: bairro,
+      //     endereco: endereco,
+      //     numero: numero,
+      //     dtNasc: dtNasc,
+      //     nomeEmpresa: nomeEmpresa,
+      //   });
+      // } catch (e) {
+      //   console.error("Error adding document: ", e);
+      // }
       navigation.dispatch(StackActions.popToTop());
     } else {
       alert('Campos obrigatórios não preenchidos');
