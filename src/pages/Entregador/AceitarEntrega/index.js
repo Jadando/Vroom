@@ -113,19 +113,16 @@ export default function AceitarEntrega() {
                             Envie este link para o cliente para iniciar o pedido
                         </Text>
                         <View style={styles.link}>
+                            <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
                             <TextInput
                                 value={displayUrl}
                                 multiline={true}
                                 editable={false}
                                 style={[styles.textInput, isExpanded ? styles.expanded : styles.collapsed]}
                             />
-                        </View>
-                        <View style={styles.linkButtonArea}>
-                        <View style={styles.linkButton}>
-                        <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-                                <Text>Mostrar {isExpanded ? 'menos' : 'mais'}</Text>
                             </TouchableOpacity>
                         </View>
+                        <View style={styles.linkButtonArea}>
                         <View style={styles.linkButton}>
                             <TouchableOpacity
                            //função do link aqui
