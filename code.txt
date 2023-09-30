@@ -42,7 +42,7 @@ export function useTema() {
 
 // Componente ThemeProviderWrapper que recebe children e aplica o tema
 export function ThemeProviderWrapper({ children }) {
-//  const { Tema } = useTema();
+  //  const { Tema } = useTema();
 
   return (
     <ThemeProvider theme={Color.Light}>
@@ -52,35 +52,39 @@ export function ThemeProviderWrapper({ children }) {
 }
 
 
-    const [location, setLocation] = useState(null);
-    console.log(location)
-    useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-                return;
-            }
+const [location, setLocation] = useState(null);
+console.log(location)
+useEffect(() => {
+  (async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      setErrorMsg('Permission to access location was denied');
+      return;
+    }
 
-            let location = await Location.getCurrentPositionAsync({});
-            setLocation(location);
-        })();
-    }, []);
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location);
+  })();
+}, []);
 
 
- region={{
-                                            latitude: location ? location.coords.latitude : 0,
-                                            longitude: location ? location.coords.longitude : 0,
-                                            latitudeDelta: 0.0922,
-                                            longitudeDelta: 0.0421,
+region = {{
+  latitude: location ? location.coords.latitude : 0,
+    longitude: location ? location.coords.longitude : 0,
+      latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
                                         }}
                                     >
-                                        {location && (
-                                            <MapView.Marker
-                                                coordinate={{
-                                                    latitude: location.coords.latitude,
-                                                    longitude: location.coords.longitude,
-                                                }}
-                                                title="Minha localização"
-                                            />
-                                        )}
+  { location && (
+    <MapView.Marker
+      coordinate={{
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      }}
+      title="Minha localização"
+    />
+  )}
+
+// <Text selectable={true}>
+  Seu texto aqui
+</Text >

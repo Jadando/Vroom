@@ -41,7 +41,7 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='AceitarEntrega'
+          initialRouteName='Mapa'
           screenOptions={{
             headerShown: false
           }}

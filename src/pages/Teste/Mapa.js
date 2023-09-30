@@ -1,103 +1,62 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, PermissionsAndroid, Button, Platform } from "react-native";
+import React, { useState } from 'react';
+import { SafeAreaView, View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 export default function App() {
-  const [currentLatitude, setCurrentLatitude] = useState('');
-  const [currentLongitude, setCurrentLongitude] = useState('');
-  const [watchID, setWatchID] = useState(0);
+  const [typedText, setTypedText] = useState('');
+  const [copiedText, setCopiedText] = useState('');
 
-  const callLocation = () => {
-    console.log("teste")
-    if(Platform.OS === 'ios') {
-      getLocation();
-    } else {
-      const requestLocationPermission = async () => {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: "Permissão de Acesso à Localização",
-            message: "Este aplicativo precisa acessar sua localização.",
-            buttonNeutral: "Pergunte-me depois",
-            buttonNegative: "Cancelar",
-            buttonPositive: "OK"
-          }
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          getLocation();
-        } else {
-          alert('Permissão de Localização negada');
-        }
-      };
-      requestLocationPermission();
-    }
-  }
-  
-  const getLocation = () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const currentLatitude = JSON.stringify(position.coords.latitude);
-        const currentLongitude = JSON.stringify(position.coords.longitude);
-        setCurrentLatitude(currentLatitude);
-        setCurrentLongitude(currentLongitude);
-      },
-      (error) => alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-    const watchID = navigator.geolocation.watchPosition((position) => {
-      const currentLatitude = JSON.stringify(position.coords.latitude);
-      const currentLongitude = JSON.stringify(position.coords.longitude);
-      setCurrentLatitude(currentLatitude);
-      setCurrentLongitude(currentLongitude);
-    });
-    setWatchID(watchID);
+  const copyToClipboard = () => {
+    Clipboard.setString(typedText);
+    alert("Texto Copiado!");
   }
 
-  const clearLocation = () => {
-    navigator.geolocation.clearWatch(watchID);
+  const fetchCopiedText = async () => {
+    const text = await Clipboard.getString();
+    setCopiedText(text);
   }
 
   return (
-    <View style={styles.container}>
-      <Text style = {styles.boldText}>
-        Você está Aqui
-      </Text>
-      <Text style={styles.text}>
-        Latitude: {currentLatitude}
-      </Text>
-      <Text style={styles.text}>
-        Longitude: {currentLongitude}
-      </Text>
-      <View style={styles.button}>
-        <Button title="Obter Localização" onPress={callLocation}/>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <TextInput
+          placeholder="Digite Algum Texto Aqui..."
+          onChangeText={typedText => setTypedText(typedText)}
+          defaultValue={typedText}
+          style={styles.textInput}
+        />
+        <Button
+          onPress={copyToClipboard}
+          title="Copiar Texto"
+        />
+        <Text style={styles.copiedText}>{copiedText}</Text>
+        <Button
+          onPress={fetchCopiedText}
+          title="Ver Texto Copiado"
+        />
       </View>
-      <View style={styles.button}>
-        <Button title="Cancelar Monitoração" onPress={clearLocation}/>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent:'center',
-    marginTop: 50,
-    padding:16,
-    backgroundColor:'white',
   },
-  boldText: {
-    fontSize: 30,
+  textInput: {
+    textAlign: 'center',
+    width: '80%',
+    borderWidth: 1,
+    borderColor: 'blue',
+    marginBottom:20,
+    fontSize: 20,
+  },
+  copiedText: {
+    marginTop: 20,
+    marginBottom:20,
     color: 'red',
+    fontSize: 20,
   },
-  text: {    
-    alignItems: 'center',
-    justifyContent:'center',
-    marginTop: 15,
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent:'center',
-    marginTop: 15,
-  }
 });
