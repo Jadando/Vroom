@@ -28,7 +28,7 @@ export default function Login() {
                         // ...
                         console.log(user)
                         console.log('estive aqui')
-                       // navigation.navigate('Home')
+                        navigation.navigate('Home')
                     })
                     .catch((error) => {
                         const errorCode = error.code;
