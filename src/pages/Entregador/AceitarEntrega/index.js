@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, Modal, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function AceitarEntrega() {
+
+    const [modalVisible, setModalVisible] = useState(false);
     const [order, setOrder] = useState("1 X-salada\n1 Coca cola");
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
@@ -13,9 +15,18 @@ export default function AceitarEntrega() {
         { label: 'Cartão débito ou crédito', value: 'cartao' },
         { label: 'Pix', value: 'pix' }
     ]);
+    const closeModal = () => {
+        setModalVisible(false);
+    }
+    const [isExpanded, setIsExpanded] = useState(false);
+    const url = 'https://figma.com/file/c97hMDfgLoFFWEAcetzH9C/TCC?type=design&node-id=0-1&mode=design&t=nfWUP24yYaj2kbHm-0';
+    const displayUrl = isExpanded ? url : url.substring(0, 35) + '...';
 
     return (
-        <ScrollView>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            overScrollMode='never'
+        >
             <View style={styles.container}>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
@@ -64,6 +75,7 @@ export default function AceitarEntrega() {
                                 setOpen={setOpen}
                                 setValue={setValue}
                                 setItems={setItems}
+                                placeholder='Selecione uma opção'
                                 style={{ borderColor: 'transparent' }}
                                 dropDownContainerStyle={{ borderColor: 'transparent' }}
                             />
@@ -74,10 +86,62 @@ export default function AceitarEntrega() {
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                    onPress={() => setModalVisible(!modalVisible)}
+                    style={styles.button}>
                     <Text style={styles.buttonText}>Iniciar entrega</Text>
                 </TouchableOpacity>
             </View>
+            <Modal
+                visible={modalVisible}
+                transparent={true}
+                animationType='slide'
+                onRequestClose={closeModal}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalHeader}>
+                        <Text style={styles.modalHeaderTitle}>Aviso</Text>
+                        <TouchableOpacity
+                            style={styles.modalHeaderClose}
+                            onPress={() => setModalVisible(!modalVisible)} >
+                            <Image source={require('../../../img/close.png')} style={{ width: 30, height: 30 }} />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View>
+                        <Text style={styles.modalContentTitle}>
+                            Envie este link para o cliente para iniciar o pedido
+                        </Text>
+                        <View style={styles.link}>
+                            <TextInput
+                                value={displayUrl}
+                                multiline={true}
+                                editable={false}
+                                style={[styles.textInput, isExpanded ? styles.expanded : styles.collapsed]}
+                            />
+                        </View>
+                        <View style={styles.linkButtonArea}>
+                        <View style={styles.linkButton}>
+                        <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
+                                <Text>Mostrar {isExpanded ? 'menos' : 'mais'}</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.linkButton}>
+                            <TouchableOpacity
+                           //função do link aqui
+                            >
+                                <Text style={{textDecorationLine: 'underline'}}>Copiar URL</Text>
+                            </TouchableOpacity>
+                        </View>
+                        </View>
+                        <TouchableOpacity
+                        onPress={() => setModalVisible(!modalVisible)}
+                        style={styles.modalButton}>
+                            <Text>Ok entendi</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </ScrollView>
     );
 }
@@ -191,10 +255,91 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 10,
         marginTop: 10,
-        elevation: 2
+        elevation: 2,
+        marginBottom: 15
     },
     buttonText: {
         fontSize: 20,
         fontWeight: '600',
+    },
+    modalContainer: {
+        alignSelf: 'center',
+        marginTop: '30%',
+        width: 300,
+        backgroundColor: '#f2f2f2',
+        margin: 20,
+        borderRadius: 20,
+        height: 'fit-content',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 50
+    },
+    modalHeader: {
+        backgroundColor: '#ffc000',
+        width: '100%',
+        height: 40,
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20,
+        padding: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 15
+    },
+    modalHeaderTitle: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#121212',
+        textAlign: 'center',
+    },
+    modalHeaderClose: {
+        justifyContent: 'flex-end',
+    },
+    modalContentTitle: {
+        fontSize: 18,
+        textAlign: 'center',
+        marginBottom: 50
+    },
+    modalContent: {
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: '#121212'
+    },
+    link: {
+        borderRadius: 10,
+        backgroundColor: '#e5e5e5',
+    },
+    collapsed: {
+        height: 40,
+    },
+    expanded: {
+        height: 'auto',
+    },
+    linkButtonArea: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    },
+    linkButton: {
+        marginLeft: 10,
+        padding: 5,
+    },
+    modalButton: {
+        height: 50,
+        width: 150,
+        backgroundColor: '#ffc000',
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+        marginTop: 20,
+        elevation: 2,
+        marginBottom: 15
     },
 })
