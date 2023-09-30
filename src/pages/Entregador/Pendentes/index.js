@@ -25,27 +25,21 @@ export default function Pendentes() {
                 <View style={styles.recents}>
                     <View style={styles.recentsContainer}>
                         <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            </View>
                             <Text>
-                                Luzia Hamburgers {'\n'}
-                                Ultimo pedido dia: 11/04/2023
+                                Pedido cd 1 {'\n'}
+                                pendente
                             </Text>
                         </View>
                         <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            </View>
                             <Text>
-                                Mix Shakes {'\n'}
-                                Ultimo pedido dia: 09/04/2023
+                                Pedido cd 2 {'\n'}
+                                Pendente
                             </Text>
                         </View>
                         <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            </View>
                             <Text>
-                                JusFarma {'\n'}
-                                Ultimo pedido dia: 28/03/2023
+                                Pedido cd 3 {'\n'}
+                                Pendente
                             </Text>
                         </View>
                     </View>
