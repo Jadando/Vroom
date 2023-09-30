@@ -38,12 +38,12 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='ConfigEmpresa'
+          initialRouteName='AceitarEntrega'
           screenOptions={{
             headerShown: false
           }}
         >
-              <Stack.Screen
+          <Stack.Screen
             name='ConfigEmpresa'
             component={ConfigEmpresa}
           />
