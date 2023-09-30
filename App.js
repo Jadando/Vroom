@@ -99,7 +99,7 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Drop'
+          initialRouteName='Home'
           screenOptions={{
             headerShown: false
           }}
