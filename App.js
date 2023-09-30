@@ -25,6 +25,9 @@ import EmpresaRevisa from './src/pages/Cadastros/Empresa/EmpresaRevisa';
 import CadastroEntregador from './src/pages/Cadastros/Entregador/CadastroEntregador';
 import EntregadorRevisa from './src/pages/Cadastros/Entregador/EntregadorRevisa';
 import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
+import Historico from './src/pages/Entregador/Historico';
+import AceitarEntrega from './src/pages/Entregador/AceitarEntrega';
+import Pendentes from './src/pages/Entregador/Pendentes';
 import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 
 
@@ -104,6 +107,18 @@ export default function App() {
             headerShown: false
           }}
         >
+          <Stack.Screen
+            name='Historico'
+            component={Historico}
+          />
+          <Stack.Screen
+            name='AceitarEntrega'
+            component={AceitarEntrega}
+          />
+          <Stack.Screen
+            name='Pendentes'
+            component={Pendentes}
+          />
           <Stack.Screen
             name='Config'
             component={Config}
