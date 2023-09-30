@@ -27,6 +27,7 @@ import PerfilEmpresa from './src/pages/Empresa/Perfil';
 import AceitarEntrega from './src/pages/Entregador/AceitarEntrega';
 import Historico from './src/pages/Entregador/Historico';
 import Pendentes from './src/pages/Entregador/Pendentes';
+import PendentesAndamento from './src/pages/Entregador/Temporario/PendentesAndamento';
 
 const Stack = createStackNavigator();
 
@@ -42,6 +43,10 @@ export default function App() {
             headerShown: false
           }}
         >
+          <Stack.Screen
+            name='PendentesAndamento'
+            component={PendentesAndamento}
+          />
           <Stack.Screen
             name='AceitarEntrega'
             component={AceitarEntrega}
