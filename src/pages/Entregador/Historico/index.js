@@ -4,12 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-export default function Pedidos() {
-    
-    const tema = useTheme();
-    const styles = getstyles(tema);
+export default function Historico() {
     return (
-
         <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
@@ -60,7 +56,7 @@ export default function Pedidos() {
     );
 }
 
-const getstyles = (tema) => StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         felx: 1,
         alignContent: 'center',
@@ -122,6 +118,7 @@ const getstyles = (tema) => StyleSheet.create({
     recentsContent: {
         flexDirection: 'row',
         backgroundColor: '#f2f2f2',
+        elevation: 2,
         padding: 20,
         width: 320,
         height: 80,

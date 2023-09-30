@@ -27,6 +27,7 @@ import EntregadorRevisa from './src/pages/Cadastros/Entregador/EntregadorRevisa'
 import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
 
 
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -103,14 +104,6 @@ export default function App() {
             headerShown: false
           }}
         >
-               <Stack.Screen
-            name='Pedidos'
-            component={Pedidos}
-          />
-          <Stack.Screen
-            name='Drop'
-            component={Drop}
-          />
           <Stack.Screen
             name='Config'
             component={Config}
