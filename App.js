@@ -26,6 +26,9 @@ import CadastroEntregador from './src/pages/Cadastros/Entregador/CadastroEntrega
 import EntregadorRevisa from './src/pages/Cadastros/Entregador/EntregadorRevisa';
 import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
 import ConfigEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
+import AceitarEntrega from './src/pages/Entregador/AceitarEntrega';
+import Historico from './src/pages/Entregador/Historico';
+import Pendentes from './src/pages/Entregador/Pendentes';
 
 
 
@@ -44,6 +47,18 @@ export default function App() {
           }}
         >
           <Stack.Screen
+            name='AceitarEntrega'
+            component={AceitarEntrega}
+          />
+          <Stack.Screen
+            name='Historico'
+            component={Historico}
+          />
+          <Stack.Screen
+            name='Pendentes'
+            component={Pendentes}
+          />
+              <Stack.Screen
             name='ConfigEmpresa'
             component={ConfigEmpresa}
           />
