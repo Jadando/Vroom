@@ -8,7 +8,36 @@ import * as Location from 'expo-location';
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
 export default function FinalizarEntrega() {
+    const [iconRotation, setIconRotation] = useState(0);
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                console.error('Permission to access location was denied');
+                return;
+            }
+            const subscription = Location.watchPositionAsync({
+                accuracy: Location.Accuracy.High,
+                timeInterval: 5000,
+                distanceInterval: 1,
+            },
+            (newLocation) => {
+                if (location) {
+                    const angle = calculateAngle(location.coords, newLocation.coords);
+                    setIconRotation(angle);
+                }
+                setLocation(newLocation);
+            });
+            return () => subscription.remove();
+        })();
+    }, []);    
 
+    function calculateAngle(coord1, coord2) {
+        const deltaY = coord2.latitude - coord1.latitude;
+        const deltaX = coord2.longitude - coord1.longitude;
+        const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+        return angle;
+    } 
     const [location, setLocation] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     const closeModal = () => {
@@ -17,35 +46,10 @@ export default function FinalizarEntrega() {
     const [isExpanded, setIsExpanded] = useState(false);
     const url = 'https://figma.com/file/c97hMDfgLoFFWEAcetzH9C/TCC?type=design&node-id=0-1&mode=design&t=nfWUP24yYaj2kbHm-0';
     const displayUrl = isExpanded ? url : url.substring(0, 35) + '...';
-
-    useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                console.error('Permission to access location was denied');
-                return;
-            }
-
-            const subscription = Location.watchPositionAsync({
-                accuracy: Location.Accuracy.High,
-                timeInterval: 5000,  
-                distanceInterval: 1,
-            },
-                (newLocation) => {
-                    setLocation(newLocation);
-                });
-
-            return () => subscription.remove();
-        })();
-    }, []);
-
     const [isMapExpanded, setIsMapExpanded] = useState(false);
-
     const handleMapPress = () => {
         setIsMapExpanded(!isMapExpanded);
     };
-
-
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
@@ -81,11 +85,11 @@ export default function FinalizarEntrega() {
                         <Mapbox.MapView
                             styleURL="mapbox://styles/dataexplorers/cln3p09nw06mh01ma53j17ayq"
                             style={styles.mapMap}
-                            scrollEnabled={isMapExpanded} 
+                            scrollEnabled={isMapExpanded}
                             onPress={handleMapPress}
                         >
                             <Mapbox.Camera
-                                DefaultZoomLevel={14}
+                                zoomLevel={14}
                                 centerCoordinate={location ? [location.coords.longitude, location.coords.latitude] : [-46.678747, -24.122155]}
                                 followUserMode="normal"
                             />
@@ -93,8 +97,12 @@ export default function FinalizarEntrega() {
                                 <Mapbox.PointAnnotation
                                     id="userLocation"
                                     coordinate={[location.coords.longitude, location.coords.latitude]}
-                                    title="Minha localização"
-                                />
+                                >
+                                    <View style={[styles.customMarker, { transform: [{ rotate: `${iconRotation}deg` }] }]}>
+                                        <Icon name="bicycle" size={30} color="#ffc000" />
+                                    </View>
+                                    <Mapbox.Callout title="Minha localização" />
+                                </Mapbox.PointAnnotation>
                             )}
                         </Mapbox.MapView>
                     </View>
