@@ -32,6 +32,7 @@ import FinalizarEntrega from './src/pages/Entregador/Temporario/Finalizar';
 import PerfilEntregador from './src/pages/Entregador/Perfil';
 import ConfigEntregador from './src/pages/Entregador/Perfil/ConfigEntregador';
 import ConfigEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
+import LocalCliente from './src/pages/Cliente/Pedidos/local';
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,10 @@ export default function App() {
             headerShown: false
           }}
         >
+          <Stack.Screen
+          name='Local'
+          component={LocalCliente}
+          />
           <Stack.Screen
             name='ConfigEmpresa'
             component={ConfigEmpresa}
