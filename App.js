@@ -8,11 +8,11 @@ import { Tabs, TabsEmpresa, TabsEntregador } from './src/pages/BottomTab';
 
 import Teste from './src/pages/Teste';
 import Mapa from './src/pages/Teste/Mapa';
-import Drop from './src/pages/Teste/Drop';
 import Login from './src/pages/Login';
 import Home from './src/pages/Cliente/Home';
 import Search from './src/pages/Cliente/Search';
-import Perfil from './src/pages/Cliente/Perfil';
+import DadosCliente from './src/pages/Cliente/Perfil/DadosCliente';
+import AlterarCliente from './src/pages/Cliente/Perfil/AlterarCliente';
 import Pedidos from './src/pages/Cliente/Pedidos';
 import Config from './src/pages/Cliente/Perfil/Config1';
 import Cadastro from './src/pages/Cadastros/Cadastro';
@@ -38,11 +38,19 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Login'
+          initialRouteName='AlterarCliente'
           screenOptions={{
             headerShown: false
           }}
         >
+          <Stack.Screen
+            name='AlterarCliente'
+            component={AlterarCliente}
+          />
+          <Stack.Screen
+            name='DadosCliente'
+            component={DadosCliente}
+          />
           <Stack.Screen
             name='PendentesAndamento'
             component={PendentesAndamento}
@@ -62,10 +70,6 @@ export default function App() {
           <Stack.Screen
             name='PerfilEmpresa'
             component={PerfilEmpresa}
-          />
-          <Stack.Screen
-            name='Drop'
-            component={Drop}
           />
           <Stack.Screen
             name='Config'

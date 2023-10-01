@@ -12,20 +12,22 @@ export default function Drop() {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [location, setLocation] = useState(null);
-    useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-                return;
-            }
+    const [Latitude, setLatitude] = useState(-24.122161);
+    const [Longitude, setLongitude] = useState(-46.678759);
 
-            const Location = await Location.getCurrentPositionAsync({});
-            setLocation(location);
-        })();
-    }, []);
-    console.log(location)
+    // useEffect(() => {
+    //     (async () => {
+    //         let { status } = await Location.requestForegroundPermissionsAsync();
+    //         if (status !== 'granted') {
+    //             setErrorMsg('Permission to access location was denied');
+    //             return;
+    //         }
+
+    //         const Location = await Location.getCurrentPositionAsync({});
+    //         setLocation(location);
+    //     })();
+    // }, []);
+    // console.log(location)
     return (
 
         <View style={styles.container}>
@@ -61,25 +63,7 @@ export default function Drop() {
                             </View>
                             <View style={styles.page}>
                                 <View style={styles.MapsContainer}>
-                                    <Mapbox.MapView style={styles.map} region={{
-                                            latitude: location ? location.coords.latitude : 0,
-                                            longitude: location ? location.coords.longitude : 0,
-                                            latitudeDelta: 0.0922,
-                                            longitudeDelta: 0.0421,
-                                        }}
-                                    >
-                                        {location && (
-                                            <MapView.Marker
-                                                coordinate={{
-                                                    latitude: location.coords.latitude,
-                                                    longitude: location.coords.longitude,
-                                                }}
-                                                title="Minha localização"
-                                            />
-                                        )}
-
-
-                                    </Mapbox.MapView>
+                              
                                 </View>
                             </View>
                             <View style={styles.recentsContent2}>

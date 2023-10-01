@@ -1,0 +1,230 @@
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView,Modal } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { TextInputMask } from 'react-native-masked-text';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useTheme } from 'styled-components';
+
+export default function AlterarCliente() {
+    const navigation = useNavigation();
+    const tema = useTheme();
+    const styles = getstyles(tema);
+    const [nome, setNome] = useState('jaoao');
+    const [telefone, setTelefone] = useState('1898180400');
+    const [cep, setCep] = useState('11730000');
+    const [estado, setEstado] = useState('sp');
+    const [cidade, setCidade] = useState('sao paulo');
+    const [bairro, setBairro] = useState('teste city');
+    const [endereco, setEndereco] = useState('rua nao sei');
+    const [numero, setNumero] = useState('321');
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const closeModal = () => {
+        setModalVisible(false);
+      }
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <TouchableOpacity style={styles.headerContent}>
+                    <Text style={styles.title}>
+                        Alterar Dados
+                    </Text>
+                    <Icon name='chevron-down' size={30} color={tema.Tema.color} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.headerBell}><Icon name='information-circle-outline' size={30} color='#000' /></TouchableOpacity>
+            </View>
+
+            <ScrollView
+                style={{ width: '100%' }}
+                showsVerticalScrollIndicator={false}
+            >
+                <View style={styles.main}>
+                    <TextInput
+                        style={styles.input}
+                        value={nome}
+                        onChangeText={setNome}
+                        placeholder="Nome completo"
+                    />
+                    <TextInputMask
+                        style={styles.input}
+                        type={'cel-phone'}
+                        value={telefone}
+                        onChangeText={setTelefone}
+                        placeholder="Telefone"
+                        options={{
+                            maskType: 'BRL',
+                            withDDD: true,
+                            dddMask: '(99) ',
+                        }}
+                    />
+                    <TextInputMask
+                        style={styles.input}
+                        type={'zip-code'}
+                        value={cep}
+                        onChangeText={setCep}
+                        placeholder="CEP"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        value={estado}
+                        onChangeText={setEstado}
+                        placeholder="Estado"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        value={cidade}
+                        onChangeText={setCidade}
+                        placeholder="Cidade"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        value={bairro}
+                        onChangeText={setBairro}
+                        placeholder="Bairro"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        value={endereco}
+                        onChangeText={setEndereco}
+                        placeholder="Endereço"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        value={numero}
+                        onChangeText={setNumero}
+                        placeholder="Número"
+                    />
+
+
+                    <View style={styles.buttons}>
+                        <TouchableOpacity
+                        onPress={()=>setModalVisible(!modalVisible)}
+                            style={styles.cadastrar}
+                        >
+                            <Text style={styles.cadastrarText}>Voltar</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.cadastrar}
+                        >
+                            <Text style={styles.cadastrarText}>Confirmar Alteração</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType='slide'
+        onRequestClose={closeModal}
+      >
+        
+        <Text>Penis</Text>
+          </Modal>
+                </View>
+                
+            </ScrollView>
+          
+        </View>
+        
+    );
+}
+
+const getstyles = (tema) => StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#f2f2f2',
+    },
+    header: {
+        backgroundColor: '#f2f2f2',
+        width: '100%',
+        height: 150,
+        padding: 20,
+        marginTop: '10%',
+        paddingTop: '15%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    headerContent: {
+        flexDirection: 'column',
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginRight: 20,
+    },
+    headerContentCircle: {
+        borderRadius: 50,
+        borderWidth: 3,
+        padding: 10,
+        marginBottom: 5,
+        backgroundColor: '#fff',
+    },
+    headerContentCircleInative: {
+        borderRadius: 50,
+        borderWidth: 3,
+        padding: 10,
+        marginBottom: 5,
+        backgroundColor: '#e6e4df',
+    },
+    headerCircleNumber: {
+        fontSize: 15,
+        fontWeight: 'bold',
+    },
+    separador: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        width: '60%',
+        marginLeft: -41,
+        marginRight: -3,
+        marginBottom: 20,
+    },
+    separadorLinha: {
+        flex: 1,
+        borderBottomWidth: 3,
+        alignSelf: 'center',
+        elevation: 1,
+    },
+    headerText: {
+        fontSize: 15,
+        textAlign: 'center',
+    },
+    title: {
+        fontWeight: 'bold',
+        fontSize: 25,
+        marginTop: 20,
+        alignSelf: 'center',
+    },
+    main: {
+        alignSelf: 'center',
+    },
+    input: {
+        fontSize: 18,
+        padding: 5,
+        paddingLeft: 15,
+        margin: 5,
+        marginLeft: 15,
+        width: 300,
+        borderBottomWidth: 1,
+        marginBottom: 30,
+    },
+    cadastrar: {
+        height: 60,
+        width: '40%',
+        alignSelf: 'center',
+        backgroundColor: '#ffc000',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 20,
+        marginBottom: 30,
+        padding: 5,
+    },
+    cadastrarText: {
+        fontSize: 17,
+        color: '#121212',
+        fontWeight: 'bold',
+    },
+    buttons: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+});

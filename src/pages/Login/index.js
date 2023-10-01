@@ -17,6 +17,7 @@ export default function Login() {
         return regex.test(email);
     }
 
+    
     async function validarLogin() {
         if (email !== '' && senha !== '') {
             if (validarEmail(email)) {
