@@ -3,9 +3,11 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
+import LogoutModal from '../../../components/logoutModal';
 
 
 export default function PerfilEmpresa() {
+    const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
@@ -52,12 +54,15 @@ export default function PerfilEmpresa() {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('Login')}>
+                    onPress={() => setModalVisible(!modalVisible)}>
                     <Text style={styles.btnText}>Sair da conta</Text>
                     <Icon name='log-out-outline' size={30} color='#000' />
                 </TouchableOpacity>
             </View>
-
+            <LogoutModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            />
         </View>
         </ScrollView>
     );

@@ -1,112 +1,108 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
+import { useTema } from '../../../../theme';
+import PasswordModal from '../../../../components/PasswordModal';
 
 
-export default function PerfilEmpresa() {
-    const navigation = useNavigation();
+export default function ConfigEmpresa() {
+    const [modalVisible, setModalVisible] = useState(false);
     const tema = useTheme();
     const styles = getstyles(tema);
+    const { TrocaLight, TrocaDark } = useTema();
+    function Light() {
+        TrocaLight();
+    }
+    function Dark() {
+        TrocaDark();
+    }
     return (
-
-        <ScrollView
-        showsVerticalScrollIndicator={false}
-        overScrollMode='never'
-        >
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity>
-                    <Icon name='notifications' size={30} color='#ffc000' />
-                </TouchableOpacity>
-            </View>
-
-            <View style={styles.user}>
-                <View style={styles.userImg}>
-                    <Image
-                        // style={{width: }}
-                        source={require('../../../img/perfil.jpg')} />
-                </View>
-                <Text style={styles.userInfo}>Nome do usuário</Text>
+            <View style={styles.config}>
+                <Text style={styles.configText}>Configurações</Text>
+                <Icon name='cog' size={30} color={tema.color} />
             </View>
 
             <View style={styles.btnArea}>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.btnText}>Editar perfil</Text>
-                    <Icon name='person-outline' size={30} color='#000' />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.btnText}>Meus dados</Text>
-                    <Icon name='information' size={30} color='#000' />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.btnText}>Entregadores</Text>
-                    <Icon name='bicycle-outline' size={30} color='#000' />
-                </TouchableOpacity>
+                <Text style={styles.configContent}>
+                    Tema
+                </Text>
+                <View style={styles.tema}>
+                    <TouchableOpacity
+                        onPress={Light}
+                        style={styles.btnTema}>
+                        <Icon name='sunny' size={30} color='#000' />
+                        <Text style={styles.btnText}>Claro</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={Dark}
+                        style={styles.btnTema}>
+                        <Icon name='moon' size={30} color='#000' />
+                        <Text style={styles.btnText}>Escuro</Text>
+                    </TouchableOpacity>
+                </View>
+                <Text style={styles.configContent}>
+                    Senha
+                </Text>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Config')}
+                onPress={() => setModalVisible(!modalVisible)}
                     style={styles.button}>
-                    <Text style={styles.btnText}>Configurações</Text>
-                    <Icon name='cog' size={30} color='#000' />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => navigation.navigate('Login')}>
-                    <Text style={styles.btnText}>Sair da conta</Text>
-                    <Icon name='log-out-outline' size={30} color='#000' />
+                    <Text style={styles.btnText}>Alterar senha</Text>
                 </TouchableOpacity>
             </View>
-
+            <PasswordModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            />
         </View>
-        </ScrollView>
     );
 }
 
 const getstyles = (tema) => StyleSheet.create({
     container: {
-        felx: 1,
+        flex: 1,
         alignContent: 'center',
         alignItems: 'center',
-        paddingTop: 25,
+        paddingTop: 15,
         backgroundColor: tema.Tema.background
     },
-    header: {
-        flexDirection: 'row',
-        width: '100%',
-        marginTop: '5%',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        alignContent: 'center',
-        marginBottom: 30,
-        paddingRight: 20,
-    },
-    user: {
+    config: {
+        marginTop: 50,
         flexDirection: 'row',
         alignContent: 'center',
         alignItems: 'center'
     },
-    userImg: {
-        backgroundColor: '#d1d3d4ff',
-        marginRight: 20,
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        alignContent: 'center',
-        alignItems: 'center',
-        paddingTop: 10,
-        overflow: 'hidden',
-    },
-    userInfo: {
+    configText: {
         fontSize: 20,
+        marginRight: 15,
+        color: tema.Tema.color
+    },
+    configContent: {
+        fontSize: 18,
+        marginBottom: 20,
         color: tema.Tema.color
     },
     btnArea: {
-        marginTop: 50,
+        marginTop: 100,
         width: '100%',
         alignContent: 'center',
         alignItems: 'center',
         height: '100%'
+    },
+    btnTema: {
+        flexDirection: 'row',
+        marginBottom: 30,
+        backgroundColor: '#ffc000',
+        borderRadius: 10,
+        padding: 10,
+        alignContent: 'center',
+        alignItems: 'center',
+        width: '40%',
+        marginRight: 20,
+        height: 60,
+        justifyContent: 'center',
     },
     button: {
         flexDirection: 'row',
@@ -119,10 +115,12 @@ const getstyles = (tema) => StyleSheet.create({
         width: '50%',
         height: 60,
         justifyContent: 'center',
-        elevation: 2,
     },
     btnText: {
         fontSize: 18,
-        marginRight: 15,
+        marginLeft: 10,
     },
-})
+    tema: {
+        flexDirection: 'row'
+    },
+});
