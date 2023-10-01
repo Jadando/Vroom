@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 export default function Historico() {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <View style={styles.header}>

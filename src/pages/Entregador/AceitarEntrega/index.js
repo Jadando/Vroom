@@ -9,6 +9,7 @@ export default function AceitarEntrega() {
     const [order, setOrder] = useState("1 X-salada\n1 Coca cola");
     const [value, setValue] = useState("R$ 19,99");
     const [payment, setPayment] = useState("Dinheiro");
+    const navigation = useNavigation();
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
@@ -77,6 +78,7 @@ export default function AceitarEntrega() {
                     </View>
                 </View>
                 <TouchableOpacity
+                onPress={()=>navigation.navigate('Finalizar')}
                     style={styles.button}>
                     <Text style={styles.buttonText}>Iniciar entrega</Text>
                 </TouchableOpacity>

@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 export default function Pendentes() {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -24,12 +25,14 @@ export default function Pendentes() {
             >
                 <View style={styles.recents}>
                     <View style={styles.recentsContainer}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('AceitarEntrega')}>
                         <View style={styles.recentsContent}>
                             <Text>
                                 Pedido cd 1 {'\n'}
                                 pendente
                             </Text>
                         </View>
+                        </TouchableOpacity>
                         <View style={styles.recentsContent}>
                             <Text>
                                 Pedido cd 2 {'\n'}

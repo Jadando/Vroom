@@ -41,7 +41,7 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='AceitarEntrega'
+          initialRouteName='Pendentes'
           screenOptions={{
             headerShown: false
           }}
@@ -85,7 +85,7 @@ export default function App() {
           />
           <Stack.Screen
             name='AceitarEntrega'
-            component={TabsEntregador}
+            component={AceitarEntrega}
           />
           <Stack.Screen
             name='Historico'
@@ -93,7 +93,7 @@ export default function App() {
           />
           <Stack.Screen
             name='Pendentes'
-            component={Pendentes}
+            component={TabsEntregador}
           />
           <Stack.Screen
             name='PerfilEmpresa'

@@ -8,6 +8,7 @@ import * as Location from 'expo-location';
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
 export default function FinalizarEntrega() {
+    const navigation = useNavigation();
     const [iconRotation, setIconRotation] = useState(0);
     useEffect(() => {
         (async () => {
@@ -127,6 +128,7 @@ export default function FinalizarEntrega() {
                     </View>
                 </View>
                 <TouchableOpacity
+                onPress={()=>navigation.navigate('Historico')}
                         style={styles.button}>
                         <Text>Finalizar Entrega</Text>
                     </TouchableOpacity>
