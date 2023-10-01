@@ -9,7 +9,7 @@ import Pedidos from '../Cliente/Pedidos';
 import AceitarEntrega from '../Entregador/AceitarEntrega';
 import Historico from '../Entregador/Historico';
 import Pendentes from '../Entregador/Pendentes';
-
+import PerfilEntregador from '../Entregador/Perfil';
 const Tab = createBottomTabNavigator();
 const icons = {
     Home: {
@@ -25,12 +25,12 @@ const icons = {
         name: 'person'
     },
     Historico: {
-        name: 'ios-home'
+        name: 'time-outline'
     },
     Pendentes: {
         name: 'ios-home'
     },
-    AceitarEntrega: {
+    IniciarﾠEntrega: {
         name: 'ios-home'
     },
 }
@@ -115,7 +115,8 @@ export function TabsEntregador() {
         >
             <Tab.Screen name="Historico" component={Historico} options={{ headerShown: false }} />
             <Tab.Screen name="Pendentes" component={Pendentes} options={{ headerShown: false }} />
-            <Tab.Screen name="AceitarEntrega" component={AceitarEntrega} options={{ headerShown: false }} />
+            <Tab.Screen name="IniciarﾠEntrega" component={AceitarEntrega} options={{ headerShown: false }} />
+            <Tab.Screen name="Perfil" component={PerfilEntregador} options={{ headerShown: false }} />
         </Tab.Navigator>
 
 

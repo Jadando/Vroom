@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import ChangeModal from './../../../components/changeModal';
 
+
 export default function AlterarCliente() {
     const [viewlVisible, setViewVisible] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
@@ -35,7 +36,7 @@ export default function AlterarCliente() {
                 <View style={styles.pedidos}>
                     <Text style={styles.pedidosText}>Alterar dados</Text>
                     <View style={styles.pedidosClock}>
-                        <Icon name='information-circle-outline' size={30} color={tema.Tema.color} />
+                        <Icon name='information-circle-outline' size={30} color={'#000'} />
                     </View>
                 </View>
                 <View style={styles.main}>
@@ -184,7 +185,7 @@ const getstyles = (tema) => StyleSheet.create({
     },
     pedidosText: {
         fontSize: 20,
-        color: tema.Tema.color
+        color: '#000'
     },
     pedidosClock: {
         marginLeft: 10,

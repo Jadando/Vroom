@@ -42,7 +42,7 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='AlterarCliente'
+          initialRouteName='Historico'
           screenOptions={{
             headerShown: false
           }}
@@ -61,7 +61,7 @@ export default function App() {
           />
           <Stack.Screen
             name='AlterarCliente'
-            component={AlterarCliente}
+            component={AlterarCliente} 
           />
           <Stack.Screen
             name='DadosCliente'
@@ -71,7 +71,6 @@ export default function App() {
           <Stack.Screen
             name='Finalizar'
             component={FinalizarEntrega}
-
           />
           <Stack.Screen
             name='PendentesAndamento'
