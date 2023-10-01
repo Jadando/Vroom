@@ -28,6 +28,7 @@ import AceitarEntrega from './src/pages/Entregador/AceitarEntrega';
 import Historico from './src/pages/Entregador/Historico';
 import Pendentes from './src/pages/Entregador/Pendentes';
 import PendentesAndamento from './src/pages/Entregador/Temporario/PendentesAndamento';
+import FinalizarEntrega from './src/pages/Entregador/Temporario/Finalizar';
 
 const Stack = createStackNavigator();
 
@@ -50,6 +51,12 @@ export default function App() {
           <Stack.Screen
             name='DadosCliente'
             component={DadosCliente}
+          />
+
+          <Stack.Screen
+            name='Finalizar'
+            component={FinalizarEntrega}
+
           />
           <Stack.Screen
             name='PendentesAndamento'
