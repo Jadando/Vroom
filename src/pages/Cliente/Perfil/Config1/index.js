@@ -4,9 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import { useTema } from '../../../../theme';
-
+import PasswordModal from '../../../../components/PasswordModal';
 
 export default function Config() {
+    const [modalVisible, setModalVisible] = useState(false);
     const tema = useTheme();
     const styles = getstyles(tema);
     const { TrocaLight, TrocaDark } = useTema();
@@ -45,10 +46,15 @@ export default function Config() {
                     Senha
                 </Text>
                 <TouchableOpacity
-                    style={styles.button}>
+                onPress={() => setModalVisible(!modalVisible)}
+                style={styles.button}>
                     <Text style={styles.btnText}>Alterar senha</Text>
                 </TouchableOpacity>
             </View>
+            <PasswordModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            />
         </View>
     );
 }
