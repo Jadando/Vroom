@@ -43,7 +43,7 @@ export default function AlterarCliente() {
                     <TextInput
                         style={styles.input}
                         value={nome}
-                        onChangeText={setNome}
+                        editable={false}
                         placeholder="Nome completo"
                     />
                     <TextInputMask
