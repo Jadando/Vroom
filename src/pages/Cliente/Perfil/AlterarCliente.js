@@ -95,7 +95,7 @@ export default function AlterarCliente() {
                         placeholder="Número"
                     />
                     <TouchableOpacity
-                        onPress={() => setModalVisible(!modalVisible)}
+                        onPress={() => setViewVisible(!viewlVisible)}
                         style={styles.address}>
                         <Icon name='add' size={20} color='#000' />
                         <Text style={{ textDecorationLine: 'none' }}>Adicionar segundo endereço</Text>
