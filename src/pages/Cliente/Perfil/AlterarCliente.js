@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import ChangeModal from '../../../../components/changeModal';
 
-export default function DadosCliente() {
+export default function AlterarCliente() {
     const [viewlVisible, setViewVisible] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const navigation = useNavigation();
