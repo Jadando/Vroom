@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView,Modal } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 
-export default function AlterarCliente() {
+export default function DadosCliente() {
+    const [modalVisible, setModalVisible] = useState(false)
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
@@ -18,27 +19,27 @@ export default function AlterarCliente() {
     const [endereco, setEndereco] = useState('rua nao sei');
     const [numero, setNumero] = useState('321');
 
-    const [modalVisible, setModalVisible] = useState(false);
     const closeModal = () => {
         setModalVisible(false);
-      }
+    }
+
+    function AlterarDados() {
+        navigation.navigate('')
+    }
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.headerContent}>
-                    <Text style={styles.title}>
-                        Alterar Dados
-                    </Text>
-                    <Icon name='chevron-down' size={30} color={tema.Tema.color} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.headerBell}><Icon name='information-circle-outline' size={30} color='#000' /></TouchableOpacity>
-            </View>
 
             <ScrollView
-                style={{ width: '100%' }}
                 showsVerticalScrollIndicator={false}
+                overScrollMode='never'
             >
+                <View style={styles.pedidos}>
+                    <Text style={styles.pedidosText}>Alterar dados</Text>
+                    <View style={styles.pedidosClock}>
+                        <Icon name='information-circle-outline' size={30} color={tema.Tema.color} />
+                    </View>
+                </View>
                 <View style={styles.main}>
                     <TextInput
                         style={styles.input}
@@ -95,36 +96,73 @@ export default function AlterarCliente() {
                         onChangeText={setNumero}
                         placeholder="Número"
                     />
+                    <TouchableOpacity
+                        onPress={() => setModalVisible(!modalVisible)}
+                        style={styles.address}>
+                        <Icon name='add' size={20} color='#000' />
+                        <Text style={{ textDecorationLine: 'none' }}>Adicionar segundo endereço</Text>
+                    </TouchableOpacity>
+                    {modalVisible && (
+                        <View style={styles.modalContainer}>
 
-
+                            <Text style={[styles.pedidosText, {alignSelf: 'center', marginBottom: 5}]}> Segundo endereço</Text>
+                            <TextInputMask
+                                style={styles.input}
+                                type={'zip-code'}
+                                value={cep}
+                                onChangeText={setCep}
+                                placeholder="CEP"
+                            />
+                            <TextInput
+                                style={styles.input}
+                                value={estado}
+                                onChangeText={setEstado}
+                                placeholder="Estado"
+                            />
+                            <TextInput
+                                style={styles.input}
+                                value={cidade}
+                                onChangeText={setCidade}
+                                placeholder="Cidade"
+                            />
+                            <TextInput
+                                style={styles.input}
+                                value={bairro}
+                                onChangeText={setBairro}
+                                placeholder="Bairro"
+                            />
+                            <TextInput
+                                style={styles.input}
+                                value={endereco}
+                                onChangeText={setEndereco}
+                                placeholder="Endereço"
+                            />
+                            <TextInput
+                                style={styles.input}
+                                value={numero}
+                                onChangeText={setNumero}
+                                placeholder="Número"
+                            />
+                        </View>
+                    )}
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                        onPress={()=>setModalVisible(!modalVisible)}
+                            onPress={AlterarDados}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
+                            onPress={AlterarDados}
                             style={styles.cadastrar}
                         >
-                            <Text style={styles.cadastrarText}>Confirmar Alteração</Text>
+                            <Text style={styles.cadastrarText}>Confirmar alteração</Text>
                         </TouchableOpacity>
                     </View>
-                    <Modal
-        visible={modalVisible}
-        transparent={true}
-        animationType='slide'
-        onRequestClose={closeModal}
-      >
-        
-        <Text>Penis</Text>
-          </Modal>
                 </View>
-                
+
             </ScrollView>
-          
         </View>
-        
     );
 }
 
@@ -132,67 +170,23 @@ const getstyles = (tema) => StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#fff',
+        padding: 30,
     },
-    header: {
-        backgroundColor: '#f2f2f2',
-        width: '100%',
-        height: 150,
-        padding: 20,
-        marginTop: '10%',
-        paddingTop: '15%',
+    pedidos: {
         flexDirection: 'row',
+        alignContent: 'center',
         alignItems: 'center',
+        padding: 10,
+        width: '100%',
         justifyContent: 'center',
     },
-    headerContent: {
-        flexDirection: 'column',
-        marginTop: 10,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginRight: 20,
+    pedidosText: {
+        fontSize: 20,
+        color: tema.Tema.color
     },
-    headerContentCircle: {
-        borderRadius: 50,
-        borderWidth: 3,
-        padding: 10,
-        marginBottom: 5,
-        backgroundColor: '#fff',
-    },
-    headerContentCircleInative: {
-        borderRadius: 50,
-        borderWidth: 3,
-        padding: 10,
-        marginBottom: 5,
-        backgroundColor: '#e6e4df',
-    },
-    headerCircleNumber: {
-        fontSize: 15,
-        fontWeight: 'bold',
-    },
-    separador: {
-        flexDirection: 'row',
-        alignSelf: 'center',
-        width: '60%',
-        marginLeft: -41,
-        marginRight: -3,
-        marginBottom: 20,
-    },
-    separadorLinha: {
-        flex: 1,
-        borderBottomWidth: 3,
-        alignSelf: 'center',
-        elevation: 1,
-    },
-    headerText: {
-        fontSize: 15,
-        textAlign: 'center',
-    },
-    title: {
-        fontWeight: 'bold',
-        fontSize: 25,
-        marginTop: 20,
-        alignSelf: 'center',
+    pedidosClock: {
+        marginLeft: 10,
     },
     main: {
         alignSelf: 'center',
@@ -208,23 +202,33 @@ const getstyles = (tema) => StyleSheet.create({
         marginBottom: 30,
     },
     cadastrar: {
-        height: 60,
+        height: 50,
         width: '40%',
-        alignSelf: 'center',
         backgroundColor: '#ffc000',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 20,
+        borderRadius: 10,
         marginBottom: 30,
         padding: 5,
     },
     cadastrarText: {
         fontSize: 17,
         color: '#121212',
-        fontWeight: 'bold',
+        fontWeight: '600',
     },
     buttons: {
         flexDirection: 'row',
         justifyContent: 'space-around',
     },
+    address: {
+        alignSelf: 'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginBottom: 30,
+        marginTop: -20,
+        borderBottomColor: '#000',
+        borderBottomWidth: 0.7,
+    }, 
+
 });
