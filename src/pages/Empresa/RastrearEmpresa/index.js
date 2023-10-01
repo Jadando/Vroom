@@ -64,14 +64,6 @@ export default function RastrearEmpresa() {
                     </View>
                 </View>
                 <View style={styles.card}>
-                    <View style={styles.recentsContent}>
-                        <View style={styles.recentsImages}>
-                        </View>
-                        <Text>
-                            Luzia Hamburgers {'\n'}
-                            Cd pedido: 01
-                        </Text>
-                    </View>
                     <View style={styles.locTitle}>
                         <Text style={{ fontSize: 18 }}>Ver destino da entrega</Text>
                         <Icon name='location-sharp' size={30} color='#000' />
