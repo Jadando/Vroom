@@ -42,14 +42,14 @@ export default function AlterarEntregador() {
                         style={styles.input}
                         type={'cpf'}
                         value={cpf}
-                        onChangeText={setCpf}
+                        editable={false}
                         placeholder="CPF"
                     />
                 <View style={styles.main}>
                     <TextInput
                         style={styles.input}
                         value={nome}
-                        onChangeText={setNome}
+                        editable={false}
                         placeholder="Nome completo"
                     />
                     <TextInputMask
