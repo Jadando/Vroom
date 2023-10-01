@@ -23,7 +23,6 @@ import EntregadorRevisa from './src/pages/Cadastros/Entregador/EntregadorRevisa'
 import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
 import PerfilEmpresa from './src/pages/Empresa/Perfil';
 import AceitarEntrega from './src/pages/Entregador/AceitarEntrega';
-import Pendentes from './src/pages/Entregador/Pendentes';
 import PendentesAndamento from './src/pages/Entregador/Temporario/PendentesAndamento';
 import FinalizarEntrega from './src/pages/Entregador/Temporario/Finalizar';
 import PerfilEntregador from './src/pages/Entregador/Perfil';
@@ -31,8 +30,16 @@ import ConfigEntregador from './src/pages/Entregador/Perfil/ConfigEntregador';
 import ConfigEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
 import LocalCliente from './src/pages/Cliente/Pedidos/local';
 import PerfilCliente from './src/pages/Cliente/Perfil';
-import Historico from './src/pages/Entregador/Historico';
 import VisualizarEmpresa from './src/pages/Cliente/VisualizarEmpresa'
+import EmpresasAfiliadas from './src/pages/Entregador/Afiliacao/index'
+import SemAfiliadacao from './src/pages/Entregador/Afiliacao/SemAfiliacao'
+import DadosEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/DadosEntregador'
+import AlterarEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/AlterarEntregador'
+
+
+
+
+
 
 
 
@@ -49,7 +56,23 @@ export default function App() {
             headerShown: false
           }}
         >
-                    <Stack.Screen
+          <Stack.Screen
+            name='AlterarEntregador'
+            component={AlterarEntregador}
+          />
+          <Stack.Screen
+            name='DadosEntregador'
+            component={DadosEntregador}
+          />
+          <Stack.Screen
+            name='SemAfiliadacao'
+            component={SemAfiliadacao}
+          />
+          <Stack.Screen
+            name='EmpresasAfiliadas'
+            component={EmpresasAfiliadas}
+          />
+          <Stack.Screen
             name='VisualizarEmpresa'
             component={VisualizarEmpresa}
           />
@@ -96,7 +119,7 @@ export default function App() {
           />
           <Stack.Screen
             name='Historico'
-            component={Historico}
+            component={TabsEntregador}
           />
           <Stack.Screen
             name='Pendentes'

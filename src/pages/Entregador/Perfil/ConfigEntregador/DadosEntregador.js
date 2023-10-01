@@ -21,9 +21,6 @@ export default function DadosEntregador() {
     const [endereco, setEndereco] = useState('rua nao sei');
     const [numero, setNumero] = useState('321');
 
-    function aAlterarEntregador() {
-        navigation.navigate('')
-    }
 
     return (
         <View style={styles.container}>
@@ -103,13 +100,13 @@ export default function DadosEntregador() {
                     />
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                            onPress={aAlterarEntregador}
+                           onPress={()=> navigation.navigate('DadosCliente')}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            // onPress={() => colocar navigate}
+                             onPress={()=> navigation.navigate('DadosCliente')}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Alterar dados</Text>

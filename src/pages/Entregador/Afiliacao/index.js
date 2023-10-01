@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation,StackActions } from '@react-navigation/native';
 
 export default function EmpresasAfiliadas() {
+    const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const closeModal = () => {
         setModalVisible(false);
@@ -48,7 +50,7 @@ export default function EmpresasAfiliadas() {
                         </Text>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                             <TouchableOpacity
-                                onPress={() => setModalVisible(!modalVisible)}
+                                onPress={() => {setModalVisible(!modalVisible); navigation.navigate('SemAfiliacao');}}
                                 style={styles.modalBtn}>
                                 <Text style={styles.modalContent}>
                                     Não

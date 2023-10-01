@@ -21,9 +21,6 @@ export default function AlterarEntregador() {
     const [endereco, setEndereco] = useState('rua nao sei');
     const [numero, setNumero] = useState('321');
 
-    function aAlterarEntregador() {
-        navigation.navigate('')
-    }
 
     return (
         <View style={styles.container}>
@@ -39,12 +36,12 @@ export default function AlterarEntregador() {
                     </View>
                 </View>
                 <TextInputMask
-                        style={styles.input}
-                        type={'cpf'}
-                        value={cpf}
-                        editable={false}
-                        placeholder="CPF"
-                    />
+                    style={styles.input}
+                    type={'cpf'}
+                    value={cpf}
+                    editable={false}
+                    placeholder="CPF"
+                />
                 <View style={styles.main}>
                     <TextInput
                         style={styles.input}
@@ -103,13 +100,16 @@ export default function AlterarEntregador() {
                     />
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                            onPress={aAlterarEntregador}
+                            onPress={() => navigation.navigate('DadosEntregador')}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => setModalVisible(!modalVisible)}
+                            onPress={() => {
+                               // setModalVisible(!modalVisible);
+                                navigation.navigate('DadosEntregador');
+                            }}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Confirmar alteração</Text>
@@ -117,11 +117,11 @@ export default function AlterarEntregador() {
                     </View>
                 </View>
                 <ChangeModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
                 />
-            </ScrollView>
-        </View>
+            </ScrollView >
+        </View >
     );
 }
 
