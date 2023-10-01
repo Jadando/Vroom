@@ -42,14 +42,14 @@ export default function DadosCliente() {
           <TextInput
             style={styles.input}
             value={nome}
-            onChangeText={setNome}
+            editable={false}
             placeholder="Nome completo"
           />
           <TextInputMask
             style={styles.input}
             type={'cel-phone'}
             value={telefone}
-            onChangeText={setTelefone}
+            editable={false}
             placeholder="Telefone"
             options={{
               maskType: 'BRL',
@@ -61,31 +61,31 @@ export default function DadosCliente() {
             style={styles.input}
             type={'zip-code'}
             value={cep}
-            onChangeText={setCep}
+            editable={false}
             placeholder="CEP"
           />
           <TextInput
             style={styles.input}
             value={estado}
-            onChangeText={setEstado}
+            editable={false}
             placeholder="Estado"
           />
           <TextInput
             style={styles.input}
             value={cidade}
-            onChangeText={setCidade}
+            editable={false}
             placeholder="Cidade"
           />
           <TextInput
             style={styles.input}
             value={bairro}
-            onChangeText={setBairro}
+           editable={false}
             placeholder="Bairro"
           />
           <TextInput
             style={styles.input}
             value={endereco}
-            onChangeText={setEndereco}
+            editable={false}
             placeholder="Endereço"
           />
           <TextInput
