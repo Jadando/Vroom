@@ -30,9 +30,9 @@ export default function DadosEntregador() {
                 overScrollMode='never'
             >
                 <View style={styles.pedidos}>
-                    <Text style={styles.pedidosText}>Alterar dados</Text>
+                    <Text style={styles.pedidosText}>Meus dados</Text>
                     <View style={styles.pedidosClock}>
-                        <Icon name='information-circle-outline' size={30} color={tema.Tema.color} />
+                        <Icon name='information-circle-outline' size={30} color='#000' />
                     </View>
                 </View>
                 <TextInputMask
@@ -100,13 +100,13 @@ export default function DadosEntregador() {
                     />
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                           onPress={()=> navigation.navigate('DadosCliente')}
+                           onPress={()=> navigation.navigate('PerfilEntregador')}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                             onPress={()=> navigation.navigate('DadosCliente')}
+                             onPress={()=> navigation.navigate('AlterarEntregador')}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Alterar dados</Text>
@@ -139,7 +139,7 @@ const getstyles = (tema) => StyleSheet.create({
     },
     pedidosText: {
         fontSize: 20,
-        color: tema.Tema.color
+        color: '#000'
     },
     pedidosClock: {
         marginLeft: 10,

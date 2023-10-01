@@ -23,7 +23,6 @@ import EntregadorRevisa from './src/pages/Cadastros/Entregador/EntregadorRevisa'
 import Afiliado from './src/pages/Cadastros/Entregador/Afiliado';
 import PerfilEmpresa from './src/pages/Empresa/Perfil';
 import AceitarEntrega from './src/pages/Entregador/AceitarEntrega';
-import PendentesAndamento from './src/pages/Entregador/Temporario/PendentesAndamento';
 import FinalizarEntrega from './src/pages/Entregador/Temporario/Finalizar';
 import PerfilEntregador from './src/pages/Entregador/Perfil';
 import ConfigEntregador from './src/pages/Entregador/Perfil/ConfigEntregador';
@@ -35,13 +34,9 @@ import EmpresasAfiliadas from './src/pages/Entregador/Afiliacao/index'
 import SemAfiliadacao from './src/pages/Entregador/Afiliacao/SemAfiliacao'
 import DadosEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/DadosEntregador'
 import AlterarEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/AlterarEntregador'
-
-
-
-
-
-
-
+import IniciarEntrega from './src/pages/Empresa/IniciarEntrega';
+import PendentesAndamento from './src/pages/Empresa/PendentesAndamento';
+import RastrearEmpresa from './src/pages/Empresa/RastrearEmpresa';
 
 const Stack = createStackNavigator();
 
@@ -51,11 +46,35 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Home'
+          initialRouteName='IniciarEntrega'
           screenOptions={{
             headerShown: false
           }}
         >
+          <Stack.Screen
+          name='RastrearEmpresa'
+          component={RastrearEmpresa}
+          />
+          <Stack.Screen
+          name='PendentesAndamento'
+          component={PendentesAndamento}
+          />
+          <Stack.Screen
+            name='IniciarEntrega'
+            component={IniciarEntrega}
+          />
+          <Stack.Screen
+            name='PerfilEntregador'
+            component={PerfilEntregador}
+          />
+          <Stack.Screen
+            name='Pendentes'
+            component={TabsEntregador}
+          />
+          <Stack.Screen
+            name='Historico'
+            component={TabsEntregador}
+          />
           <Stack.Screen
             name='AlterarEntregador'
             component={AlterarEntregador}
@@ -93,10 +112,6 @@ export default function App() {
             component={ConfigEntregador}
           />
           <Stack.Screen
-            name='PerfilEntregador'
-            component={PerfilEntregador}
-          />
-          <Stack.Screen
             name='AlterarCliente'
             component={AlterarCliente}
           />
@@ -110,20 +125,8 @@ export default function App() {
             component={FinalizarEntrega}
           />
           <Stack.Screen
-            name='PendentesAndamento'
-            component={PendentesAndamento}
-          />
-          <Stack.Screen
             name='AceitarEntrega'
             component={AceitarEntrega}
-          />
-          <Stack.Screen
-            name='Historico'
-            component={TabsEntregador}
-          />
-          <Stack.Screen
-            name='Pendentes'
-            component={TabsEntregador}
           />
           <Stack.Screen
             name='PerfilEmpresa'

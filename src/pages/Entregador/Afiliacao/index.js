@@ -9,7 +9,6 @@ export default function EmpresasAfiliadas() {
     const closeModal = () => {
         setModalVisible(false);
     }
-
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -23,7 +22,7 @@ export default function EmpresasAfiliadas() {
                 <View style={styles.circle} />
                 <View style={styles.textContainer}>
                     <Text style={styles.companyName}>Empresa: Luzia Hamburgers</Text>
-                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.button}>
+                    <TouchableOpacity onPress={() => {setModalVisible(true); navigation.navigate('DadosEntregador')}} style={styles.button}>
                         <Text style={styles.buttonText}>Desafiliar-se da Empresa</Text>
                     </TouchableOpacity>
                 </View>
