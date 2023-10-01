@@ -4,8 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
+import ChangeModal from '../../../../components/changeModal';
 
 export default function DadosCliente() {
+    const [viewlVisible, setViewVisible] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const navigation = useNavigation();
     const tema = useTheme();
@@ -19,11 +21,7 @@ export default function DadosCliente() {
     const [endereco, setEndereco] = useState('rua nao sei');
     const [numero, setNumero] = useState('321');
 
-    const closeModal = () => {
-        setModalVisible(false);
-    }
-
-    function AlterarDados() {
+    function aAlterarCliente() {
         navigation.navigate('')
     }
 
@@ -102,7 +100,7 @@ export default function DadosCliente() {
                         <Icon name='add' size={20} color='#000' />
                         <Text style={{ textDecorationLine: 'none' }}>Adicionar segundo endereço</Text>
                     </TouchableOpacity>
-                    {modalVisible && (
+                    {viewlVisible && (
                         <View style={styles.modalContainer}>
 
                             <Text style={[styles.pedidosText, {alignSelf: 'center', marginBottom: 5}]}> Segundo endereço</Text>
@@ -147,20 +145,23 @@ export default function DadosCliente() {
                     )}
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                            onPress={AlterarDados}
+                            onPress={aAlterarCliente}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={AlterarDados}
+                            onPress={() => setModalVisible(!modalVisible)}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Confirmar alteração</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
-
+                <ChangeModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                />
             </ScrollView>
         </View>
     );
@@ -229,6 +230,5 @@ const getstyles = (tema) => StyleSheet.create({
         marginTop: -20,
         borderBottomColor: '#000',
         borderBottomWidth: 0.7,
-    }, 
-
+    },
 });
