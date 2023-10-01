@@ -30,9 +30,10 @@ import PerfilEntregador from './src/pages/Entregador/Perfil';
 import ConfigEntregador from './src/pages/Entregador/Perfil/ConfigEntregador';
 import ConfigEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
 import LocalCliente from './src/pages/Cliente/Pedidos/local';
+import PerfilCliente from './src/pages/Cliente/Perfil';
+import Historico from './src/pages/Entregador/Historico';
 
 const Stack = createStackNavigator();
-
 
 export default function App() {
   const Tema = useTema()
@@ -40,14 +41,18 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Historico'
+          initialRouteName='AceitarEntrega'
           screenOptions={{
             headerShown: false
           }}
         >
           <Stack.Screen
-          name='Local'
-          component={LocalCliente}
+            name='PerfilCliente'
+            component={PerfilCliente}
+          />
+          <Stack.Screen
+            name='Local'
+            component={LocalCliente}
           />
           <Stack.Screen
             name='ConfigEmpresa'
@@ -63,7 +68,7 @@ export default function App() {
           />
           <Stack.Screen
             name='AlterarCliente'
-            component={AlterarCliente} 
+            component={AlterarCliente}
           />
           <Stack.Screen
             name='DadosCliente'
@@ -80,11 +85,11 @@ export default function App() {
           />
           <Stack.Screen
             name='AceitarEntrega'
-            component={AceitarEntrega}
+            component={TabsEntregador}
           />
           <Stack.Screen
             name='Historico'
-            component={TabsEntregador}
+            component={Historico}
           />
           <Stack.Screen
             name='Pendentes'

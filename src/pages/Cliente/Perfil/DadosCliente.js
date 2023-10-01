@@ -18,21 +18,20 @@ export default function DadosCliente() {
   const [endereco, setEndereco] = useState('rua nao sei');
   const [numero, setNumero] = useState('321');
 
-  function AlterarDados(){
-    navigation.navigate('')
-  }
+
+
 
   return (
     <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.headerContent}>
-                    <Text style={styles.title}>
-                        Meus Dados
-                    </Text>
-                    <Icon name='chevron-down' size={30} color={tema.Tema.color} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.headerBell}><Icon name='information-circle-outline' size={30} color='#000' /></TouchableOpacity>
-            </View>
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.headerContent}>
+          <Text style={styles.title}>
+            Meus Dados
+          </Text>
+          <Icon name='chevron-down' size={30} color={tema.Tema.color} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.headerBell}><Icon name='information-circle-outline' size={30} color='#000' /></TouchableOpacity>
+      </View>
 
       <ScrollView
         style={{ width: '100%' }}
@@ -79,7 +78,7 @@ export default function DadosCliente() {
           <TextInput
             style={styles.input}
             value={bairro}
-           editable={false}
+            editable={false}
             placeholder="Bairro"
           />
           <TextInput
@@ -97,7 +96,13 @@ export default function DadosCliente() {
 
           <View style={styles.buttons}>
             <TouchableOpacity
-            onPress={AlterarDados}
+              onPress={()=>navigation.navigate('PerfilCliente')}
+              style={styles.cadastrar}
+            >
+              <Text style={styles.cadastrarText}>Voltar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={()=>navigation.navigate('AlterarCliente')}
               style={styles.cadastrar}
             >
               <Text style={styles.cadastrarText}>Alterar Dados</Text>
@@ -120,7 +125,7 @@ const getstyles = (tema) => StyleSheet.create({
     width: '100%',
     height: 150,
     padding: 20,
-    marginTop:'10%',
+    marginTop: '10%',
     paddingTop: '15%',
     flexDirection: 'row',
     alignItems: 'center',

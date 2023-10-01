@@ -27,7 +27,8 @@ export default function Perfil() {
             </View>
 
             <View style={styles.btnArea}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button}
+                onPress={() => navigation.navigate('DadosCliente')}>
                     <Text style={styles.btnText}>Meus dados</Text>
                     <Icon name='information' size={30} color='#000' />
                 </TouchableOpacity>

@@ -22,9 +22,6 @@ export default function AlterarCliente() {
     const [endereco, setEndereco] = useState('rua nao sei');
     const [numero, setNumero] = useState('321');
 
-    function aAlterarCliente() {
-        navigation.navigate('')
-    }
 
     return (
         <View style={styles.container}>
@@ -146,13 +143,13 @@ export default function AlterarCliente() {
                     )}
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                            onPress={aAlterarCliente}
+                            onPress={()=> navigation.navigate('DadosCliente')}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => setModalVisible(!modalVisible)}
+                            onPress={()=> navigation.navigate('DadosCliente')}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Confirmar alteração</Text>

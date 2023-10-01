@@ -113,9 +113,8 @@ export function TabsEntregador() {
                 },
             })}
         >
+              <Tab.Screen name="Pendentes" component={Pendentes} options={{ headerShown: false }} />
             <Tab.Screen name="Historico" component={Historico} options={{ headerShown: false }} />
-            <Tab.Screen name="Pendentes" component={Pendentes} options={{ headerShown: false }} />
-            <Tab.Screen name="IniciarﾠEntrega" component={AceitarEntrega} options={{ headerShown: false }} />
             <Tab.Screen name="Perfil" component={PerfilEntregador} options={{ headerShown: false }} />
         </Tab.Navigator>
 
@@ -158,7 +157,7 @@ export function TabsEmpresa() {
                 },
             })}
         >
-            <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
+            <Tab.Screen name="IniciarﾠEntrega" component={AceitarEntrega} options={{ headerShown: false }} />
             <Tab.Screen name="Buscar" component={Search} options={{ headerShown: false }} />
             <Tab.Screen name="Pedidos" component={Pedidos} options={{ headerShown: false }} />
             <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />

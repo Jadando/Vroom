@@ -52,7 +52,8 @@ export default function EntregadorRevisa({ route }) {
       // } catch (e) {
       //   console.error("Error adding document: ", e);
       // }
-      navigation.dispatch(StackActions.popToTop());
+     // navigation.dispatch(StackActions.popToTop())
+     navigation.navigate('AceitarEntrega')
     } else {
       alert('Campos obrigatórios não preenchidos');
     }

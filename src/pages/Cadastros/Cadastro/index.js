@@ -9,9 +9,9 @@ export default function Cadastro() {
   const tema = useTheme();
   const styles = getstyles(tema);
 
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [senhaConfirma, setSenhaConfirma] = useState('');
+  const [email, setEmail] = useState('joaoa@gmail.com');
+  const [senha, setSenha] = useState('1');
+  const [senhaConfirma, setSenhaConfirma] = useState('1');
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -43,6 +43,7 @@ export default function Cadastro() {
         //     const errorMessage = error.message;
         //     // ..
         //   });
+        setModalVisible(true);
       } else {
         alert('Formato de email inválido');
       }

@@ -9,16 +9,16 @@ export default function CadastroEntregador() {
   const tema = useTheme();
   const styles = getstyles(tema);
 
-  const [cpf, setCpf] = useState('');
-  const [nome, setNome] = useState('');
-  const [dtNasc, setDtNasc] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [cep, setCep] = useState('');
-  const [estado, setEstado] = useState('');
-  const [cidade, setCidade] = useState('');
-  const [bairro, setBairro] = useState('');
-  const [endereco, setEndereco] = useState('');
-  const [numero, setNumero] = useState('');
+  const [cpf, setCpf] = useState('11111111111');
+  const [nome, setNome] = useState('luiz ');
+  const [dtNasc, setDtNasc] = useState('23/09/1990');
+  const [telefone, setTelefone] = useState('343433');
+  const [cep, setCep] = useState('11111111');
+  const [estado, setEstado] = useState('bahia');
+  const [cidade, setCidade] = useState('pernanbuco');
+  const [bairro, setBairro] = useState('Caiu dormiu');
+  const [endereco, setEndereco] = useState('Rua das redes ');
+  const [numero, setNumero] = useState('11111111111');
 
   function verificaInput() {
     if (

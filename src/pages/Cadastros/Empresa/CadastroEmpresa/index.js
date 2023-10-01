@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
-
+import { useTheme } from 'styled-components';
 export default function CadastroEmpresa() {
   const navigation = useNavigation();
   const tema = useTheme();

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { collection, addDoc, getFirestore } from "firebase/firestore";
-
+import { useTheme } from 'styled-components';
 export default function EmpresaRevisa({ route }) {
   const navigation = useNavigation();
   const tema = useTheme();

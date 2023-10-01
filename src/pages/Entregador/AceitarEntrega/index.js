@@ -34,7 +34,7 @@ export default function AceitarEntrega() {
 
 
                 <View style={styles.pedidos}>
-                    <Text style={styles.pedidosText}>Entregas pendentes</Text>
+                    <Text style={styles.pedidosText}>Iniciar entrega</Text>
                     <View style={styles.pedidosClock}>
                         <Icon name='time-outline' size={30} color='#000' />
                     </View>
@@ -69,6 +69,7 @@ export default function AceitarEntrega() {
                         <Text style={styles.comandaTitle}>Forma de pagamento:</Text>
                         <View style={styles.comandaPayment}>
                             <DropDownPicker
+                                editable={false}
                                 open={open}
                                 value={value}
                                 items={items}
@@ -76,8 +77,8 @@ export default function AceitarEntrega() {
                                 setValue={setValue}
                                 setItems={setItems}
                                 placeholder='Selecione uma opção'
-                                style={{ borderColor: 'transparent' }}
-                                dropDownContainerStyle={{ borderColor: 'transparent' }}
+                                style={{ borderColor: 'transparent', zIndex: 1, position: 'relative' }}
+                                dropDownContainerStyle={{ borderColor: 'transparent', zIndex: 1, position: 'absolute' }}
                             />
                         </View>
                         <Text style={styles.comandaTitle}>Valor do pedido:</Text>
@@ -114,26 +115,26 @@ export default function AceitarEntrega() {
                         </Text>
                         <View style={styles.link}>
                             <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-                            <TextInput
-                                value={displayUrl}
-                                multiline={true}
-                                editable={false}
-                                style={[styles.textInput, isExpanded ? styles.expanded : styles.collapsed]}
-                            />
+                                <TextInput
+                                    value={displayUrl}
+                                    multiline={true}
+                                    editable={false}
+                                    style={[styles.textInput, isExpanded ? styles.expanded : styles.collapsed]}
+                                />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.linkButtonArea}>
-                        <View style={styles.linkButton}>
-                            <TouchableOpacity
-                           //função do link aqui
-                            >
-                                <Text style={{textDecorationLine: 'underline'}}>Copiar URL</Text>
-                            </TouchableOpacity>
-                        </View>
+                            <View style={styles.linkButton}>
+                                <TouchableOpacity
+                                //função do link aqui
+                                >
+                                    <Text style={{ textDecorationLine: 'underline' }}>Copiar URL</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <TouchableOpacity
-                        onPress={() => setModalVisible(!modalVisible)}
-                        style={styles.modalButton}>
+                            onPress={() => setModalVisible(!modalVisible)}
+                            style={styles.modalButton}>
                             <Text>Ok entendi</Text>
                         </TouchableOpacity>
                     </View>
