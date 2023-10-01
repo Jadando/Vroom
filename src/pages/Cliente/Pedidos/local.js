@@ -8,6 +8,7 @@ import * as Location from 'expo-location';
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
 export default function LocalCliente() {
+    const navigation = useNavigation();
     const [iconRotation, setIconRotation] = useState(0);
     useEffect(() => {
         (async () => {

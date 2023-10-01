@@ -8,6 +8,7 @@ import { useTheme } from 'styled-components';
 export default function Home() {
   const tema = useTheme();
   const styles = getstyles(tema);
+  const navigation = useNavigation();
   return (
 
     <View style={styles.container}>
@@ -27,7 +28,7 @@ export default function Home() {
       >
         <View style={styles.categorias}>
           <View style={styles.categoriasContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate('VisualizarEmpresa')}>
               <View style={styles.categoriasContent}>
                 <Text style={{ ...styles.categoriaText, marginBottom: -15 }}>
                   Restaurantes

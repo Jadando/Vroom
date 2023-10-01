@@ -8,6 +8,7 @@ import { useTheme } from 'styled-components';
 export default function Pedidos() {
     const tema = useTheme();
     const styles = getstyles(tema);
+    const navigation = useNavigation();
     return (
 
         <View style={styles.container}>

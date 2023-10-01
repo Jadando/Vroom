@@ -32,6 +32,9 @@ import ConfigEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
 import LocalCliente from './src/pages/Cliente/Pedidos/local';
 import PerfilCliente from './src/pages/Cliente/Perfil';
 import Historico from './src/pages/Entregador/Historico';
+import VisualizarEmpresa from './src/pages/Cliente/VisualizarEmpresa'
+
+
 
 const Stack = createStackNavigator();
 
@@ -46,6 +49,10 @@ export default function App() {
             headerShown: false
           }}
         >
+                    <Stack.Screen
+            name='VisualizarEmpresa'
+            component={VisualizarEmpresa}
+          />
           <Stack.Screen
             name='PerfilCliente'
             component={PerfilCliente}
