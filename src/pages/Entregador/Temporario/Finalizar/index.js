@@ -85,9 +85,8 @@ export default function FinalizarEntrega() {
                             onPress={handleMapPress}
                         >
                             <Mapbox.Camera
-                                DefaultZoomLevel={15}
+                                DefaultZoomLevel={14}
                                 centerCoordinate={location ? [location.coords.longitude, location.coords.latitude] : [-46.678747, -24.122155]}
-                                followUserLocation={true}
                                 followUserMode="normal"
                             />
                             {location && (
