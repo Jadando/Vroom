@@ -45,25 +45,6 @@ export default function LocalCliente() {
     const [isExpanded, setIsExpanded] = useState(false);
     const url = 'https://figma.com/file/c97hMDfgLoFFWEAcetzH9C/TCC?type=design&node-id=0-1&mode=design&t=nfWUP24yYaj2kbHm-0';
     const displayUrl = isExpanded ? url : url.substring(0, 35) + '...';
-    useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                console.error('Permission to access location was denied');
-                return;
-            }
-            const subscription = Location.watchPositionAsync({
-                accuracy: Location.Accuracy.High,
-                timeInterval: 5000,
-                distanceInterval: 1,
-            },
-                (newLocation) => {
-                    setLocation(newLocation);
-                });
-
-            return () => subscription.remove();
-        })();
-    }, []);
     const [isMapExpanded, setIsMapExpanded] = useState(false);
     const handleMapPress = () => {
         setIsMapExpanded(!isMapExpanded);
