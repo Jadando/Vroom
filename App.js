@@ -29,6 +29,9 @@ import Historico from './src/pages/Entregador/Historico';
 import Pendentes from './src/pages/Entregador/Pendentes';
 import PendentesAndamento from './src/pages/Entregador/Temporario/PendentesAndamento';
 import FinalizarEntrega from './src/pages/Entregador/Temporario/Finalizar';
+import PerfilEntregador from './src/pages/Entregador/Perfil';
+import ConfigEntregador from './src/pages/Entregador/Perfil/ConfigEntregador';
+import ConfigEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +47,22 @@ export default function App() {
             headerShown: false
           }}
         >
+          <Stack.Screen
+            name='ConfigEmpresa'
+            component={ConfigEmpresa}
+          />
+          <Stack.Screen
+            name='Perfil'
+            component={Perfil}
+          />
+          <Stack.Screen
+            name='ConfigEntregador'
+            component={ConfigEntregador}
+          />
+          <Stack.Screen
+            name='PerfilEntregador'
+            component={PerfilEntregador}
+          />
           <Stack.Screen
             name='AlterarCliente'
             component={AlterarCliente}
