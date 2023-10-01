@@ -21,31 +21,23 @@ export default function FinalizarEntrega() {
                 timeInterval: 5000,
                 distanceInterval: 1,
             },
-            (newLocation) => {
-                if (location) {
-                    const angle = calculateAngle(location.coords, newLocation.coords);
-                    setIconRotation(angle);
-                }
-                setLocation(newLocation);
-            });
+                (newLocation) => {
+                    if (location) {
+                        const angle = calculateAngle(location.coords, newLocation.coords);
+                        setIconRotation(angle);
+                    }
+                    setLocation(newLocation);
+                });
             return () => subscription.remove();
         })();
-    }, []);    
-
+    }, []);
     function calculateAngle(coord1, coord2) {
         const deltaY = coord2.latitude - coord1.latitude;
         const deltaX = coord2.longitude - coord1.longitude;
         const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
         return angle;
-    } 
-    const [location, setLocation] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
-    const closeModal = () => {
-        setModalVisible(false);
     }
-    const [isExpanded, setIsExpanded] = useState(false);
-    const url = 'https://figma.com/file/c97hMDfgLoFFWEAcetzH9C/TCC?type=design&node-id=0-1&mode=design&t=nfWUP24yYaj2kbHm-0';
-    const displayUrl = isExpanded ? url : url.substring(0, 35) + '...';
+    const [location, setLocation] = useState(null);
     const [isMapExpanded, setIsMapExpanded] = useState(false);
     const handleMapPress = () => {
         setIsMapExpanded(!isMapExpanded);
@@ -135,58 +127,10 @@ export default function FinalizarEntrega() {
                     </View>
                 </View>
                 <TouchableOpacity
-                    onPress={() => setModalVisible(!modalVisible)}
-                    style={styles.button}>
-                    <Text style={styles.buttonText}>Iniciar entrega</Text>
-                </TouchableOpacity>
+                        style={styles.button}>
+                        <Text>Finalizar Entrega</Text>
+                    </TouchableOpacity>
             </View>
-            <Modal
-                visible={modalVisible}
-                transparent={true}
-                animationType='slide'
-                onRequestClose={closeModal}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalHeader}>
-                        <Text style={styles.modalHeaderTitle}>Aviso</Text>
-                        <TouchableOpacity
-                            style={styles.modalHeaderClose}
-                            onPress={() => setModalVisible(!modalVisible)} >
-                            <Image source={require('../../../../img/close.png')} style={{ width: 30, height: 30 }} />
-                        </TouchableOpacity>
-                    </View>
-
-                    <View>
-                        <Text style={styles.modalContentTitle}>
-                            Envie este link para o cliente para iniciar o pedido
-                        </Text>
-                        <View style={styles.link}>
-                            <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-                                <TextInput
-                                    value={displayUrl}
-                                    multiline={true}
-                                    editable={false}
-                                    style={[styles.textInput, isExpanded ? styles.expanded : styles.collapsed]}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.linkButtonArea}>
-                            <View style={styles.linkButton}>
-                                <TouchableOpacity
-                                //função do link aqui
-                                >
-                                    <Text style={{ textDecorationLine: 'underline' }}>Copiar URL</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <TouchableOpacity
-                            onPress={() => setModalVisible(!modalVisible)}
-                            style={styles.modalButton}>
-                            <Text>Ok entendi</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
         </ScrollView>
     );
 }
@@ -288,6 +232,35 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginTop: 10,
     },
+
+    locTitle: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 10
+    },
+    map: {
+
+        borderRadius: 10,
+        marginBottom: 15,
+        overflow: 'hidden'
+    },
+    mapMap: {
+        overflow: 'hidden',
+        height: 350,
+        marginBottom: 15,
+        borderRadius: 10,
+    },
+    expandedMap: {
+        elevation: 10
+    },
+    customMarker: {
+        width: 30,
+        height: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 15,
+    },
     button: {
         height: 50,
         width: 250,
@@ -303,107 +276,5 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 20,
         fontWeight: '600',
-    },
-    modalContainer: {
-        alignSelf: 'center',
-        marginTop: '30%',
-        width: 300,
-        backgroundColor: '#f2f2f2',
-        margin: 20,
-        borderRadius: 20,
-        height: 'fit-content',
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 50
-    },
-    modalHeader: {
-        backgroundColor: '#ffc000',
-        width: '100%',
-        height: 40,
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20,
-        padding: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 15
-    },
-    modalHeaderTitle: {
-        flex: 1,
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#121212',
-        textAlign: 'center',
-    },
-    modalHeaderClose: {
-        justifyContent: 'flex-end',
-    },
-    modalContentTitle: {
-        fontSize: 18,
-        textAlign: 'center',
-        marginBottom: 50
-    },
-    modalContent: {
-        fontSize: 20,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        color: '#121212'
-    },
-    link: {
-        borderRadius: 10,
-        backgroundColor: '#e5e5e5',
-    },
-    collapsed: {
-        height: 40,
-    },
-    expanded: {
-        height: 'auto',
-    },
-    linkButtonArea: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
-    linkButton: {
-        marginLeft: 10,
-        padding: 5,
-    },
-    modalButton: {
-        height: 50,
-        width: 150,
-        backgroundColor: '#ffc000',
-        alignSelf: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 10,
-        marginTop: 20,
-        elevation: 2,
-        marginBottom: 15
-    },
-    locTitle: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 10
-    },
-    map: {
-        
-        borderRadius: 10,
-        height: '35%',
-        marginBottom: 15,
-        overflow: 'hidden'
-    },
-    mapMap: {
-        overflow: 'hidden',
-        height: 350,
-        marginBottom: 15,
-        borderRadius: 10,
-    },
-    expandedMap: {
-         elevation: 10
     },
 })
