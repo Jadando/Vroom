@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useTema } from './src/theme';
 import { ThemeProvider } from 'styled-components';
-import { Tabs, TabsEmpresa, TabsEntregador } from './src/pages/BottomTab';
+import { Tabs, TabsEmpresa, TabsEntregador } from './src/components/BottomTab';
 
 import Teste from './src/pages/Teste';
 import Mapa from './src/pages/Teste/Mapa';
@@ -44,7 +44,7 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Pendentes'
+          initialRouteName='Home'
           screenOptions={{
             headerShown: false
           }}

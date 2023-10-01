@@ -2,14 +2,14 @@ import { useTheme } from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Home from '../Cliente/Home';
-import Search from '../Cliente/Search';
-import Perfil from '../Cliente/Perfil';
-import Pedidos from '../Cliente/Pedidos';
-import AceitarEntrega from '../Entregador/AceitarEntrega';
-import Historico from '../Entregador/Historico';
-import Pendentes from '../Entregador/Pendentes';
-import PerfilEntregador from '../Entregador/Perfil';
+import Home from '../../pages/Cliente/Home';
+import Search from '../../pages/Cliente/Search';
+import Perfil from '../../pages/Cliente/Perfil';
+import Pedidos from '../../pages/Cliente/Pedidos';
+import AceitarEntrega from '../../pages/Entregador/AceitarEntrega';
+import Historico from '../../pages/Entregador/Historico';
+import Pendentes from '../../pages/Entregador/Pendentes';
+import PerfilEntregador from '../../pages/Entregador/Perfil';
 const Tab = createBottomTabNavigator();
 const icons = {
     Home: {
