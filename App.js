@@ -42,7 +42,7 @@ export default function App() {
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Perfil'
+          initialRouteName='AlterarCliente'
           screenOptions={{
             headerShown: false
           }}
@@ -50,10 +50,6 @@ export default function App() {
           <Stack.Screen
             name='ConfigEmpresa'
             component={ConfigEmpresa}
-          />
-          <Stack.Screen
-            name='Perfil'
-            component={Perfil}
           />
           <Stack.Screen
             name='ConfigEntregador'
