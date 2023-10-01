@@ -125,6 +125,7 @@ export default function AceitarEntrega() {
                         <View style={styles.linkButtonArea}>
                         <View style={styles.linkButton}>
                             <TouchableOpacity
+                           //função do link aqui
                             >
                                 <Text style={{textDecorationLine: 'underline'}}>Copiar URL</Text>
                             </TouchableOpacity>
