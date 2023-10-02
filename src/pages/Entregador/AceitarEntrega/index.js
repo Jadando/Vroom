@@ -77,7 +77,7 @@ export default function AceitarEntrega() {
                     </View>
                 </View>
                 <TouchableOpacity
-                onPress={()=>navigation.navigate('Finalizar')}
+                onPress={()=>navigation.navigate('FinalizarEntrega')}
                     style={styles.button}>
                     <Text style={styles.buttonText}>Iniciar entrega</Text>
                 </TouchableOpacity>

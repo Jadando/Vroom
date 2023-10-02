@@ -46,6 +46,7 @@ import EmpresasAfiliadas from './src/pages/Entregador/Afiliacao/index';
 import SemAfiliacao from './src/pages/Entregador/Afiliacao/SemAfiliacao';
 import DadosEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/DadosEntregador';
 import AlterarEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/AlterarEntregador';
+import Historico from './src/pages/Entregador/Historico';
 import Pendentes from './src/pages/Entregador/Pendentes';
 
 // Imports gerais
@@ -105,7 +106,8 @@ export default function App() {
 
           {/* Telas relacionadas ao Entregador */}
           <Stack.Group title="Entregador">
-              <Stack.Screen name="AceitarEntrega" component={TabsEntregador} />
+              <Stack.Screen name="Historico" component={Historico} />
+              <Stack.Screen name="AceitarEntrega" component={AceitarEntrega} />
               <Stack.Screen name="FinalizarEntrega" component={FinalizarEntrega} />
               <Stack.Screen name="PerfilEntregador" component={PerfilEntregador} />
               <Stack.Screen name="ConfigEntregador" component={ConfigEntregador} />
@@ -115,7 +117,7 @@ export default function App() {
               <Stack.Screen name="SemAfiliacao" component={SemAfiliacao} />
               <Stack.Screen name="DadosEntregador" component={DadosEntregador} />
               <Stack.Screen name="AlterarEntregador" component={AlterarEntregador} />
-              <Stack.Screen name="Pendentes" component={Pendentes} />
+              <Stack.Screen name="Pendentes" component={TabsEntregador} />
           </Stack.Group>
 
           {/* Telas gerais */}

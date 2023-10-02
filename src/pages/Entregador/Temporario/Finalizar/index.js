@@ -128,7 +128,7 @@ export default function FinalizarEntrega() {
                     </View>
                 </View>
                 <TouchableOpacity
-                onPress={()=>navigation.navigate('Historico')}
+                onPress={()=>navigation.navigate('Pendentes')}
                         style={styles.button}>
                         <Text>Finalizar Entrega</Text>
                     </TouchableOpacity>

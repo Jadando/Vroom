@@ -230,7 +230,7 @@ const getstyles = (tema) => StyleSheet.create({
   },
   modalContainer: {
     alignSelf: 'center',
-    marginTop: '30%',
+    marginTop: '50%',
     width: 300,
     backgroundColor: '#fff',
     margin: 20,

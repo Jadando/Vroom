@@ -53,7 +53,7 @@ export default function EntregadorRevisa({ route }) {
       //   console.error("Error adding document: ", e);
       // }
      // navigation.dispatch(StackActions.popToTop())
-     navigation.navigate('AceitarEntrega')
+     navigation.navigate('Pendentes')
     } else {
       alert('Campos obrigatórios não preenchidos');
     }
