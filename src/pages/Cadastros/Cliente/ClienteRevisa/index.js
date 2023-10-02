@@ -156,7 +156,7 @@ export default function ClienteRevisa({ route }) {
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={verificaInput} style={styles.cadastrar}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.cadastrar}>
                             <Text style={styles.cadastrarText}>Concluir</Text>
                         </TouchableOpacity>
                     </View>
@@ -171,17 +171,16 @@ const getstyles = (tema) => StyleSheet.create({
         flex: 1,
         alignContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#fff',
     },
     header: {
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#ffc000',
         width: '100%',
-        height: 130,
+        height: 120,
         padding: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        elevation: 3,
     },
     headerContent: {
         flexDirection: 'column',
@@ -258,7 +257,7 @@ const getstyles = (tema) => StyleSheet.create({
         backgroundColor: '#ffc000',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 20,
+        borderRadius: 10,
         marginBottom: 30,
         padding: 5,
     },

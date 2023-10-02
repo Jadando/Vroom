@@ -12,14 +12,15 @@ export default function DadosEntregador() {
     const tema = useTheme();
     const styles = getstyles(tema);
     const [cpf, setCpf] = useState('11111111111');
-    const [nome, setNome] = useState('jaoao');
-    const [telefone, setTelefone] = useState('1898180400');
-    const [cep, setCep] = useState('11730000');
-    const [estado, setEstado] = useState('sp');
-    const [cidade, setCidade] = useState('sao paulo');
-    const [bairro, setBairro] = useState('teste city');
-    const [endereco, setEndereco] = useState('rua nao sei');
-    const [numero, setNumero] = useState('321');
+    const [nome, setNome] = useState('Agostinho Carrara');
+    const [dtNasc, setDtNasc] = useState('23/09/1990');
+    const [telefone, setTelefone] = useState('1344809900');
+    const [cep, setCep] = useState('11111111');
+    const [estado, setEstado] = useState('SP');
+    const [cidade, setCidade] = useState('Mongaguá');
+    const [bairro, setBairro] = useState('Agenor de Campos');
+    const [endereco, setEndereco] = useState('Rua Aimorés');
+    const [numero, setNumero] = useState('11111111111');
 
 
     return (
@@ -48,6 +49,13 @@ export default function DadosEntregador() {
                         value={nome}
                         editable={false}
                         placeholder="Nome completo"
+                    />
+                    <TextInputMask
+                        style={styles.input}
+                        type={'datetime'}
+                        value={dtNasc}
+                        editable={false}
+                        placeholder="Data de nascimento"
                     />
                     <TextInputMask
                         style={styles.input}

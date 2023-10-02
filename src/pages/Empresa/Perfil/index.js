@@ -27,22 +27,26 @@ export default function PerfilEmpresa() {
             <View style={styles.user}>
                 <View style={styles.userImg}>
                     <Image
-                        // style={{width: }}
-                        source={require('../../../img/perfil.jpg')} />
+                        style={{ width: '100%', height: '150%', top: -25 }}
+                        source={require('../../../img/luzia.png')} />
                 </View>
-                <Text style={styles.userInfo}>Nome do usuário</Text>
+                <Text style={styles.userInfo}>Luzia Hamburgers</Text>
             </View>
 
             <View style={styles.btnArea}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity 
+                onPress={() => navigation.navigate('EditarPerfil')}
+                style={styles.button}>
                     <Text style={styles.btnText}>Editar perfil</Text>
                     <Icon name='person-outline' size={30} color='#000' />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button}
+                 onPress={() => navigation.navigate('DadosEmpresa')}>
                     <Text style={styles.btnText}>Meus dados</Text>
                     <Icon name='information' size={30} color='#000' />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button}
+                onPress={() => navigation.navigate('Entregadores')}>
                     <Text style={styles.btnText}>Entregadores</Text>
                     <Icon name='bicycle-outline' size={30} color='#000' />
                 </TouchableOpacity>

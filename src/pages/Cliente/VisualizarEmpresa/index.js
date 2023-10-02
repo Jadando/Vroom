@@ -30,12 +30,12 @@ export default function VisualizarPerfil() {
                     <View style={styles.user}>
 
                         <View style={styles.userImg}>
-                            <Image
-                                // style={{width: }}
-                                source={require('../../../img/perfil.jpg')} />
+                        <Image
+                                style={{width: '100%', height: '145%', top: -25}}
+                                source={require('../../../img/luzia.png')} />
                         </View>
                         <View style={styles.userInfo}>
-                        <Text style={styles.userInfo}>Nome do usuário</Text>
+                        <Text style={styles.userInfo}>Luzia Hamburgers</Text>
                         </View>
                     </View>
                 </ImageBackground>

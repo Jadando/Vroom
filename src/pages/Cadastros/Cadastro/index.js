@@ -9,9 +9,9 @@ export default function Cadastro() {
   const tema = useTheme();
   const styles = getstyles(tema);
 
-  const [email, setEmail] = useState('joaoa@gmail.com');
-  const [senha, setSenha] = useState('1');
-  const [senhaConfirma, setSenhaConfirma] = useState('1');
+  const [email, setEmail] = useState('vroomde@gmail.com');
+  const [senha, setSenha] = useState('12345');
+  const [senhaConfirma, setSenhaConfirma] = useState('12345');
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -126,21 +126,24 @@ export default function Cadastro() {
               Seleciona o cadastro que deseja seguir
             </Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate('CadastroCliente')}
+              onPress={() => { setModalVisible(!modalVisible);
+                navigation.navigate('CadastroCliente')}}
               style={styles.modalBtn}>
               <Text style={styles.modalContent}>
                 Cliente
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('CadastroEntregador')}
+              onPress={() => {setModalVisible(!modalVisible);
+                navigation.navigate('CadastroEntregador')}}
               style={styles.modalBtn}>
               <Text style={styles.modalContent}>
                 Entregador
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('CadastroEmpresa')}
+              onPress={() => {setModalVisible(!modalVisible);
+                navigation.navigate('CadastroEmpresa')}}
               style={styles.modalBtn}>
               <Text style={styles.modalContent}>
                 Empresa
@@ -158,7 +161,7 @@ const getstyles = (tema) => StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: '15%',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
   },
   logoTop: {
     height: 200,
@@ -205,13 +208,13 @@ const getstyles = (tema) => StyleSheet.create({
     backgroundColor: '#ffc000',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 25,
+    borderRadius: 10,
     marginTop: 20,
     marginBottom: 15
   },
   logarText: {
     fontSize: 20,
-    color: '#fff',
+    color: '#000',
     fontWeight: 'bold',
   },
   footer: {
@@ -227,9 +230,9 @@ const getstyles = (tema) => StyleSheet.create({
   },
   modalContainer: {
     alignSelf: 'center',
-    marginTop: '50%',
+    marginTop: '30%',
     width: 300,
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
     margin: 20,
     borderRadius: 20,
     height: 400,
@@ -278,7 +281,7 @@ const getstyles = (tema) => StyleSheet.create({
   modalBtn: {
     width: 200,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 10,
     backgroundColor: '#ffc000',
     padding: 5,
     marginBottom: 20,

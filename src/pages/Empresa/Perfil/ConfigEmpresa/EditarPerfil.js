@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ImageBackg
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
-import LogoutModal from '../../../components/logoutModal';
+import LogoutModal from '../../../../components/logoutModal';
 
 
 export default function EditarPerfil() {
@@ -32,17 +32,17 @@ export default function EditarPerfil() {
                 <Text style={{fontSize: 18, marginBottom: 10}}>Veja como está seu perfil</Text>
                 <View style={{borderRadius: 10, overflow: 'hidden',}}>
                 <ImageBackground
-                    source={require('../../../img/header.png')}
+                    source={require('../../../../img/header.png')}
                     style={styles.imageBackground}>
                     <View style={styles.user}>
 
                         <View style={styles.userImg}>
                             <Image
-                                // style={{width: }}
-                                source={require('../../../img/perfil.jpg')} />
+                                style={{width: '100%', height: '145%', top: -25}}
+                                source={require('../../../../img/luzia.png')} />
                         </View>
                         <View style={styles.userInfo}>
-                        <Text style={styles.userInfo}>Nome do usuário</Text>
+                        <Text style={styles.userInfo}>Luzia Hamburgers</Text>
                         </View>
                     </View>
                 </ImageBackground>

@@ -9,14 +9,14 @@ export default function DadosCliente() {
   const navigation = useNavigation();
   const tema = useTheme();
   const styles = getstyles(tema);
-  const [nome, setNome] = useState('jaoao');
+  const [nome, setNome] = useState('João Adriano');
   const [telefone, setTelefone] = useState('1898180400');
   const [cep, setCep] = useState('11730000');
   const [estado, setEstado] = useState('sp');
   const [cidade, setCidade] = useState('sao paulo');
-  const [bairro, setBairro] = useState('teste city');
-  const [endereco, setEndereco] = useState('rua nao sei');
-  const [numero, setNumero] = useState('321');
+  const [bairro, setBairro] = useState('Agenor de Campos');
+  const [endereco, setEndereco] = useState('Av. Monteiro Lobato');
+  const [numero, setNumero] = useState('779');
 
 
 
@@ -24,18 +24,15 @@ export default function DadosCliente() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.headerContent}>
           <Text style={styles.title}>
             Meus Dados
           </Text>
-          <Icon name='chevron-down' size={30} color={tema.Tema.color} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.headerBell}><Icon name='information-circle-outline' size={30} color='#000' /></TouchableOpacity>
       </View>
 
       <ScrollView
         style={{ width: '100%' }}
         showsVerticalScrollIndicator={false}
+        overScrollMode='never'
       >
         <View style={styles.main}>
           <TextInput
@@ -118,10 +115,10 @@ const getstyles = (tema) => StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
   },
   header: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
     width: '100%',
     height: 150,
     padding: 20,

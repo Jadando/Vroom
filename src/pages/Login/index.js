@@ -147,6 +147,7 @@ const getstyles = (tema) => StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: '10%',
+        backgroundColor: '#fff'
     },
     logoTop: {
         height: 200,
@@ -189,7 +190,7 @@ const getstyles = (tema) => StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 25,
+        borderRadius: 10,
     },
     logarText: {
         fontSize: 20,

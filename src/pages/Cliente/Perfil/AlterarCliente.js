@@ -13,14 +13,14 @@ export default function AlterarCliente() {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [nome, setNome] = useState('jaoao');
+    const [nome, setNome] = useState('João Adriano');
     const [telefone, setTelefone] = useState('1898180400');
     const [cep, setCep] = useState('11730000');
     const [estado, setEstado] = useState('sp');
     const [cidade, setCidade] = useState('sao paulo');
-    const [bairro, setBairro] = useState('teste city');
-    const [endereco, setEndereco] = useState('rua nao sei');
-    const [numero, setNumero] = useState('321');
+    const [bairro, setBairro] = useState('Agenor de Campos');
+    const [endereco, setEndereco] = useState('Av. Monteiro Lobato');
+    const [numero, setNumero] = useState('779');
 
 
     return (
@@ -101,7 +101,7 @@ export default function AlterarCliente() {
                     {viewlVisible && (
                         <View style={styles.modalContainer}>
 
-                            <Text style={[styles.pedidosText, {alignSelf: 'center', marginBottom: 5}]}> Segundo endereço</Text>
+                            <Text style={[styles.pedidosText, { alignSelf: 'center', marginBottom: 5 }]}> Segundo endereço</Text>
                             <TextInputMask
                                 style={styles.input}
                                 type={'zip-code'}
@@ -143,13 +143,13 @@ export default function AlterarCliente() {
                     )}
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                            onPress={()=> navigation.navigate('DadosCliente')}
+                            onPress={() => navigation.navigate('DadosCliente')}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={()=> navigation.navigate('DadosCliente')}
+                            onPress={() => setModalVisible(!modalVisible)}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Confirmar alteração</Text>
@@ -157,8 +157,8 @@ export default function AlterarCliente() {
                     </View>
                 </View>
                 <ChangeModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
                 />
             </ScrollView>
         </View>

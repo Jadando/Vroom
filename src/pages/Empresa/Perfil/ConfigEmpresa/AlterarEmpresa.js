@@ -11,15 +11,16 @@ export default function AlterarEntregador() {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [cnpj, setCnpj] = useState('11111111111111');
-    const [nome, setNome] = useState('Luzia Hamburgueres');
-    const [telefone, setTelefone] = useState('1398180400');
-    const [cep, setCep] = useState('11730000');
-    const [estado, setEstado] = useState('sp');
-    const [cidade, setCidade] = useState('sao paulo');
-    const [bairro, setBairro] = useState('teste city');
-    const [endereco, setEndereco] = useState('rua nao sei');
-    const [numero, setNumero] = useState('321');
+    const [cnpj, setCnpj] = useState('35.123.000/0001-00');
+    const [nome, setNome] = useState('Luizia hamburgueria');
+    const [categoria, setCategoria] = useState('Restaurante');
+    const [telefone, setTelefone] = useState('1999819006');
+    const [cep, setCep] = useState('1173000');
+    const [estado, setEstado] = useState('RJ');
+    const [cidade, setCidade] = useState('Rio de Janeiro');
+    const [bairro, setBairro] = useState('Cristo Redentor');
+    const [endereco, setEndereco] = useState('Rua vicente casemiro');
+    const [numero, setNumero] = useState('90');
 
     function aAlterarEntregador() {
         navigation.navigate('')
@@ -51,6 +52,12 @@ export default function AlterarEntregador() {
                         value={nome}
                         editable={false}
                         placeholder="Nome completo"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        value={categoria}
+                        editable={false}
+                        placeholder="Categoria"
                     />
                     <TextInputMask
                         style={styles.input}
@@ -103,7 +110,7 @@ export default function AlterarEntregador() {
                     />
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                            onPress={aAlterarEntregador}
+                            onPress={() => navigation.navigate('DadosEmpresa')}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>

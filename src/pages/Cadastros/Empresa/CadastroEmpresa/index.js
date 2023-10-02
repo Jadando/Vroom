@@ -8,16 +8,16 @@ export default function CadastroEmpresa() {
   const tema = useTheme();
   const styles = getstyles(tema);
 
-  const [cnpj, setCnpj] = useState('');
-  const [nomeEmpresa, setNomeEmpresa] = useState('');
-  const [categoria, setCategoria] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [cep, setCep] = useState('');
-  const [estado, setEstado] = useState('');
-  const [cidade, setCidade] = useState('');
-  const [bairro, setBairro] = useState('');
-  const [endereco, setEndereco] = useState('');
-  const [numero, setNumero] = useState('');
+  const [cnpj, setCnpj] = useState('35.123.000/0001-00');
+  const [nomeEmpresa, setNomeEmpresa] = useState('Luizia hamburgueria');
+  const [categoria, setCategoria] = useState('Restaurante');
+  const [telefone, setTelefone] = useState('1999819006');
+  const [cep, setCep] = useState('1173000');
+  const [estado, setEstado] = useState('RJ');
+  const [cidade, setCidade] = useState('Rio de Janeiro');
+  const [bairro, setBairro] = useState('Cristo Redentor');
+  const [endereco, setEndereco] = useState('Rua vicente casemiro');
+  const [numero, setNumero] = useState('90');
 
   function verificaInput() {
     if (
@@ -32,7 +32,7 @@ export default function CadastroEmpresa() {
       endereco !== '' &&
       numero !== ''
     ) {
-      navigation.navigate('EmpresaRevisa', {
+      navigation.navigate('Afiliado', {
         cnpj,
         nomeEmpresa,
         categoria,
@@ -69,6 +69,18 @@ export default function CadastroEmpresa() {
             <Text style={styles.headerCircleNumber}>
               {' '}
               2 {' '}
+            </Text>
+          </View>
+          <Text style={styles.headerText}>Vincular</Text>
+        </View>
+        <View style={styles.separador2}>
+          <View style={styles.separadorLinha}></View>
+        </View>
+        <View style={styles.headerContent}>
+          <View style={styles.headerContentCircleInative}>
+            <Text style={styles.headerCircleNumber}>
+              {' '}
+              3 {' '}
             </Text>
           </View>
           <Text style={styles.headerText}>Revisão</Text>
@@ -174,18 +186,16 @@ const getstyles = (tema) => StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
   },
   header: {
-    backgroundColor: '#f2f2f2',
-    paddingTop: '15%',
+    backgroundColor: '#ffc000',
     width: '100%',
-    height: 150,
+    height: 120,
     padding: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 3,
   },
   headerContent: {
     flexDirection: 'column',
@@ -215,9 +225,17 @@ const getstyles = (tema) => StyleSheet.create({
   separador: {
     flexDirection: 'row',
     alignSelf: 'center',
-    width: '60%',
+    width: '30%',
     marginLeft: -41,
-    marginRight: -3,
+    marginRight: -6,
+    marginBottom: 20,
+  },
+  separador2: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    width: '30%',
+    marginLeft: -30,
+    marginRight: -5,
     marginBottom: 20,
   },
   separadorLinha: {
@@ -257,7 +275,7 @@ const getstyles = (tema) => StyleSheet.create({
     backgroundColor: '#ffc000',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
     marginBottom: 30,
     padding: 5,
   },

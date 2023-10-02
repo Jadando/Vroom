@@ -192,7 +192,7 @@ export default function LocalCliente() {
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={() => navigation.dispatch(StackActions.popToTop())}
+                                onPress={() => navigation.navigate('Pedidos')}
                                 style={styles.modalBtn}>
                                 <Text style={styles.modalContent}>
                                     Sim

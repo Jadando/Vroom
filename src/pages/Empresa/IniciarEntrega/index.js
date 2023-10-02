@@ -132,8 +132,7 @@ export default function IniciarEntrega() {
                             </View>
                         </View>
                         <TouchableOpacity
-                            onPress={() => {setModalVisible(!modalVisible)
-                                navigation.navigate('PendentesAndamento')}}
+                            onPress={() => setModalVisible(!modalVisible)}
                             style={styles.modalButton}>
                             <Text>Ok entendi</Text>
                         </TouchableOpacity>

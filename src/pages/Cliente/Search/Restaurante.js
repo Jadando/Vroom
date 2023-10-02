@@ -4,7 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 
-export default function Search() {
+export default function Restaurante() {
+    const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
     return (
@@ -20,12 +21,15 @@ export default function Search() {
                 <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
             </View>
 
+            <Text style={styles.recentsTitle}>
+                        Restaurantes
+                    </Text>
             <View style={styles.search}>
                 <View style={styles.searchLupe}>
                     <Icon name='search' size={25} color={tema.Tema.color} />
                 </View>
                 <TextInput
-                placeholder="Buscar estabelecimentos" 
+                placeholder="Buscar em resturantes" 
                 style={{fontSize: 18, color: tema.Tema.color }}
                 placeholderTextColor={tema.Tema.color}
                 />
@@ -36,24 +40,23 @@ export default function Search() {
                 overScrollMode='never'
             >
                 <View style={styles.recents}>
-                    <Text style={styles.recentsTitle}>
-                        Pedido Recentemente
-                    </Text>
                     <View style={styles.recentsContainer}>
+                        <TouchableOpacity onPress={() => navigation.navigate('VisualizarEmpresa')}>
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
                             </View>
                             <Text style={styles.Text}>
                                 Luzia Hamburgers {'\n'}
-                                Ultimo pedido dia: 11/04/2023
+                                1,1Km de você
                             </Text>
                         </View>
+                        </TouchableOpacity>
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
                             </View>
                             <Text style={styles.Text}>
                                 Mix Shakes {'\n'}
-                                Ultimo pedido dia: 09/04/2023
+                                2,1Km de você
                             </Text>
                         </View>
                         <View style={styles.recentsContent}>
@@ -61,7 +64,7 @@ export default function Search() {
                             </View>
                             <Text style={styles.Text}>
                                 JusFarma {'\n'}
-                                Ultimo pedido dia: 28/03/2023
+                                3,1Km de você
                             </Text>
                         </View>
                     </View>

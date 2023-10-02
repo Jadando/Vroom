@@ -28,7 +28,7 @@ export default function Home() {
       >
         <View style={styles.categorias}>
           <View style={styles.categoriasContainer}>
-            <TouchableOpacity onPress={()=>navigation.navigate('VisualizarEmpresa')}>
+            <TouchableOpacity onPress={()=>navigation.navigate('Restaurante')}>
               <View style={styles.categoriasContent}>
                 <Text style={{ ...styles.categoriaText, marginBottom: -15 }}>
                   Restaurantes

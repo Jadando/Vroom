@@ -9,14 +9,14 @@ export default function CadastroCliente() {
   const tema = useTheme();
   const styles = getstyles(tema);
 
-  const [nome, setNome] = useState('jaoao');
+  const [nome, setNome] = useState('João Adriano');
   const [telefone, setTelefone] = useState('1898180400');
   const [cep, setCep] = useState('11730000');
   const [estado, setEstado] = useState('sp');
   const [cidade, setCidade] = useState('sao paulo');
-  const [bairro, setBairro] = useState('teste city');
-  const [endereco, setEndereco] = useState('rua nao sei');
-  const [numero, setNumero] = useState('321');
+  const [bairro, setBairro] = useState('Agenor de Campos');
+  const [endereco, setEndereco] = useState('Av. Monteiro Lobato');
+  const [numero, setNumero] = useState('779');
 
   function verificaInput() {
     if (
@@ -156,18 +156,16 @@ const getstyles = (tema) => StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
   },
   header: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#ffc000',
     width: '100%',
-    height: 150,
+    height: 120,
     padding: 20,
-    paddingTop: '15%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 3,
   },
   headerContent: {
     flexDirection: 'column',
@@ -239,7 +237,7 @@ const getstyles = (tema) => StyleSheet.create({
     backgroundColor: '#ffc000',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
     marginBottom: 30,
     padding: 5,
   },

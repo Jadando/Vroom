@@ -29,7 +29,7 @@ export default function PerfilEntregador() {
                     <Image
                         source={require('../../../img/perfil.jpg')} />
                 </View>
-                <Text style={styles.userInfo}>Nome do usuário</Text>
+                <Text style={styles.userInfo}>Agostinho Carrara</Text>
             </View>
 
             <View style={styles.btnArea}>

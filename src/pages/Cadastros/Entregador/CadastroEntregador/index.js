@@ -10,14 +10,14 @@ export default function CadastroEntregador() {
   const styles = getstyles(tema);
 
   const [cpf, setCpf] = useState('11111111111');
-  const [nome, setNome] = useState('luiz ');
+  const [nome, setNome] = useState('Agostinho Carrara');
   const [dtNasc, setDtNasc] = useState('23/09/1990');
-  const [telefone, setTelefone] = useState('343433');
+  const [telefone, setTelefone] = useState('1344809900');
   const [cep, setCep] = useState('11111111');
-  const [estado, setEstado] = useState('bahia');
-  const [cidade, setCidade] = useState('pernanbuco');
-  const [bairro, setBairro] = useState('Caiu dormiu');
-  const [endereco, setEndereco] = useState('Rua das redes ');
+  const [estado, setEstado] = useState('SP');
+  const [cidade, setCidade] = useState('Mongaguá');
+  const [bairro, setBairro] = useState('Agenor de Campos');
+  const [endereco, setEndereco] = useState('Rua Aimorés');
   const [numero, setNumero] = useState('11111111111');
 
   function verificaInput() {
@@ -33,7 +33,7 @@ export default function CadastroEntregador() {
       endereco !== '' &&
       numero !== ''
     ) {
-      navigation.navigate('Afiliado', {
+      navigation.navigate('EntregadorRevisa', {
         cpf,
         nome,
         dtNasc,
@@ -65,15 +65,6 @@ export default function CadastroEntregador() {
         <View style={styles.separador}>
           <View style={styles.separadorLinha}></View>
         </View>
-        <View style={styles.headerContent}>
-          <View style={styles.headerContentCircleInative}>
-            <Text style={styles.headerCircleNumber}>
-              {' '}
-              2 {' '}
-            </Text>
-          </View>
-          <Text style={styles.headerText}>Afiliação</Text>
-        </View>
         <View style={styles.separador2}>
           <View style={styles.separadorLinha}></View>
         </View>
@@ -81,7 +72,7 @@ export default function CadastroEntregador() {
           <View style={styles.headerContentCircleInative}>
             <Text style={styles.headerCircleNumber}>
               {' '}
-              3 {' '}
+              2 {' '}
             </Text>
           </View>
           <Text style={styles.headerText}>Revisão</Text>
@@ -90,6 +81,7 @@ export default function CadastroEntregador() {
 
       <ScrollView
         style={{ width: '100%' }}
+        overScrollMode='never'
         showsVerticalScrollIndicator={false}
       >
         <Text style={styles.title}>Informações Pessoais</Text>
@@ -205,19 +197,17 @@ const getstyles = (tema) => StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
   },
   header: {
-    backgroundColor: '#f2f2f2',
-    paddingTop: '15%',
+    backgroundColor: '#ffc000',
     width: '100%',
-    height: 150,
+    height: 120,
     padding: 20,
     paddingLeft: 25,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 3,
   },
   headerContent: {
     flexDirection: 'column',
@@ -297,7 +287,7 @@ const getstyles = (tema) => StyleSheet.create({
     backgroundColor: '#ffc000',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
     marginBottom: 30,
     padding: 5,
   },

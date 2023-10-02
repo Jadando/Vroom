@@ -4,21 +4,22 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { collection, addDoc, getFirestore } from "firebase/firestore";
 import { useTheme } from 'styled-components';
+
 export default function EmpresaRevisa({ route }) {
   const navigation = useNavigation();
   const tema = useTheme();
   const styles = getstyles(tema);
 
-  const [cnpj, setCnpj] = useState(route.params?.cnpj || '');
-  const [nomeEmpresa, setNomeEmpresa] = useState(route.params?.nomeEmpresa || '');
-  const [categoria, setCategoria] = useState(route.params?.categoria || '');
-  const [telefone, setTelefone] = useState(route.params?.telefone || '');
-  const [cep, setCep] = useState(route.params?.cep || '');
-  const [estado, setEstado] = useState(route.params?.estado || '');
-  const [cidade, setCidade] = useState(route.params?.cidade || '');
-  const [bairro, setBairro] = useState(route.params?.bairro || '');
-  const [endereco, setEndereco] = useState(route.params?.endereco || '');
-  const [numero, setNumero] = useState(route.params?.numero || '');
+  const [cnpj, setCnpj] = useState('35.123.000/0001-00');
+  const [nomeEmpresa, setNomeEmpresa] = useState('Luizia hamburgueria');
+  const [categoria, setCategoria] = useState('Restaurante');
+  const [telefone, setTelefone] = useState('1999819006');
+  const [cep, setCep] = useState('1173000');
+  const [estado, setEstado] = useState('RJ');
+  const [cidade, setCidade] = useState('Rio de Janeiro');
+  const [bairro, setBairro] = useState('Cristo Redentor');
+  const [endereco, setEndereco] = useState('Rua vicente casemiro');
+  const [numero, setNumero] = useState('90');
 
   async function verificaInput() {
     if (
@@ -48,7 +49,8 @@ export default function EmpresaRevisa({ route }) {
       // } catch (e) {
       //   console.error("Error adding document: ", e);
       // }
-      navigation.dispatch(StackActions.popToTop());
+     // navigation.dispatch(StackActions.popToTop());
+     navigation.navigate('IniciarEntrega')
     } else {
       alert('Campos obrigatórios não preenchidos');
     }
@@ -70,10 +72,22 @@ export default function EmpresaRevisa({ route }) {
           <View style={styles.separadorLinha}></View>
         </View>
         <View style={styles.headerContent}>
-          <View style={styles.headerContentCircle}>
+          <View style={styles.headerContentCircleInative}>
             <Text style={styles.headerCircleNumber}>
               {' '}
               2 {' '}
+            </Text>
+          </View>
+          <Text style={styles.headerText}>Vincular</Text>
+        </View>
+        <View style={styles.separador2}>
+          <View style={styles.separadorLinha}></View>
+        </View>
+        <View style={styles.headerContent}>
+          <View style={styles.headerContentCircle}>
+            <Text style={styles.headerCircleNumber}>
+              {' '}
+              3 {' '}
             </Text>
           </View>
           <Text style={styles.headerText}>Revisão</Text>
@@ -81,6 +95,7 @@ export default function EmpresaRevisa({ route }) {
       </View>
 
       <ScrollView
+      overScrollMode='never'
         style={{ width: '100%' }}
         showsVerticalScrollIndicator={false}
       >
@@ -157,7 +172,7 @@ export default function EmpresaRevisa({ route }) {
 
           <View style={styles.buttons}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Cadastro')}
+              onPress={() => navigation.navigate('Afiliado')}
               style={styles.cadastrar}
             >
               <Text style={styles.cadastrarText}>Voltar</Text>
@@ -166,7 +181,7 @@ export default function EmpresaRevisa({ route }) {
               onPress={verificaInput}
               style={styles.cadastrar}
             >
-              <Text style={styles.cadastrarText}>Próxima etapa</Text>
+              <Text style={styles.cadastrarText}>Concluir</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -180,18 +195,16 @@ const getstyles = (tema) => StyleSheet.create({
     flex: 1,
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
   },
   header: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#ffc000',
     width: '100%',
-    height: 150,
+    height: 120,
     padding: 20,
-    paddingTop: '15%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 3,
   },
   headerContent: {
     flexDirection: 'column',
@@ -203,18 +216,16 @@ const getstyles = (tema) => StyleSheet.create({
   },
   headerContentCircle: {
     borderRadius: 50,
-    borderWidth: 2,
+    borderWidth: 3,
     padding: 10,
     marginBottom: 5,
-    borderWidth: 3,
     backgroundColor: '#fff',
   },
   headerContentCircleInative: {
     borderRadius: 50,
-    borderWidth: 2,
+    borderWidth: 3,
     padding: 10,
     marginBottom: 5,
-    borderWidth: 3,
     backgroundColor: '#e6e4df',
   },
   headerCircleNumber: {
@@ -224,9 +235,17 @@ const getstyles = (tema) => StyleSheet.create({
   separador: {
     flexDirection: 'row',
     alignSelf: 'center',
-    width: '60%',
+    width: '30%',
     marginLeft: -41,
-    marginRight: -3,
+    marginRight: -6,
+    marginBottom: 20,
+  },
+  separador2: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    width: '30%',
+    marginLeft: -30,
+    marginRight: -5,
     marginBottom: 20,
   },
   separadorLinha: {
@@ -268,7 +287,7 @@ const getstyles = (tema) => StyleSheet.create({
     backgroundColor: '#ffc000',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
     marginBottom: 30,
     padding: 5,
   },

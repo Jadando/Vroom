@@ -23,7 +23,7 @@ export default function Perfil() {
                 <View style={styles.userImg}>
                     <Icon name='person' size={70} color='#939598ff' />
                 </View>
-                <Text style={styles.userInfo}>Nome do usuário</Text>
+                <Text style={styles.userInfo}>João Adriano</Text>
             </View>
 
             <View style={styles.btnArea}>

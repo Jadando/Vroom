@@ -9,9 +9,9 @@ export const Color = {
     borderColor:'#000'
   },
   Light: {
-    background: '#313338',
-    content: '#181818',
-    color: '#f2f2f2',
+    background: '#fff',
+    content: '#e5e5e5',
+    color: '#000',
   },
 };
 

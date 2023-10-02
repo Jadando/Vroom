@@ -25,7 +25,7 @@ export default function Afiliado({ route }) {
     const [cnpj, setCnpj] = useState('');
 
     function passaTela() {
-        navigation.navigate('EntregadorRevisa', {
+        navigation.navigate('EmpresaRevisa', {
             nomeEmpresa,
             cnpj,
             cpf,
@@ -64,7 +64,7 @@ export default function Afiliado({ route }) {
                             2 {' '}
                         </Text>
                     </View>
-                    <Text style={styles.headerText}>Afiliação</Text>
+                    <Text style={styles.headerText}>Vincular</Text>
                 </View>
                 <View style={styles.separador2}>
                     <View style={styles.separadorLinha}></View>
@@ -82,44 +82,45 @@ export default function Afiliado({ route }) {
 
             <ScrollView
                 style={{ width: '100%' }}
+                overScrollMode='never'
                 showsVerticalScrollIndicator={false}>
                 <Text style={styles.title}>
-                    Afiliação
+                    Vincular entregador
                 </Text>
                 <View style={styles.main}>
                     <TextInput
                         style={styles.input}
                         value={codEmpresa}
                         onChangeText={setCodEmpresa}
-                        placeholder='Código da empresa'
+                        placeholder='CPF do entregador'
                     />
 
                     <View style={styles.mainEmpresa}>
                         <Text style={styles.title}>
-                            Informações da empresa
+                            Informações do entregador
                         </Text>
                         <TextInputMask
                             style={styles.input}
                             value={cnpj}
                             onChangeText={setCnpj}
                             type={'cnpj'}
-                            placeholder='CNPJ'
+                            placeholder='CPF'
                         />
                         <TextInput
                             style={styles.input}
                             value={nomeEmpresa}
                             onChangeText={setNomeEmpresa}
-                            placeholder='Nome da empresa'
+                            placeholder='Nome do entregador'
                         />
                     </View>
                 </View>
                 <Text style={styles.aviso}>
-                    Caso não possua afiliação, prossiga
+                    Caso não possua entregadores, prossiga
                 </Text>
 
                 <View style={styles.buttons}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('CadastroEntregador')}
+                        onPress={() => navigation.navigate('CadastroEmpresa')}
                         style={styles.cadastrar}
                     >
                         <Text style={styles.cadastrarText}>Voltar</Text>
@@ -141,19 +142,17 @@ const getstyles = (tema) => StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#f2f2f2'
+        backgroundColor: '#fff'
     },
     header: {
-        backgroundColor: '#f2f2f2',
-        paddingTop: '15%',
+        backgroundColor: '#ffc000',
         width: '100%',
-        height: 150,
+        height: 120,
         padding: 20,
         paddingLeft: 25,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        elevation: 3,
     },
     headerContent: {
         flexDirection: 'column',
@@ -246,7 +245,7 @@ const getstyles = (tema) => StyleSheet.create({
         backgroundColor: '#ffc000',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 20,
+        borderRadius: 10,
         marginBottom: 30,
         padding: 5,
     },

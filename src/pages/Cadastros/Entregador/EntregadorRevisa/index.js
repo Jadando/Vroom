@@ -74,15 +74,6 @@ export default function EntregadorRevisa({ route }) {
         <View style={styles.separador}>
           <View style={styles.separadorLinha}></View>
         </View>
-        <View style={styles.headerContent}>
-          <View style={styles.headerContentCircleInative}>
-            <Text style={styles.headerCircleNumber}>
-              {' '}
-              2 {' '}
-            </Text>
-          </View>
-          <Text style={styles.headerText}>Afiliação</Text>
-        </View>
         <View style={styles.separador2}>
           <View style={styles.separadorLinha}></View>
         </View>
@@ -90,7 +81,7 @@ export default function EntregadorRevisa({ route }) {
           <View style={styles.headerContentCircle}>
             <Text style={styles.headerCircleNumber}>
               {' '}
-              3 {' '}
+              2 {' '}
             </Text>
           </View>
           <Text style={styles.headerText}>Revisão</Text>
@@ -99,6 +90,7 @@ export default function EntregadorRevisa({ route }) {
 
       <ScrollView
         style={{ width: '100%' }}
+        overScrollMode='never'
         showsVerticalScrollIndicator={false}
       >
         <Text style={styles.title}>Por favor revise suas Informações antes de concluir o cadastro</Text>
@@ -188,27 +180,10 @@ export default function EntregadorRevisa({ route }) {
             onChangeText={setNumero}
             placeholder="Número"
           />
-
-          <View style={styles.mainEmpresa}>
-            <Text style={styles.title}>
-              Informações da empresa
-            </Text>
-            <TextInputMask
-              style={styles.input}
-              value={cnpj}
-              type={'cnpj'}
-              placeholder='CNPJ'
-            />
-            <TextInput
-              style={styles.input}
-              value={nomeEmpresa}
-              placeholder='Nome da empresa'
-            />
-          </View>
         </View>
         <View style={styles.buttons}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Afiliado')}
+            onPress={() => navigation.navigate('CadastroEntregador')}
             style={styles.cadastrar}
           >
             <Text style={styles.cadastrarText}>Voltar</Text>
@@ -217,7 +192,7 @@ export default function EntregadorRevisa({ route }) {
             onPress={verificaInput}
             style={styles.cadastrar}
           >
-            <Text style={styles.cadastrarText}>Próxima etapa</Text>
+            <Text style={styles.cadastrarText}>Concluir cadastro</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -230,19 +205,17 @@ const getstyles = (tema) => StyleSheet.create({
     flex: 1,
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
   },
   header: {
-    backgroundColor: '#f2f2f2',
-    paddingTop: '15%',
+    backgroundColor: '#ffc000',
     width: '100%',
-    height: 150,
+    height: 120,
     padding: 20,
     paddingLeft: 25,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 3,
   },
   headerContent: {
     flexDirection: 'column',
@@ -325,7 +298,7 @@ const getstyles = (tema) => StyleSheet.create({
     backgroundColor: '#ffc000',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
     marginBottom: 30,
     padding: 5,
   },

@@ -1,47 +1,62 @@
 import { useTheme } from 'styled-components';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from '../../pages/Cliente/Home';
 import Search from '../../pages/Cliente/Search';
 import Perfil from '../../pages/Cliente/Perfil';
 import Pedidos from '../../pages/Cliente/Pedidos';
-import AceitarEntrega from '../../pages/Entregador/AceitarEntrega';
+import IniciarEntrega from '../../pages/Empresa/IniciarEntrega';
 import Historico from '../../pages/Entregador/Historico';
 import Pendentes from '../../pages/Entregador/Pendentes';
 import PerfilEntregador from '../../pages/Entregador/Perfil';
+import PerfilEmpresa from '../../pages/Empresa/Perfil';
+import PendentesAndamento from '../../pages/Empresa/PendentesAndamento';
+import HistoricoEmpresa from '../../pages/Empresa/HistoricoEmpresa'
+import LocalCliente from '../../pages/Cliente/Pedidos/local';
+
 const Tab = createBottomTabNavigator();
+
 const icons = {
     Home: {
+        lib: Ionicons,
         name: 'ios-home'
     },
     Buscar: {
+        lib: Ionicons,
         name: 'search'
     },
     Pedidos: {
+        lib: Ionicons,
         name: 'clipboard'
     },
     Perfil: {
+        lib: Ionicons,
         name: 'person'
     },
-    Historico: {
-        name: 'time-outline'
+    Histórico: {
+        lib: MaterialCommunityIcons,
+        name: 'clipboard-clock-outline'
     },
     Pendentes: {
-        name: 'ios-home'
+        lib: MaterialCommunityIcons,
+        name: 'clipboard-clock-outline'
     },
     IniciarﾠEntrega: {
-        name: 'ios-home'
+        lib: Ionicons,
+        name: 'bicycle'
     },
 }
+
 export function Tabs() {
     const tema = useTheme();
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused }) => {
-                    const { name } = icons[route.name];
-                    return <Icon name={name} color={focused ? '#ffc000' : tema.Tema.color} size={25} />;
+                    const { lib: IconComponent, name } = icons[route.name];
+                    return <IconComponent name={name} color={focused ? '#ffc000' : tema.Tema.color} size={25} />;
                 },
                 tabBarActiveTintColor: '#ffc000',
                 tabBarItemStyle: {
@@ -52,7 +67,7 @@ export function Tabs() {
                         display: 'flex',
                         elevation: 10,
                         height: 60,
-                        backgroundColor: tema.Tema.content,
+                        backgroundColor: '#fff',
                         paddingBottom: 5,
                         paddingTop: 5,
                         shadowColor: '#000',
@@ -72,7 +87,7 @@ export function Tabs() {
         >
             <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
             <Tab.Screen name="Buscar" component={Search} options={{ headerShown: false }} />
-            <Tab.Screen name="Pedidos" component={Pedidos} options={{ headerShown: false }} />
+            <Tab.Screen name="Pedidos" component={LocalCliente} options={{ headerShown: false }} />
             <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />
         </Tab.Navigator>
     )
@@ -83,8 +98,8 @@ export function TabsEntregador() {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused }) => {
-                    const { name } = icons[route.name];
-                    return <Icon name={name} color={focused ? '#ffc000' : tema.Tema.color} size={25} />;
+                    const { lib: IconComponent, name } = icons[route.name];
+                    return <IconComponent name={name} color={focused ? '#ffc000' : tema.Tema.color} size={25} />;
                 },
                 tabBarActiveTintColor: '#ffc000',
                 tabBarItemStyle: {
@@ -95,7 +110,7 @@ export function TabsEntregador() {
                         display: 'flex',
                         elevation: 10,
                         height: 60,
-                        backgroundColor: tema.Tema.content,
+                        backgroundColor: '#fff',
                         paddingBottom: 5,
                         paddingTop: 5,
                         shadowColor: '#000',
@@ -114,7 +129,7 @@ export function TabsEntregador() {
             })}
         >
               <Tab.Screen name="Pendentes" component={Pendentes} options={{ headerShown: false }} />
-            <Tab.Screen name="Historico" component={Historico} options={{ headerShown: false }} />
+            <Tab.Screen name="Histórico" component={Historico} options={{ headerShown: false }} />
             <Tab.Screen name="Perfil" component={PerfilEntregador} options={{ headerShown: false }} />
         </Tab.Navigator>
 
@@ -127,8 +142,8 @@ export function TabsEmpresa() {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused }) => {
-                    const { name } = icons[route.name];
-                    return <Icon name={name} color={focused ? '#ffc000' : tema.Tema.color} size={25} />;
+                    const { lib: IconComponent, name } = icons[route.name];
+                    return <IconComponent name={name} color={focused ? '#ffc000' : tema.Tema.color} size={25} />;
                 },
                 tabBarActiveTintColor: '#ffc000',
                 tabBarItemStyle: {
@@ -139,7 +154,7 @@ export function TabsEmpresa() {
                         display: 'flex',
                         elevation: 10,
                         height: 60,
-                        backgroundColor: tema.Tema.content,
+                        backgroundColor: '#fff',
                         paddingBottom: 5,
                         paddingTop: 5,
                         shadowColor: '#000',
@@ -157,10 +172,10 @@ export function TabsEmpresa() {
                 },
             })}
         >
-            <Tab.Screen name="IniciarﾠEntrega" component={AceitarEntrega} options={{ headerShown: false }} />
-            <Tab.Screen name="Buscar" component={Search} options={{ headerShown: false }} />
-            <Tab.Screen name="Pedidos" component={Pedidos} options={{ headerShown: false }} />
-            <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />
+            <Tab.Screen name="IniciarﾠEntrega" component={IniciarEntrega} options={{ headerShown: false }} />
+            <Tab.Screen name="Pendentes" component={PendentesAndamento} options={{ headerShown: false }} />
+            <Tab.Screen name="Histórico" component={HistoricoEmpresa} options={{ headerShown: false }} />
+            <Tab.Screen name="Perfil" component={PerfilEmpresa} options={{ headerShown: false }} />
         </Tab.Navigator>
 
 
