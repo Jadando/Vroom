@@ -1,75 +1,97 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ToastAndroid } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, getAuth } from "firebase/auth";
-import { auth } from '../../firebaseConnection'
+import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import { useTheme } from 'styled-components';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+WebBrowser.maybeCompleteAuthSession();
+
 
 export default function Login() {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
+    const [user, setUser] = useState < {
+        email: string,
+        name: string,
+        picture: string,
+    } | null > (null);
     const [email, setEmail] = useState('vroomde@gmail.com');
-    const [senha, setSenha] = useState('vroom123');
+    const [senha, setSenha] = useState('123456');
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        androidClientId: '627440962610-n2r8bbgrk522djprqkemh3qh9d3d32ep.apps.googleusercontent.com'
+    })
 
+    function validarLoginGoogle() {
+        promptAsync()
+    }
+
+
+    async function getUserInfo() {
+        if (response) {
+            switch (response.type) {
+                case 'error':
+                    ToastAndroid.show('Houve um erro', ToastAndroid.SHORT);
+                    break
+                case 'cancel':
+                    ToastAndroid.show('Login cancelado', ToastAndroid.SHORT);
+                    break
+                case 'success':
+                    try {
+                        const res = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+                            headers: {
+                                Authorization: `Bearer${response.authentication?.accessToken}`,
+                            },
+                        })
+                    }
+                    catch (e) {
+                        console.warn('ERROR')
+                    }
+                    const userLogin = await res.json();
+                    setUser(userLogin)
+                    break
+                default:
+                    () => { }
+            }
+        }
+    }
+
+    useEffect(() => {
+        getResponse()
+    }, [response])
     function validarEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     }
 
-    
+
     async function validarLogin() {
         if (email !== '' && senha !== '') {
             if (validarEmail(email)) {
-                if(email==='vroomde@gmail.com'||senha==='vroom123'){
-                    navigation.navigate('Home')
-                }
-                else{
-                    alert("email ou senha incorreto")
-                }
-                // const auth = getAuth();
-                // signInWithEmailAndPassword(auth, email, senha)
-                //     .then((userCredential) => {
-                //         // Signed in 
-                //         const user = userCredential.user;
-                //         // ...
-                //         console.log(user)
-                //         console.log("partir 4")
-                //         //  navigation.navigate('Home')
-                //     })
-                //     .catch((error) => {
-                //         const errorCode = error.code;
-                //         const errorMessage = error.message;
-
-                //     });
+                const auth = getAuth();
+                signInWithEmailAndPassword(auth, email, senha)
+                    .then((userCredential) => {
+                        // Signed in 
+                        const user = userCredential.user;
+                        // ...
+                        //console.log(user)
+                        console.log("estive aqui")
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        console.log(errorCode)
+                        console.log(errorMessage)
+                    });
+            }
+            else {
+                alert("email ou senha incorreto")
             }
         }
     }
 
-    function validarLoginGoogle() {
-        const provider = new GoogleAuthProvider();
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                console.log(result)
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                //const credential = GoogleAuthProvider.credentialFromResult(result);
-                //const token = credential.accessToken;
-                // The signed-in user info.
-                //const user = result.user;
-                // IdP data available using getAdditionalUserInfo(result)
-                // ...
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
 
-    }
     return (
         <View style={styles.container}>
             <ScrollView
@@ -112,7 +134,7 @@ export default function Login() {
                 </View>
 
                 <View style={styles.loginLogos}>
-                    <TouchableOpacity onPress={validarLoginGoogle}>
+                    <TouchableOpacity disabled={!request} onPress={validarLoginGoogle}>
                         <Image style={{ width: 40, height: 40 }} source={require('../../img/google.png')} />
                     </TouchableOpacity>
 

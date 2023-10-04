@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Vroom",
+    "scheme":"Vroom",
     "slug": "Vroom",
     "version": "1.0.0",
     "orientation": "portrait",

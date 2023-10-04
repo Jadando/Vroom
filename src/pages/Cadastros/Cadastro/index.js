@@ -10,8 +10,8 @@ export default function Cadastro() {
   const styles = getstyles(tema);
 
   const [email, setEmail] = useState('vroomde@gmail.com');
-  const [senha, setSenha] = useState('12345');
-  const [senhaConfirma, setSenhaConfirma] = useState('12345');
+  const [senha, setSenha] = useState('123456');
+  const [senhaConfirma, setSenhaConfirma] = useState('123456');
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -25,25 +25,26 @@ export default function Cadastro() {
     return regex.test(email);
   }
 
-  function validarCadastro() {
+  async function validarCadastro() {
 
     if (senha === senhaConfirma && senha !== '' && senhaConfirma !== '' && email !== '') {
       if (validarEmail(email)) {
-        // const auth = getAuth();
-        // createUserWithEmailAndPassword(auth, email, senha)
-        //   .then((userCredential) => {
-        //     // Signed in 
-        //     const user = userCredential.user;
-
-        //     // ...
-        //     setModalVisible(true);
-        //   })
-        //   .catch((error) => {
-        //     const errorCode = error.code;
-        //     const errorMessage = error.message;
-        //     // ..
-        //   });
-        setModalVisible(true);
+        const auth = getAuth();
+        createUserWithEmailAndPassword(auth, email, senha)
+          .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            setModalVisible(true);
+            console.log(user)
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode)
+            console.log(errorMessage)
+            // ..
+          });
       } else {
         alert('Formato de email inválido');
       }
@@ -126,24 +127,30 @@ export default function Cadastro() {
               Seleciona o cadastro que deseja seguir
             </Text>
             <TouchableOpacity
-              onPress={() => { setModalVisible(!modalVisible);
-                navigation.navigate('CadastroCliente')}}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                navigation.navigate('CadastroCliente')
+              }}
               style={styles.modalBtn}>
               <Text style={styles.modalContent}>
                 Cliente
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => {setModalVisible(!modalVisible);
-                navigation.navigate('CadastroEntregador')}}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                navigation.navigate('CadastroEntregador')
+              }}
               style={styles.modalBtn}>
               <Text style={styles.modalContent}>
                 Entregador
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => {setModalVisible(!modalVisible);
-                navigation.navigate('CadastroEmpresa')}}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                navigation.navigate('CadastroEmpresa')
+              }}
               style={styles.modalBtn}>
               <Text style={styles.modalContent}>
                 Empresa

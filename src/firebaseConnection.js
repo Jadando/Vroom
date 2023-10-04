@@ -5,13 +5,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBNkOMurHnWiRvZ_RCEWFv6S7cXbUg2F0M",
-  authDomain: "vroom-dbd69.firebaseapp.com",
-  projectId: "vroom-dbd69",
-  storageBucket: "vroom-dbd69.appspot.com",
-  messagingSenderId: "334270387845",
-  appId: "1:334270387845:web:f59aec8bbcb424ddb43bec",
-  measurementId: "G-03F3EVSVJ2"
+  apiKey: "AIzaSyBnkSVTvCB1DX6pTmGdo26JrWH7Fk1N5_s",
+  authDomain: "tcc-ab7f2.firebaseapp.com",
+  projectId: "tcc-ab7f2",
+  storageBucket: "tcc-ab7f2.appspot.com",
+  messagingSenderId: "627440962610",
+  appId: "1:627440962610:web:221db8330d808e82ff002b",
+  measurementId: "G-35VR4F2CFM"
 };
 
 // Initialize Firebase

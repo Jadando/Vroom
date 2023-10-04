@@ -1,0 +1,9 @@
+{
+    "installed": {
+        "client_id": "627440962610-n2r8bbgrk522djprqkemh3qh9d3d32ep.apps.googleusercontent.com",
+        "project_id": "tcc-ab7f2",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs"
+    }
+}
