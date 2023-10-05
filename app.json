@@ -28,8 +28,7 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.vroomde.Vroom",
-      "permissions": ["CAMERA", "LOCATION"]
+      "package": "com.vroomde.Vroom"
     },
     "web": {
       "favicon": "./assets/icon.png"

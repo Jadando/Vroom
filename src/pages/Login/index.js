@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ToastAndroid } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ToastAndroid} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import { useTheme } from 'styled-components';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
+import { Linking } from 'expo';
 WebBrowser.maybeCompleteAuthSession();
 
 
@@ -12,13 +13,8 @@ export default function Login() {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [user, setUser] = useState < {
-        email: string,
-        name: string,
-        picture: string,
-    } | null > (null);
-    const [email, setEmail] = useState('vroomde@gmail.com');
-    const [senha, setSenha] = useState('123456');
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
     const [request, response, promptAsync] = Google.useAuthRequest({
         androidClientId: '627440962610-n2r8bbgrk522djprqkemh3qh9d3d32ep.apps.googleusercontent.com'
     })
@@ -44,12 +40,11 @@ export default function Login() {
                                 Authorization: `Bearer${response.authentication?.accessToken}`,
                             },
                         })
+                        const userLogin = await res.json();
                     }
                     catch (e) {
                         console.warn('ERROR')
                     }
-                    const userLogin = await res.json();
-                    setUser(userLogin)
                     break
                 default:
                     () => { }
@@ -57,8 +52,11 @@ export default function Login() {
         }
     }
 
+
+
+
     useEffect(() => {
-        getResponse()
+        getUserInfo()
     }, [response])
     function validarEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
