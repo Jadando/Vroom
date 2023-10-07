@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ToastAndroid} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ToastAndroid, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import { useTheme } from 'styled-components';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-WebBrowser.maybeCompleteAuthSession();
-
+WebBrowser.maybeCompleteAuthSession()
 
 export default function Login() {
     const navigation = useNavigation();
@@ -15,54 +15,47 @@ export default function Login() {
     const styles = getstyles(tema);
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [UserGoogle, SetUserGoogle] = React.useState(null);
     const [request, response, promptAsync] = Google.useAuthRequest({
-        androidClientId: '627440962610-n2r8bbgrk522djprqkemh3qh9d3d32ep.apps.googleusercontent.com'
-    })
+        androidClientId: '627440962610-n2r8bbgrk522djprqkemh3qh9d3d32ep.apps.googleusercontent.com',
+    });
 
-    function validarLoginGoogle() {
-        promptAsync()
-    }
+    useEffect(() => {
+        handledSingInWithGoogle()
+    }, [response])
 
-
-    async function getUserInfo() {
-        if (response) {
-            switch (response.type) {
-                case 'error':
-                    ToastAndroid.show('Houve um erro', ToastAndroid.SHORT);
-                    break
-                case 'cancel':
-                    ToastAndroid.show('Login cancelado', ToastAndroid.SHORT);
-                    break
-                case 'success':
-                    try {
-                        const res = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-                            headers: {
-                                Authorization: `Bearer${response.authentication?.accessToken}`,
-                            },
-                        })
-                        const userLogin = await res.json();
-                    }
-                    catch (e) {
-                        console.warn('ERROR')
-                    }
-                    break
-                default:
-                    () => { }
+    async function handledSingInWithGoogle() {
+        const user = await AsyncStorage.getItem("@user");
+        if (!user) {
+            if (response?.type === "success") {
+                await getUserInfo(response.authentication.accessToken);
             }
+        } else {
+            SetUserGoogle(JSON.parse(user));
         }
     }
 
+    const getUserInfo = async (token) => {
+        if (!token) return;
+        try {
+            const response = await fetch(
+                "https://www.googleapis.com/userinfo/v2/me",
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            const user = await response.json();
+            await AsyncStorage.setItem("@user", JSON, stringify(user));
+            SetUserGoogle(user);
+        } catch (error) {
+            console.log("erro")
+        }
+    }
 
-
-
-    useEffect(() => {
-        getUserInfo()
-    }, [response])
     function validarEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     }
-
 
     async function validarLogin() {
         if (email !== '' && senha !== '') {
@@ -99,6 +92,8 @@ export default function Login() {
                 <View style={styles.logoTop}>
                     <Image source={require('../../img/logo.png')} />
                 </View>
+                <Text>{JSON.stringify(UserGoogle, null, 2)}</Text>
+                <Button title="sair da conta" onPress={() => AsyncStorage.removeItem("@user")}></Button>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.inputEmail}
@@ -132,7 +127,7 @@ export default function Login() {
                 </View>
 
                 <View style={styles.loginLogos}>
-                    <TouchableOpacity disabled={!request} onPress={validarLoginGoogle}>
+                    <TouchableOpacity disabled={!request} onPress={() => promptAsync()}>
                         <Image style={{ width: 40, height: 40 }} source={require('../../img/google.png')} />
                     </TouchableOpacity>
 
