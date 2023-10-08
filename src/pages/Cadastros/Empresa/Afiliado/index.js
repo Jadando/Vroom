@@ -9,30 +9,25 @@ export default function Afiliado({ route }) {
     const tema = useTheme();
     const styles = getstyles(tema);
     const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
-    const [nomeEmpresa, setNomeEmpresa] = useState(route.params?.nomeEmpresa || '');
-    const [cpf, setCpf] = useState(route.params?.cpf || '');
-    const [nome, setNome] = useState(route.params?.nome || '');
-    const [dtNasc, setDtNasc] = useState(route.params?.dtNasc || '');
-    const [telefone, setTelefone] = useState(route.params?.telefone || '');
-    const [cep, setCep] = useState(route.params?.cep || '');
-    const [estado, setEstado] = useState(route.params?.estado || '');
-    const [cidade, setCidade] = useState(route.params?.cidade || '');
-    const [bairro, setBairro] = useState(route.params?.bairro || '');
-    const [endereco, setEndereco] = useState(route.params?.endereco || '');
-    const [numero, setNumero] = useState(route.params?.numero || '');
-
-    const [codEmpresa, setCodEmpresa] = useState('');
+    const [cnpj, setCnpj] = useState(route.params?.cnpj);
+    const [nomeEmpresa, setNomeEmpresa] = useState(route.params?.nomeEmpresa);
+    const [categoria, setCategoria] = useState(route.params?.categoria);
+    const [telefone, setTelefone] = useState(route.params?.telefone);
+    const [cep, setCep] = useState(route.params?.cep);
+    const [estado, setEstado] = useState(route.params?.estado);
+    const [cidade, setCidade] = useState(route.params?.cidade);
+    const [bairro, setBairro] = useState(route.params?.bairro);
+    const [endereco, setEndereco] = useState(route.params?.endereco);
+    const [numero, setNumero] = useState(route.params?.numero);
+    const [cpf, setCpf] = useState('');
     const [nomeEntregador, setNomeEntregador] = useState('');
-    const [cnpj, setCnpj] = useState(route.params?.cnpj || '');
 
     function passaTela() {
         navigation.navigate('EmpresaRevisa', {
             Identificador,
-            nomeEmpresa,
             cnpj,
-            cpf,
-            nomeEntregador,
-            dtNasc,
+            nomeEmpresa,
+            categoria,
             telefone,
             cep,
             estado,
@@ -40,7 +35,8 @@ export default function Afiliado({ route }) {
             bairro,
             endereco,
             numero,
-            categoria,
+            cpf,
+            nomeEntregador
         });
     }
 
@@ -91,28 +87,30 @@ export default function Afiliado({ route }) {
                     Vincular entregador
                 </Text>
                 <View style={styles.main}>
-                    <TextInput
+                    <TextInputMask
                         style={styles.input}
-                        value={codEmpresa}
-                        onChangeText={setCodEmpresa}
+                        value={cpf}
+                        onChangeText={setCpf}
+                        type={'cpf'}
                         placeholder='CPF do entregador'
+                        maxLength={14}
                     />
-
                     <View style={styles.mainEmpresa}>
                         <Text style={styles.title}>
                             Informações do entregador
                         </Text>
                         <TextInputMask
                             style={styles.input}
-                            value={cnpj}
-                            onChangeText={setCpf}
+                            value={cpf}
+                            editable={false}
                             type={'cpf'}
                             placeholder='CPF'
+                            maxLength={14}
                         />
                         <TextInput
                             style={styles.input}
                             value={nomeEntregador}
-                            onChangeText={setNomeEntregador}
+                            editable={false}
                             placeholder='Nome do entregador'
                         />
                     </View>
