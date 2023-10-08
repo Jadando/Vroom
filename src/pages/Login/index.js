@@ -14,7 +14,7 @@ export default function Login() {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [email, setEmail] = useState('vroomde@gmail.com');
+    const [email, setEmail] = useState('empresa@gmail.com');
     const [senha, setSenha] = useState('123456');
     const [UserGoogle, SetUserGoogle] = React.useState(null);
     const [request, response, promptAsync] = Google.useAuthRequest({
@@ -52,7 +52,6 @@ export default function Login() {
             console.log("erro")
         }
     }
-
     function validarEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
@@ -64,33 +63,44 @@ export default function Login() {
                 const auth = getAuth();
                 const db = getFirestore();
                 signInWithEmailAndPassword(auth, email, senha)
-                    .then((userCredential) => {
+                    .then(async (userCredential) => {
                         const user = userCredential.user;
-                        const uid = user.uid
-                        console.log(uid)
-
-                        // Realize consultas para verificar se o UID existe em cada subcoleção
-                        const clienteQuery = query(collection(db, `usuario/tabela/cliente`), where('uid', '==', uid));
-                        const empresaQuery = query(collection(db, `usuario/tabela/empresa`), where('uid', '==', uid));
-                        const entregadorQuery = query(collection(db, `usuario/tabela/entregador`), where('uid', '==', uid));
-
-
-                        const clienteSnapshot = getDocs(clienteQuery)
-                        const empresaSnapshot = getDocs(empresaQuery)
-                        const entregadorSnapshot = getDocs(entregadorQuery)
-
-                        if (!clienteSnapshot.empty) {
-                            console.log('O UID pertence à coleção "cliente"')
-                            navigation.navigate('Home')
-                        } else if (!empresaSnapshot.empty) {
-                            console.log('O UID pertence à coleção "empresa"');
-                            navigation.navigate('IniciarEntrega')
-                        } else if (!entregadorSnapshot.empty) {
-                            console.log('O UID pertence à coleção "entregador"');
-                            navigation.navigate('Pendente')
-                        } else {
-                            console.log('O UID não pertence a nenhuma das coleções conhecidas');
-                        }
+                        const uide = user.uid
+                        const processarConsulta = (snapshot, dataArray, navigateCallback) => {
+                            snapshot.forEach((doc) => {
+                              const data = doc.data();
+                              dataArray.push({ id: doc.id, ...data });
+                              if (doc.id === uide) {
+                                navigateCallback(); // Chama a função de navegação
+                              }
+                            });
+                          };
+                        try {
+                            const [clienteSnapshot, empresaSnapshot, entregadorSnapshot] = await Promise.all([
+                              getDocs(collection(db, "usuario/tabela/cliente"),where('id', '==', uide)),
+                              getDocs(collection(db, "usuario/tabela/empresa"),where('id', '==', uide)),
+                              getDocs(collection(db, "usuario/tabela/entregador"),where('id', '==', uide)),
+                            ]);
+                      
+                            const dataArrayCliente = [];
+                            const dataArrayEmpresa = [];
+                            const dataArrayEntregador = [];
+                      
+                            // Processar os resultados de cada consulta
+                            processarConsulta(clienteSnapshot, dataArrayCliente, () => {
+                              navigation.navigate('Home'); // Substitua 'NomeDaTelaCliente' pelo nome da tela de cliente
+                            });
+                            processarConsulta(empresaSnapshot, dataArrayEmpresa, () => {
+                              navigation.navigate('IniciarEntrega'); // Substitua 'NomeDaTelaEmpresa' pelo nome da tela de empresa
+                            });
+                            processarConsulta(entregadorSnapshot, dataArrayEntregador, () => {
+                              navigation.navigate('Pendentes'); // Substitua 'NomeDaTelaEntregador' pelo nome da tela de entregador
+                            });
+                      
+                            // ...
+                          } catch (error) {
+                            console.error("Erro ao executar as consultas:", error);
+                          }
                     })
                     .catch((error) => {
                         const errorCode = error.code;
