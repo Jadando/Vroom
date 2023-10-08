@@ -3,8 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Modal } fro
 import { useNavigation } from '@react-navigation/native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useTheme } from 'styled-components';
-//Para evitar erro de produção deixar esse import aqui
-import * as App from "../../../firebaseConnection";
 
 export default function Cadastro() {
   const navigation = useNavigation();

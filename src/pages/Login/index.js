@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ToastAndroid, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
-import { getFirestore, getDocs, query, collection, where } from "firebase/firestore";
+import { getFirestore, getDocs, collection, where } from "firebase/firestore";
 import { useTheme } from 'styled-components';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as App from "../../firebaseConnection";
 
 WebBrowser.maybeCompleteAuthSession()
 
