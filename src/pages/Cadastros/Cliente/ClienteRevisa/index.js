@@ -9,7 +9,7 @@ export default function ClienteRevisa({ route }) {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    
+
     const [nome, setNome] = useState(route.params?.nome || '');
     const [telefone, setTelefone] = useState(route.params?.telefone || '');
     const [cep, setCep] = useState(route.params?.cep || '');
@@ -18,9 +18,7 @@ export default function ClienteRevisa({ route }) {
     const [bairro, setBairro] = useState(route.params?.bairro || '');
     const [endereco, setEndereco] = useState(route.params?.endereco || '');
     const [numero, setNumero] = useState(route.params?.numero || '');
-    //const data = new Date()
-    //data.getDate
-    //console.log(data)
+    
     async function verificaInput() {
         if (
             nome !== '' &&
@@ -32,25 +30,25 @@ export default function ClienteRevisa({ route }) {
             endereco !== '' &&
             numero !== ''
         ) {
-        //     const db = getFirestore()
-        //     try {
-        //         const agora = new Date();
-        //         const dataHoraBrasilia = agora.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-        //         console.log(dataHoraBrasilia);
-        //         await addDoc(collection(db, "users"), {
-        //             nome: nome,
-        //             telefone: telefone,
-        //             cep: cep,
-        //             estado: estado,
-        //             cidade: cidade,
-        //             bairro: bairro,
-        //             endereco: endereco,
-        //             numero: numero,
-        //             dataHora: dataHoraBrasilia,
-        //         });
-        //   } catch (e) {
-        //         console.error("Error adding document: ", e);
-        //     }
+            const db = getFirestore()
+            try {
+                // const agora = new Date();
+                // const dataHoraBrasilia = agora.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+                // console.log(dataHoraBrasilia);
+                await addDoc(collection(db, "usuario/cliente"), {
+                    nome: nome,
+                    telefone: telefone,
+                    cep: cep,
+                    estado: estado,
+                    cidade: cidade,
+                    bairro: bairro,
+                    endereco: endereco,
+                    numero: numero,
+                });
+                navigation.navigate('Home')
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
 
         } else {
             alert('Campos obrigatórios não preenchidos');
@@ -156,13 +154,13 @@ export default function ClienteRevisa({ route }) {
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.cadastrar}>
-                            <Text style={styles.cadastrarText}>Concluir</Text>
-                        </TouchableOpacity>
-                    </View>
+                        <TouchableOpacity onPress={verificaInput}style={styles.cadastrar}>
+                        <Text style={styles.cadastrarText}>Concluir</Text>
+                    </TouchableOpacity>
                 </View>
-            </ScrollView>
         </View>
+            </ScrollView >
+        </View >
     );
 }
 

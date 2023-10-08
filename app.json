@@ -2,6 +2,7 @@
   "expo": {
     "name": "Vroom",
     "slug": "Vroom",
+    "scheme": "vroom",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,7 +21,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.vroomde.Vroom"
+      "bundleIdentifier": "com.Vroomde.vroom"
     },
     "android": {
       "adaptiveIcon": {
@@ -32,7 +33,6 @@
     "web": {
       "favicon": "./assets/icon.png"
     },
-    "scheme": "Vroom",
     "plugins": [
       [
         "@rnmapbox/maps",

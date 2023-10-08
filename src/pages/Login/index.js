@@ -17,7 +17,7 @@ export default function Login() {
     const [senha, setSenha] = useState('');
     const [UserGoogle, SetUserGoogle] = React.useState(null);
     const [request, response, promptAsync] = Google.useAuthRequest({
-        androidClientId: '627440962610-n2r8bbgrk522djprqkemh3qh9d3d32ep.apps.googleusercontent.com',
+        androidClientId: '550744668475-82l8k7cubo8tt1jqfn3clneu0hjrhdmj.apps.googleusercontent.com',
     });
 
     useEffect(() => {
