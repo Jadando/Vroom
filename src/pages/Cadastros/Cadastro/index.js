@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Modal } fro
 import { useNavigation } from '@react-navigation/native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useTheme } from 'styled-components';
+//Para evitar erro de produção deixar esse import aqui
+import * as App from "../../../firebaseConnection";
 
 export default function Cadastro() {
   const navigation = useNavigation();
@@ -12,6 +14,7 @@ export default function Cadastro() {
   const [email, setEmail] = useState('vroomde@gmail.com');
   const [senha, setSenha] = useState('123456');
   const [senhaConfirma, setSenhaConfirma] = useState('123456');
+  const [Identificador, setIdentificador] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -34,8 +37,9 @@ export default function Cadastro() {
           .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
+            const userUid = user.uid; 
+            setIdentificador(userUid)
             setModalVisible(true);
-            console.log(user)
             // ...
           })
           .catch((error) => {
@@ -129,7 +133,9 @@ export default function Cadastro() {
             <TouchableOpacity
               onPress={() => {
                 setModalVisible(!modalVisible);
-                navigation.navigate('CadastroCliente')
+                navigation.navigate('CadastroCliente', {
+                  Identificador
+                });
               }}
               style={styles.modalBtn}>
               <Text style={styles.modalContent}>
@@ -139,7 +145,9 @@ export default function Cadastro() {
             <TouchableOpacity
               onPress={() => {
                 setModalVisible(!modalVisible);
-                navigation.navigate('CadastroEntregador')
+                navigation.navigate('CadastroEntregador',{
+                  Identificador
+                })
               }}
               style={styles.modalBtn}>
               <Text style={styles.modalContent}>
@@ -149,7 +157,9 @@ export default function Cadastro() {
             <TouchableOpacity
               onPress={() => {
                 setModalVisible(!modalVisible);
-                navigation.navigate('CadastroEmpresa')
+                navigation.navigate('CadastroEmpresa',{
+                  Identificador
+                })
               }}
               style={styles.modalBtn}>
               <Text style={styles.modalContent}>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
-import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { useTheme } from 'styled-components';
 
 export default function EmpresaRevisa({ route }) {
@@ -10,17 +10,17 @@ export default function EmpresaRevisa({ route }) {
   const tema = useTheme();
   const styles = getstyles(tema);
 
-  const [cnpj, setCnpj] = useState('35.123.000/0001-00');
-  const [nomeEmpresa, setNomeEmpresa] = useState('Luizia hamburgueria');
-  const [categoria, setCategoria] = useState('Restaurante');
-  const [telefone, setTelefone] = useState('1999819006');
-  const [cep, setCep] = useState('1173000');
-  const [estado, setEstado] = useState('RJ');
-  const [cidade, setCidade] = useState('Rio de Janeiro');
-  const [bairro, setBairro] = useState('Cristo Redentor');
-  const [endereco, setEndereco] = useState('Rua vicente casemiro');
-  const [numero, setNumero] = useState('90');
-
+  const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
+  const [cnpj, setCnpj] = useState(route.params?.cnpj || '');
+  const [nomeEmpresa, setNomeEmpresa] = useState(route.params?.nomeEmpresa || '');
+  const [categoria, setCategoria] = useState(route.params?.categoria || '');
+  const [telefone, setTelefone] = useState(route.params?.telefone || '');
+  const [cep, setCep] = useState(route.params?.cep || '');
+  const [estado, setEstado] = useState(route.params?.estado || '');
+  const [cidade, setCidade] = useState(route.params?.cidade || '');
+  const [bairro, setBairro] = useState(route.params?.bairro || '');
+  const [endereco, setEndereco] = useState(route.params?.endereco || '');
+  const [numero, setNumero] = useState(route.params?.numero || '');
   async function verificaInput() {
     if (
       cnpj !== '' &&
@@ -33,24 +33,31 @@ export default function EmpresaRevisa({ route }) {
       endereco !== '' &&
       numero !== ''
     ) {
-      // const db = getFirestore()
-      // try {
-      //   await addDoc(collection(db, "users"), {
-      //     cnpj: cnpj,
-      //     nome: nomeEmpresa,
-      //     telefone: telefone,
-      //     cep: cep,
-      //     estado: estado,
-      //     cidade: cidade,
-      //     bairro: bairro,
-      //     endereco: endereco,
-      //     numero: numero,
-      //   });
-      // } catch (e) {
-      //   console.error("Error adding document: ", e);
-      // }
-     // navigation.dispatch(StackActions.popToTop());
-     navigation.navigate('IniciarEntrega')
+      try {
+        // Substitua com o UID desejado
+        const db = getFirestore();
+
+        const docRef = doc(db, "usuario/tabela/empresa", Identificador); // Crie uma referência ao documento com o UID específico
+
+        const dados = {
+          cnpj: cnpj,
+          nome: nomeEmpresa,
+          telefone: telefone,
+          cep: cep,
+          estado: estado,
+          cidade: cidade,
+          bairro: bairro,
+          endereco: endereco,
+          numero: numero,
+          categoria: categoria
+        };
+
+        await setDoc(docRef, dados); // Use setDoc para criar o documento com os dados
+        navigation.navigate('IniciarEntrega')
+        console.log('Documento criado com sucesso');
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
     } else {
       alert('Campos obrigatórios não preenchidos');
     }
@@ -95,7 +102,7 @@ export default function EmpresaRevisa({ route }) {
       </View>
 
       <ScrollView
-      overScrollMode='never'
+        overScrollMode='never'
         style={{ width: '100%' }}
         showsVerticalScrollIndicator={false}
       >

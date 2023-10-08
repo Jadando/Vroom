@@ -88,6 +88,7 @@ export default function App() {
               <Stack.Screen name='Pedidos' component={Pedidos} />
           </Stack.Group>
 
+
           {/* Telas relacionadas à Empresa */}
           <Stack.Group title="Empresa">
               <Stack.Screen name="PerfilEmpresa" component={PerfilEmpresa} />

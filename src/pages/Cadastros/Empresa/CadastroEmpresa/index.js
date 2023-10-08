@@ -3,21 +3,25 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { useTheme } from 'styled-components';
-export default function CadastroEmpresa() {
+
+
+
+export default function CadastroEmpresa({route}) {
   const navigation = useNavigation();
   const tema = useTheme();
   const styles = getstyles(tema);
-
+  const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
   const [cnpj, setCnpj] = useState('35.123.000/0001-00');
   const [nomeEmpresa, setNomeEmpresa] = useState('Luizia hamburgueria');
   const [categoria, setCategoria] = useState('Restaurante');
   const [telefone, setTelefone] = useState('1999819006');
-  const [cep, setCep] = useState('1173000');
+  const [cep, setCep] = useState('11730000');
   const [estado, setEstado] = useState('RJ');
   const [cidade, setCidade] = useState('Rio de Janeiro');
   const [bairro, setBairro] = useState('Cristo Redentor');
   const [endereco, setEndereco] = useState('Rua vicente casemiro');
   const [numero, setNumero] = useState('90');
+
 
   function verificaInput() {
     if (
@@ -32,7 +36,8 @@ export default function CadastroEmpresa() {
       endereco !== '' &&
       numero !== ''
     ) {
-      navigation.navigate('Afiliado', {
+      navigation.navigate('EmpresaRevisa', {
+        Identificador,
         cnpj,
         nomeEmpresa,
         categoria,

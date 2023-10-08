@@ -4,11 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { useTheme } from 'styled-components';
 
-export default function CadastroCliente() {
+export default function CadastroCliente({route}) {
   const navigation = useNavigation();
   const tema = useTheme();
   const styles = getstyles(tema);
-
+  const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
   const [nome, setNome] = useState('João Adriano');
   const [telefone, setTelefone] = useState('1898180400');
   const [cep, setCep] = useState('11730000');
@@ -30,6 +30,7 @@ export default function CadastroCliente() {
       numero !== ''
     ) {
       navigation.navigate('ClienteRevisa', {
+        Identificador,
         nome,
         telefone,
         cep,

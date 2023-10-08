@@ -8,7 +8,8 @@ export default function Afiliado({ route }) {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-
+    const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
+    const [nomeEmpresa, setNomeEmpresa] = useState(route.params?.nomeEmpresa || '');
     const [cpf, setCpf] = useState(route.params?.cpf || '');
     const [nome, setNome] = useState(route.params?.nome || '');
     const [dtNasc, setDtNasc] = useState(route.params?.dtNasc || '');
@@ -21,15 +22,16 @@ export default function Afiliado({ route }) {
     const [numero, setNumero] = useState(route.params?.numero || '');
 
     const [codEmpresa, setCodEmpresa] = useState('');
-    const [nomeEmpresa, setNomeEmpresa] = useState('');
-    const [cnpj, setCnpj] = useState('');
+    const [nomeEntregador, setNomeEntregador] = useState('');
+    const [cnpj, setCnpj] = useState(route.params?.cnpj || '');
 
     function passaTela() {
         navigation.navigate('EmpresaRevisa', {
+            Identificador,
             nomeEmpresa,
             cnpj,
             cpf,
-            nome,
+            nomeEntregador,
             dtNasc,
             telefone,
             cep,
@@ -37,7 +39,8 @@ export default function Afiliado({ route }) {
             cidade,
             bairro,
             endereco,
-            numero
+            numero,
+            categoria,
         });
     }
 
@@ -102,14 +105,14 @@ export default function Afiliado({ route }) {
                         <TextInputMask
                             style={styles.input}
                             value={cnpj}
-                            onChangeText={setCnpj}
-                            type={'cnpj'}
+                            onChangeText={setCpf}
+                            type={'cpf'}
                             placeholder='CPF'
                         />
                         <TextInput
                             style={styles.input}
-                            value={nomeEmpresa}
-                            onChangeText={setNomeEmpresa}
+                            value={nomeEntregador}
+                            onChangeText={setNomeEntregador}
                             placeholder='Nome do entregador'
                         />
                     </View>

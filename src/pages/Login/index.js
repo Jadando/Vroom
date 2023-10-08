@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ToastAndroid, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
+import { getFirestore, getDocs, query, collection, where } from "firebase/firestore";
 import { useTheme } from 'styled-components';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
@@ -13,8 +14,8 @@ export default function Login() {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
+    const [email, setEmail] = useState('vroomde@gmail.com');
+    const [senha, setSenha] = useState('123456');
     const [UserGoogle, SetUserGoogle] = React.useState(null);
     const [request, response, promptAsync] = Google.useAuthRequest({
         androidClientId: '550744668475-82l8k7cubo8tt1jqfn3clneu0hjrhdmj.apps.googleusercontent.com',
@@ -61,13 +62,35 @@ export default function Login() {
         if (email !== '' && senha !== '') {
             if (validarEmail(email)) {
                 const auth = getAuth();
+                const db = getFirestore();
                 signInWithEmailAndPassword(auth, email, senha)
                     .then((userCredential) => {
-                        // Signed in 
                         const user = userCredential.user;
-                        // ...
-                        //console.log(user)
-                        console.log("estive aqui")
+                        const uid = user.uid
+                        console.log(uid)
+
+                        // Realize consultas para verificar se o UID existe em cada subcoleção
+                        const clienteQuery = query(collection(db, `usuario/tabela/cliente`), where('uid', '==', uid));
+                        const empresaQuery = query(collection(db, `usuario/tabela/empresa`), where('uid', '==', uid));
+                        const entregadorQuery = query(collection(db, `usuario/tabela/entregador`), where('uid', '==', uid));
+
+
+                        const clienteSnapshot = getDocs(clienteQuery)
+                        const empresaSnapshot = getDocs(empresaQuery)
+                        const entregadorSnapshot = getDocs(entregadorQuery)
+
+                        if (!clienteSnapshot.empty) {
+                            console.log('O UID pertence à coleção "cliente"')
+                            navigation.navigate('Home')
+                        } else if (!empresaSnapshot.empty) {
+                            console.log('O UID pertence à coleção "empresa"');
+                            navigation.navigate('IniciarEntrega')
+                        } else if (!entregadorSnapshot.empty) {
+                            console.log('O UID pertence à coleção "entregador"');
+                            navigation.navigate('Pendente')
+                        } else {
+                            console.log('O UID não pertence a nenhuma das coleções conhecidas');
+                        }
                     })
                     .catch((error) => {
                         const errorCode = error.code;
@@ -80,6 +103,7 @@ export default function Login() {
                 alert("email ou senha incorreto")
             }
         }
+
     }
 
 

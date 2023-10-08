@@ -2,18 +2,16 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
-import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { useTheme } from 'styled-components';
 
 export default function EntregadorRevisa({ route }) {
   const navigation = useNavigation();
   const tema = useTheme();
   const styles = getstyles(tema);
-  const [cnpj, setCnpj] = useState(route.params?.cnpj || '');
-  const [nomeEmpresa, setNomeEmpresa] = useState(route.params?.nomeEmpresa || '');
+  const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
   const [cpf, setCpf] = useState(route.params?.cpf || '');
   const [nome, setNome] = useState(route.params?.nome || '');
-  const [dtNasc, setDtNasc] = useState(route.params?.dtNasc || '');
   const [telefone, setTelefone] = useState(route.params?.telefone || '');
   const [cep, setCep] = useState(route.params?.cep || '');
   const [estado, setEstado] = useState(route.params?.estado || '');
@@ -21,6 +19,7 @@ export default function EntregadorRevisa({ route }) {
   const [bairro, setBairro] = useState(route.params?.bairro || '');
   const [endereco, setEndereco] = useState(route.params?.endereco || '');
   const [numero, setNumero] = useState(route.params?.numero || '');
+  const [dtNasc, setDtNasc] = useState(route.params?.dtNasc || '');
 
   async function verificaInput() {
     if (
@@ -34,26 +33,32 @@ export default function EntregadorRevisa({ route }) {
       endereco !== '' &&
       numero !== ''
     ) {
-      // const db = getFirestore()
-      // try {
-      //   await addDoc(collection(db, "users"), {
-      //     nome: nome,
-      //     telefone: telefone,
-      //     cep: cep,
-      //     cpf: cpf,
-      //     estado: estado,
-      //     cidade: cidade,
-      //     bairro: bairro,
-      //     endereco: endereco,
-      //     numero: numero,
-      //     dtNasc: dtNasc,
-      //     nomeEmpresa: nomeEmpresa,
-      //   });
-      // } catch (e) {
-      //   console.error("Error adding document: ", e);
-      // }
-     // navigation.dispatch(StackActions.popToTop())
-     navigation.navigate('Pendentes')
+      try {
+        // Substitua com o UID desejado
+        const db = getFirestore();
+
+        const docRef = doc(db, "usuario/tabela/entregador", Identificador); // Crie uma referência ao documento com o UID específico
+
+        const dados = {
+          nome: nome,
+          telefone: telefone,
+          cep: cep,
+          cpf: cpf,
+          estado: estado,
+          cidade: cidade,
+          bairro: bairro,
+          endereco: endereco,
+          numero: numero,
+          dtNasc: dtNasc,
+        };
+
+        await setDoc(docRef, dados); // Use setDoc para criar o documento com os dados
+        navigation.navigate('Pendente')
+        console.log('Documento criado com sucesso');
+         // Redirecione ou faça o que desejar após criar o documento
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
     } else {
       alert('Campos obrigatórios não preenchidos');
     }

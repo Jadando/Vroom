@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
-import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { useTheme } from 'styled-components';
 
 export default function ClienteRevisa({ route }) {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-
+    const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
     const [nome, setNome] = useState(route.params?.nome || '');
     const [telefone, setTelefone] = useState(route.params?.telefone || '');
     const [cep, setCep] = useState(route.params?.cep || '');
@@ -18,7 +18,8 @@ export default function ClienteRevisa({ route }) {
     const [bairro, setBairro] = useState(route.params?.bairro || '');
     const [endereco, setEndereco] = useState(route.params?.endereco || '');
     const [numero, setNumero] = useState(route.params?.numero || '');
-    
+
+
     async function verificaInput() {
         if (
             nome !== '' &&
@@ -30,12 +31,13 @@ export default function ClienteRevisa({ route }) {
             endereco !== '' &&
             numero !== ''
         ) {
-            const db = getFirestore()
             try {
-                // const agora = new Date();
-                // const dataHoraBrasilia = agora.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-                // console.log(dataHoraBrasilia);
-                await addDoc(collection(db, "usuario/cliente"), {
+                 // Substitua com o UID desejado
+                const db = getFirestore();
+
+                const docRef = doc(db, "usuario/tabela/cliente", Identificador); // Crie uma referência ao documento com o UID específico
+
+                const dados = {
                     nome: nome,
                     telefone: telefone,
                     cep: cep,
@@ -44,8 +46,12 @@ export default function ClienteRevisa({ route }) {
                     bairro: bairro,
                     endereco: endereco,
                     numero: numero,
-                });
-                navigation.navigate('Home')
+                };
+
+                await setDoc(docRef, dados);
+                 navigation.navigate('Home') 
+
+                console.log('Documento criado com sucesso'); // Redirecione ou faça o que desejar após criar o documento
             } catch (e) {
                 console.error("Error adding document: ", e);
             }
@@ -154,11 +160,11 @@ export default function ClienteRevisa({ route }) {
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={verificaInput}style={styles.cadastrar}>
-                        <Text style={styles.cadastrarText}>Concluir</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={verificaInput} style={styles.cadastrar}>
+                            <Text style={styles.cadastrarText}>Concluir</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-        </View>
             </ScrollView >
         </View >
     );

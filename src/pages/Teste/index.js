@@ -73,7 +73,7 @@ export default function Teste() {
     };
     async function validarLogin() {
         const db = getFirestore();
-        const querySnapshot = await getDocs(collection(db, "users"));
+        const querySnapshot = await getDocs(collection(db, "usuario/tabela/"));
         const dataArray = [];
 
         querySnapshot.forEach((doc) => {

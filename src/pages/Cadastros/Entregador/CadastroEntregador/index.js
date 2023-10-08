@@ -4,11 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { useTheme } from 'styled-components';
 
-export default function CadastroEntregador() {
+export default function CadastroEntregador({route}) {
   const navigation = useNavigation();
   const tema = useTheme();
   const styles = getstyles(tema);
-
+  const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
   const [cpf, setCpf] = useState('11111111111');
   const [nome, setNome] = useState('Agostinho Carrara');
   const [dtNasc, setDtNasc] = useState('23/09/1990');
@@ -34,6 +34,7 @@ export default function CadastroEntregador() {
       numero !== ''
     ) {
       navigation.navigate('EntregadorRevisa', {
+        Identificador,
         cpf,
         nome,
         dtNasc,
