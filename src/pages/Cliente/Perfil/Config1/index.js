@@ -79,7 +79,6 @@ const getstyles = (tema) => StyleSheet.create({
         marginTop: 50,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        
         alignItems: 'center',
         width: '100%',
     },

@@ -60,7 +60,7 @@ export default function Login() {
 
     async function validarLogin() {
         if (email !== '' && senha !== '') {
-            navigation.navigate('Home');
+            navigation.navigate('IniciarEntrega');
             // if (validarEmail(email)) {
             //     const auth = getAuth();
             //     const db = getFirestore();

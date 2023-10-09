@@ -51,7 +51,7 @@ export default function PerfilEmpresa() {
                     <Icon name='bicycle-outline' size={30} color='#000' />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Config')}
+                    onPress={() => navigation.navigate('ConfigEmpresa')}
                     style={styles.button}>
                     <Text style={styles.btnText}>Configurações</Text>
                     <Icon name='cog' size={30} color='#000' />

@@ -8,6 +8,7 @@ import PasswordModal from '../../../../components/PasswordModal';
 
 
 export default function ConfigEmpresa() {
+    const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const tema = useTheme();
     const styles = getstyles(tema);
