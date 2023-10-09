@@ -20,14 +20,17 @@ export default function ConfigEntregador() {
     }
     return (
         <View style={styles.container}>
-            <View style={styles.config}>
-           <TouchableOpacity
+               <View style={styles.config}>
+                <TouchableOpacity
                     style={styles.Chevron}
                     onPress={() => navigation.pop(1)}>
                     <Icon name='chevron-back' size={30} color='#000' />
                 </TouchableOpacity>
+                <View style={{flexDirection: 'row'}}>
                 <Text style={styles.configText}>Configurações</Text>
                 <Icon name='cog' size={30} color={tema.color} />
+                </View>
+                <View/>
             </View>
 
             <View style={styles.btnArea}>
@@ -73,11 +76,13 @@ const getstyles = (tema) => StyleSheet.create({
         paddingTop: 15,
         backgroundColor: tema.Tema.background
     },
+
     config: {
         marginTop: 50,
         flexDirection: 'row',
-        alignContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'space-around',s
+        alignItems: 'center',
+        width: '100%',
     },
     configText: {
         fontSize: 20,
