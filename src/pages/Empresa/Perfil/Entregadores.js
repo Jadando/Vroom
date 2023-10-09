@@ -2,23 +2,37 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextInputMask } from 'react-native-masked-text';
-
+import { useNavigation } from '@react-navigation/native';
+//CORRIGIR
+//CORRIGIR
+//CORRIGIR
+//CORRIGIR
+//CORRIGIR
+//CORRIGIR
+//CORRIGIR CARD
+//CORRIGIR
 export default function Entregadores() {
+    const navigation = useNavigation();
     const [cpf, setCpf] = useState('11111111111');
     const [nome, setNome] = useState('Joao');
-    const [nasc, setNasc] = useState('25121998');
     return (
         <View style={styles.container}>
+                <View style={styles.header}>
+                <TouchableOpacity
+                    style={styles.Chevron}
+                    onPress={() => navigation.pop(1)}>
+                    <Icon name='chevron-back' size={30} color='#000' />
+                </TouchableOpacity>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.recentsTitle}>Entregadores</Text>
+                    <Icon name='bicycle' size={30} color='#000' />
+                </View>
+                    <View/>
+                </View>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 overScrollMode='never'
             >
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
-                    <Text style={styles.recentsTitle}>
-                        Entregadores
-                    </Text>
-                    <Icon name='bicycle' size={30} color='#000' />
-                </View>
                 <View style={styles.card}>
                     <TextInputMask
                         style={styles.input}
@@ -33,13 +47,6 @@ export default function Entregadores() {
                             value={nome}
                             editable={false}
                             placeholder="Nome completo"
-                        />
-                        <TextInputMask
-                            style={styles.input}
-                            type={'datetime'}
-                            value={nasc}
-                            editable={false}
-                            placeholder="Data de nascimento"
                         />
                         <View style={styles.buttons}>
                             <TouchableOpacity
@@ -65,12 +72,22 @@ export default function Entregadores() {
 
 const styles = StyleSheet.create({
     container: {
-        felx: 1,
+        flex: 1,
         alignContent: 'center',
         alignItems: 'center',
         paddingTop: 15,
         backgroundColor: '#fff',
         height: '100%',
+    },
+    header: {
+        flexDirection: 'row',
+        marginTop: '5%',
+        width: '100%',
+        justifyContent: 'space-between',
+        padding: 5,
+        alignItems: 'center',
+        alignContent: 'center',
+        marginBottom: 30,
     },
     recentsTitle: {
         fontSize: 20,

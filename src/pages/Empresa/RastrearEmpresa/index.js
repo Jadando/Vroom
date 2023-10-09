@@ -8,6 +8,7 @@ import * as Location from 'expo-location';
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
 export default function RastrearEmpresa() {
+    const navigation = useNavigation();
     const [heading, setHeading] = useState(0);
     const [iconRotation, setIconRotation] = useState(0);
     const [lastLocation, setLastLocation] = useState(null);
@@ -53,7 +54,14 @@ export default function RastrearEmpresa() {
         >
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.Chevron}
+                    onPress={() => navigation.pop(1)}>
+                    <Icon name='chevron-back' size={30} color='#000' />
+                </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Icon name='notifications' size={30} color='#ffc000' />
+                        </TouchableOpacity>
                 </View>
 
 
@@ -149,16 +157,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginRight: 20,
-        marginBottom: 30
+        marginBottom: 30,
+        padding: 10,
     },
     headerContent: {
         flexDirection: 'row',
         justifyContent: 'center',
         flex: 1,
         marginLeft: 70
-    },
-    headerBell: {
-        marginLeft: '90%',
     },
     title: {
         fontSize: 20,

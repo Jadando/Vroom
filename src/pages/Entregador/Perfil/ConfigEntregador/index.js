@@ -8,6 +8,7 @@ import PasswordModal from '../../../../components/PasswordModal';
 
 
 export default function ConfigEntregador() {
+    const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const tema = useTheme();
     const styles = getstyles(tema);
@@ -76,11 +77,10 @@ const getstyles = (tema) => StyleSheet.create({
         paddingTop: 15,
         backgroundColor: tema.Tema.background
     },
-
     config: {
         marginTop: 50,
         flexDirection: 'row',
-        justifyContent: 'space-around',s
+        justifyContent: 'space-around',
         alignItems: 'center',
         width: '100%',
     },

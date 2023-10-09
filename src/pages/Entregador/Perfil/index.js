@@ -44,7 +44,7 @@ export default function PerfilEntregador() {
                     <Icon name='business-outline' size={30} color='#000' />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Config')}
+                    onPress={() => navigation.navigate('ConfigEntregador')}
                     style={styles.button}>
                     <Text style={styles.btnText}>Configurações</Text>
                     <Icon name='cog' size={30} color='#000' />
@@ -67,7 +67,7 @@ export default function PerfilEntregador() {
 
 const getstyles = (tema) => StyleSheet.create({
     container: {
-        felx: 1,
+        flex: 1,
         alignContent: 'center',
         alignItems: 'center',
         paddingTop: 25,

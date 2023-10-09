@@ -110,7 +110,7 @@ export default function DadosEmpresa() {
                     />
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('PerfilEmpresa')}
+                            onPress={() => navigation.pop(1)}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>

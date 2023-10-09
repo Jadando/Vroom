@@ -197,7 +197,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         elevation: 2,
         padding: 20,
-        width: 320,
         height: 80,
         borderRadius: 10,
         alignContent: 'center',
@@ -215,7 +214,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         elevation: 2,
         padding: 20,
-        width: 320,
         height: 'fit-content',
         borderRadius: 10,
         marginBottom: 20

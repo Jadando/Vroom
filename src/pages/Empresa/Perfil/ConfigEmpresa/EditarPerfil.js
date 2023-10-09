@@ -19,6 +19,11 @@ export default function EditarPerfil() {
         >
             <View style={styles.container}>
                 <View style={styles.header}>
+                <TouchableOpacity
+                    style={styles.Chevron}
+                    onPress={() => navigation.pop(1)}>
+                    <Icon name='chevron-back' size={30} color='#000' />
+                </TouchableOpacity>
                     <TouchableOpacity>
                         <Icon name='notifications' size={30} color='#ffc000' />
                     </TouchableOpacity>
@@ -83,7 +88,8 @@ const getstyles = (tema) => StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         marginTop: '5%',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
+        padding: 5,
         alignItems: 'center',
         alignContent: 'center',
         marginBottom: 30,

@@ -108,7 +108,7 @@ export default function DadosEntregador() {
                     />
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                           onPress={()=> navigation.navigate('PerfilEntregador')}
+                           onPress={()=> navigation.pop(1)}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
@@ -144,6 +144,7 @@ const getstyles = (tema) => StyleSheet.create({
         padding: 10,
         width: '100%',
         justifyContent: 'center',
+        marginBottom: 15,
     },
     pedidosText: {
         fontSize: 20,
