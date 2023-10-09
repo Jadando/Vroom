@@ -21,6 +21,11 @@ export default function ConfigEntregador() {
     return (
         <View style={styles.container}>
             <View style={styles.config}>
+           <TouchableOpacity
+                    style={styles.Chevron}
+                    onPress={() => navigation.pop(1)}>
+                    <Icon name='chevron-back' size={30} color='#000' />
+                </TouchableOpacity>
                 <Text style={styles.configText}>Configurações</Text>
                 <Icon name='cog' size={30} color={tema.color} />
             </View>
