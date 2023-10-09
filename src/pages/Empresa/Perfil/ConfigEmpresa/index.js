@@ -26,8 +26,11 @@ export default function ConfigEmpresa() {
                     onPress={() => navigation.pop(1)}>
                     <Icon name='chevron-back' size={30} color='#000' />
                 </TouchableOpacity>
+                <View style={{flexDirection: 'row'}}>
                 <Text style={styles.configText}>Configurações</Text>
                 <Icon name='cog' size={30} color={tema.color} />
+                </View>
+                <View/>
             </View>
             <View style={styles.btnArea}>
                 <Text style={styles.configContent}>
@@ -75,8 +78,9 @@ const getstyles = (tema) => StyleSheet.create({
     config: {
         marginTop: 50,
         flexDirection: 'row',
-        alignContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '100%',
     },
     configText: {
         fontSize: 20,
