@@ -9,6 +9,7 @@ import PasswordModal from '../../../../components/PasswordModal';
 export default function Config() {
     const [modalVisible, setModalVisible] = useState(false);
     const tema = useTheme();
+    const navigation = useNavigation();
     const styles = getstyles(tema);
     const { TrocaLight, TrocaDark } = useTema();
     function Light() {
@@ -20,10 +21,14 @@ export default function Config() {
     return (
         <View style={styles.container}>
             <View style={styles.config}>
+                <TouchableOpacity
+                    style={styles.Chevron}
+                    onPress={() => navigation.pop(1)}>
+                    <Icon name='chevron-back' size={30} color='#000' />
+                </TouchableOpacity>
                 <Text style={styles.configText}>Configurações</Text>
                 <Icon name='cog' size={30} color={tema.color} />
             </View>
-
             <View style={styles.btnArea}>
                 <Text style={styles.configContent}>
                     Tema
@@ -46,14 +51,14 @@ export default function Config() {
                     Senha
                 </Text>
                 <TouchableOpacity
-                onPress={() => setModalVisible(!modalVisible)}
-                style={styles.button}>
+                    onPress={() => setModalVisible(!modalVisible)}
+                    style={styles.button}>
                     <Text style={styles.btnText}>Alterar senha</Text>
                 </TouchableOpacity>
             </View>
             <PasswordModal
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
             />
         </View>
     );
@@ -70,8 +75,13 @@ const getstyles = (tema) => StyleSheet.create({
     config: {
         marginTop: 50,
         flexDirection: 'row',
-        alignContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'space-between',
+        padding: 15,
+        alignItems: 'center',
+        width: '100%'
+    },
+    chevron: {
+        marginRight: 100
     },
     configText: {
         fontSize: 20,
