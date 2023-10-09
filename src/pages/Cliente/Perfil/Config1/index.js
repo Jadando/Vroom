@@ -79,13 +79,10 @@ const getstyles = (tema) => StyleSheet.create({
         marginTop: 50,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        paddingLeft: 15,
+        
         alignItems: 'center',
         width: '100%',
     },
-    // chevron: {
-    //     alignSelf: 'flex-start'
-    // },
     configText: {
         fontSize: 20,
         marginRight: 15,
