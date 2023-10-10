@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import LogoutModal from '../../../components/logoutModal';
+import { getFirestore, getDocs, collection} from "firebase/firestore";
+
+
 
 export default function Perfil() {
     const [modalVisible, setModalVisible] = useState(false);
+    const [nameuser, setnameUser] = useState(null);
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
+
     return (
 
         <View style={styles.container}>
@@ -23,7 +28,7 @@ export default function Perfil() {
                 <View style={styles.userImg}>
                     <Icon name='person' size={70} color='#939598ff' />
                 </View>
-                <Text style={styles.userInfo}>João Adriano</Text>
+                <Text style={styles.userInfo}>{nameuser}</Text>
             </View>
 
             <View style={styles.btnArea}>

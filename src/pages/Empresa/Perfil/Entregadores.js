@@ -3,60 +3,69 @@ import { View, StyleSheet, Text, TextInput, ScrollView, TouchableOpacity } from 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextInputMask } from 'react-native-masked-text';
 import { useNavigation } from '@react-navigation/native';
-//CORRIGIR
-//CORRIGIR
-//CORRIGIR
-//CORRIGIR
-//CORRIGIR
-//CORRIGIR
-//CORRIGIR CARD
-//CORRIGIR
+
 export default function Entregadores() {
     const navigation = useNavigation();
+    const [telefone, setTelefone] = useState('13991476204')
     const [cpf, setCpf] = useState('11111111111');
     const [nome, setNome] = useState('Joao');
+    const [expandido, setExpandido] = useState(false);
+
     return (
         <View style={styles.container}>
-                <View style={styles.header}>
+            <View style={styles.header}>
                 <TouchableOpacity
                     style={styles.Chevron}
                     onPress={() => navigation.pop(1)}>
                     <Icon name='chevron-back' size={30} color='#000' />
                 </TouchableOpacity>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.recentsTitle}>Entregadores</Text>
                     <Icon name='bicycle' size={30} color='#000' />
                 </View>
-                    <View/>
-                </View>
+                <View />
+            </View>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 overScrollMode='never'
             >
-                <View style={styles.card}>
-                    <TextInputMask
+                <TouchableOpacity style={styles.card} onPress={() => setExpandido(!expandido)}>
+                    <TextInput
                         style={styles.input}
-                        type={'cpf'}
-                        value={cpf}
-                        placeholder="CPF"
+                        value={nome}
                         editable={false}
+                        placeholder="Nome completo"
                     />
-                    <View style={styles.main}>
-                        <TextInput
-                            style={styles.input}
-                            value={nome}
-                            editable={false}
-                            placeholder="Nome completo"
-                        />
-                        <View style={styles.buttons}>
-                            <TouchableOpacity
-                                style={styles.cadastrar}
-                            >
-                                <Text style={styles.cadastrarText}>Desvincular entregador</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
+                    {expandido && (
+                        <>
+                            <TextInputMask
+                                style={styles.input}
+                                type={'cpf'}
+                                value={cpf}
+                                placeholder="CPF"
+                                editable={false}
+                            />
+                            <TextInputMask
+                                style={styles.input}
+                                type={'cel-phone'}
+                                value={telefone}
+                                editable={false}
+                                placeholder="Telefone"
+                                options={{
+                                    maskType: 'BRL',
+                                    withDDD: true,
+                                    dddMask: '(99) ',
+                                }}
+                            />
+                            <View style={styles.buttons}>
+                                <TouchableOpacity style={styles.cadastrar}>
+                                    <Text style={styles.cadastrarText}>Desvincular entregador</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </>
+                    )}
+                </TouchableOpacity>
+
                 <TouchableOpacity>
                     <View style={{ flexDirection: 'row', marginBottom: 20, marginTop: 20, alignSelf: 'flex-end', justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={{ fontSize: 18 }}>Adicionar novo entregador</Text>

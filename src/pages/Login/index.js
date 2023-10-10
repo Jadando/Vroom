@@ -60,60 +60,60 @@ export default function Login() {
 
     async function validarLogin() {
         if (email !== '' && senha !== '') {
-            navigation.navigate('Home');
-            // if (validarEmail(email)) {
-            //     const auth = getAuth();
-            //     const db = getFirestore();
-            //     signInWithEmailAndPassword(auth, email, senha)
-            //         .then(async (userCredential) => {
-            //             const user = userCredential.user;
-            //             const uide = user.uid
-            //             const processarConsulta = (snapshot, dataArray, navigateCallback) => {
-            //                 snapshot.forEach((doc) => {
-            //                   const data = doc.data();
-            //                   dataArray.push({ id: doc.id, ...data });
-            //                   if (doc.id === uide) {
-            //                     navigateCallback(); // Chama a função de navegação
-            //                   }
-            //                 });
-            //               };
-            //             try {
-            //                 const [clienteSnapshot, empresaSnapshot, entregadorSnapshot] = await Promise.all([
-            //                   getDocs(collection(db, "usuario/tabela/cliente"),where('id', '==', uide)),
-            //                   getDocs(collection(db, "usuario/tabela/empresa"),where('id', '==', uide)),
-            //                   getDocs(collection(db, "usuario/tabela/entregador"),where('id', '==', uide)),
-            //                 ]);
+            //navigation.navigate('Home');
+            if (validarEmail(email)) {
+                const auth = getAuth();
+                const db = getFirestore();
+                signInWithEmailAndPassword(auth, email, senha)
+                    .then(async (userCredential) => {
+                        const user = userCredential.user;
+                        const uide = user.uid
+                        const processarConsulta = (snapshot, dataArray, navigateCallback) => {
+                            snapshot.forEach((doc) => {
+                              const data = doc.data();
+                              dataArray.push({ id: doc.id, ...data });
+                              if (doc.id === uide) {
+                                navigateCallback(); // Chama a função de navegação
+                              }
+                            });
+                          };
+                        try {
+                            const [clienteSnapshot, empresaSnapshot, entregadorSnapshot] = await Promise.all([
+                              getDocs(collection(db, "usuario/tabela/cliente"),where('id', '==', uide)),
+                              getDocs(collection(db, "usuario/tabela/empresa"),where('id', '==', uide)),
+                              getDocs(collection(db, "usuario/tabela/entregador"),where('id', '==', uide)),
+                            ]);
                       
-            //                 const dataArrayCliente = [];
-            //                 const dataArrayEmpresa = [];
-            //                 const dataArrayEntregador = [];
+                            const dataArrayCliente = [];
+                            const dataArrayEmpresa = [];
+                            const dataArrayEntregador = [];
                       
-            //                 // Processar os resultados de cada consulta
-            //                 processarConsulta(clienteSnapshot, dataArrayCliente, () => {
-            //                   navigation.navigate('Home'); // Substitua 'NomeDaTelaCliente' pelo nome da tela de cliente
-            //                 });
-            //                 processarConsulta(empresaSnapshot, dataArrayEmpresa, () => {
-            //                   navigation.navigate('IniciarEntrega'); // Substitua 'NomeDaTelaEmpresa' pelo nome da tela de empresa
-            //                 });
-            //                 processarConsulta(entregadorSnapshot, dataArrayEntregador, () => {
-            //                   navigation.navigate('Pendentes'); // Substitua 'NomeDaTelaEntregador' pelo nome da tela de entregador
-            //                 });
+                            // Processar os resultados de cada consulta
+                            processarConsulta(clienteSnapshot, dataArrayCliente, () => {
+                              navigation.navigate('Home'); // Substitua 'NomeDaTelaCliente' pelo nome da tela de cliente
+                            });
+                            processarConsulta(empresaSnapshot, dataArrayEmpresa, () => {
+                              navigation.navigate('IniciarEntrega'); // Substitua 'NomeDaTelaEmpresa' pelo nome da tela de empresa
+                            });
+                            processarConsulta(entregadorSnapshot, dataArrayEntregador, () => {
+                              navigation.navigate('Pendentes'); // Substitua 'NomeDaTelaEntregador' pelo nome da tela de entregador
+                            });
                       
-            //                 // ...
-            //               } catch (error) {
-            //                 console.error("Erro ao executar as consultas:", error);
-            //               }
-            //         })
-            //         .catch((error) => {
-            //             const errorCode = error.code;
-            //             const errorMessage = error.message;
-            //             console.log(errorCode)
-            //             console.log(errorMessage)
-            //         });
-            // }
-            // else {
-            //     alert("email ou senha incorreto")
-            // }
+                            // ...
+                          } catch (error) {
+                            console.error("Erro ao executar as consultas:", error);
+                          }
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        console.log(errorCode)
+                        console.log(errorMessage)
+                    });
+            }
+            else {
+                alert("email ou senha incorreto")
+            }
         }
     }
 
