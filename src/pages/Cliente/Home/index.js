@@ -5,7 +5,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 
 
-export default function Home() {
+export default function Home({route}) {
+  const [Identificado, setIdentificador] = useState(route.params?.Identificador || '');
+  console.log(Identificado)
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();

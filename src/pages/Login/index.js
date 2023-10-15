@@ -15,44 +15,45 @@ export default function Login() {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [email, setEmail] = useState('empresa@gmail.com');
+    const [email, setEmail] = useState('vroomde@gmail.com');
     const [senha, setSenha] = useState('123456');
+    const [Identificador, setIdentificador] = useState(null);
     const [UserGoogle, SetUserGoogle] = React.useState(null);
-    const [request, response, promptAsync] = Google.useAuthRequest({
-        androidClientId: '550744668475-82l8k7cubo8tt1jqfn3clneu0hjrhdmj.apps.googleusercontent.com',
-    });
+    // const [request, response, promptAsync] = Google.useAuthRequest({
+    //     androidClientId: '550744668475-82l8k7cubo8tt1jqfn3clneu0hjrhdmj.apps.googleusercontent.com',
+    // });
 
-    useEffect(() => {
-        handledSingInWithGoogle()
-    }, [response])
+    // useEffect(() => {
+    //     handledSingInWithGoogle()
+    // }, [response])
 
-    async function handledSingInWithGoogle() {
-        const user = await AsyncStorage.getItem("@user");
-        if (!user) {
-            if (response?.type === "success") {
-                await getUserInfo(response.authentication.accessToken);
-            }
-        } else {
-            SetUserGoogle(JSON.parse(user));
-        }
-    }
+    // async function handledSingInWithGoogle() {
+    //     const user = await AsyncStorage.getItem("@user");
+    //     if (!user) {
+    //         if (response?.type === "success") {
+    //             await getUserInfo(response.authentication.accessToken);
+    //         }
+    //     } else {
+    //         SetUserGoogle(JSON.parse(user));
+    //     }
+    // }
 
-    const getUserInfo = async (token) => {
-        if (!token) return;
-        try {
-            const response = await fetch(
-                "https://www.googleapis.com/userinfo/v2/me",
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            const user = await response.json();
-            await AsyncStorage.setItem("@user", JSON, stringify(user));
-            SetUserGoogle(user);
-        } catch (error) {
-            console.log("erro")
-        }
-    }
+    // const getUserInfo = async (token) => {
+    //     if (!token) return;
+    //     try {
+    //         const response = await fetch(
+    //             "https://www.googleapis.com/userinfo/v2/me",
+    //             {
+    //                 headers: { Authorization: `Bearer ${token}` },
+    //             }
+    //         );
+    //         const user = await response.json();
+    //         await AsyncStorage.setItem("@user", JSON, stringify(user));
+    //         SetUserGoogle(user);
+    //     } catch (error) {
+    //         console.log("erro")
+    //     }
+    // }
     function validarEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
@@ -60,7 +61,6 @@ export default function Login() {
 
     async function validarLogin() {
         if (email !== '' && senha !== '') {
-            //navigation.navigate('Home');
             if (validarEmail(email)) {
                 const auth = getAuth();
                 const db = getFirestore();
@@ -68,41 +68,50 @@ export default function Login() {
                     .then(async (userCredential) => {
                         const user = userCredential.user;
                         const uide = user.uid
+                        setIdentificador(uide)
+                        //Não retirar o log a baixo sujeito a erro//
+                        console.log(Identificador)
                         const processarConsulta = (snapshot, dataArray, navigateCallback) => {
                             snapshot.forEach((doc) => {
-                              const data = doc.data();
-                              dataArray.push({ id: doc.id, ...data });
-                              if (doc.id === uide) {
-                                navigateCallback(); // Chama a função de navegação
-                              }
+                                const data = doc.data();
+                                dataArray.push({ id: doc.id, ...data });
+                                if (doc.id === uide) {
+                                    navigateCallback();
+                                }
                             });
-                          };
+                        };
                         try {
                             const [clienteSnapshot, empresaSnapshot, entregadorSnapshot] = await Promise.all([
-                              getDocs(collection(db, "usuario/tabela/cliente"),where('id', '==', uide)),
-                              getDocs(collection(db, "usuario/tabela/empresa"),where('id', '==', uide)),
-                              getDocs(collection(db, "usuario/tabela/entregador"),where('id', '==', uide)),
+                                getDocs(collection(db, "usuario/tabela/cliente"), where('id', '==', uide)),
+                                getDocs(collection(db, "usuario/tabela/empresa"), where('id', '==', uide)),
+                                getDocs(collection(db, "usuario/tabela/entregador"), where('id', '==', uide)),
                             ]);
-                      
+
                             const dataArrayCliente = [];
                             const dataArrayEmpresa = [];
                             const dataArrayEntregador = [];
-                      
+
                             // Processar os resultados de cada consulta
                             processarConsulta(clienteSnapshot, dataArrayCliente, () => {
-                              navigation.navigate('Home'); // Substitua 'NomeDaTelaCliente' pelo nome da tela de cliente
+                                navigation.navigate('Home', {
+                                    Identificador
+                                }); 
                             });
                             processarConsulta(empresaSnapshot, dataArrayEmpresa, () => {
-                              navigation.navigate('IniciarEntrega'); // Substitua 'NomeDaTelaEmpresa' pelo nome da tela de empresa
+                                navigation.navigate('IniciarEntrega', {
+                                    Identificador
+                                }); 
                             });
                             processarConsulta(entregadorSnapshot, dataArrayEntregador, () => {
-                              navigation.navigate('Pendentes'); // Substitua 'NomeDaTelaEntregador' pelo nome da tela de entregador
+                                navigation.navigate('Pendentes', {
+                                    Identificador
+                                });
                             });
-                      
+
                             // ...
-                          } catch (error) {
+                        } catch (error) {
                             console.error("Erro ao executar as consultas:", error);
-                          }
+                        }
                     })
                     .catch((error) => {
                         const errorCode = error.code;
@@ -127,8 +136,6 @@ export default function Login() {
                 <View style={styles.logoTop}>
                     <Image source={require('../../img/logo.png')} />
                 </View>
-                <Text>{JSON.stringify(UserGoogle, null, 2)}</Text>
-                <Button title="sair da conta" onPress={() => AsyncStorage.removeItem("@user")}></Button>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.inputEmail}
@@ -162,7 +169,7 @@ export default function Login() {
                 </View>
 
                 <View style={styles.loginLogos}>
-                    <TouchableOpacity disabled={!request} onPress={() => promptAsync()}>
+                    <TouchableOpacity onPress={() => promptAsync()}>
                         <Image style={{ width: 40, height: 40 }} source={require('../../img/google.png')} />
                     </TouchableOpacity>
 

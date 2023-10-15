@@ -1,27 +1,91 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
-import ChangeModal from './../../../components/changeModal';
+//import ChangeModal from './../../../components/changeModal/index';
+import { getFirestore,doc,setDoc } from "firebase/firestore";
 
 
-export default function AlterarCliente() {
+export default function AlterarCliente({route}) {
     const [viewlVisible, setViewVisible] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [nome, setNome] = useState('João Adriano');
-    const [telefone, setTelefone] = useState('1898180400');
-    const [cep, setCep] = useState('11730000');
-    const [estado, setEstado] = useState('sp');
-    const [cidade, setCidade] = useState('sao paulo');
-    const [bairro, setBairro] = useState('Agenor de Campos');
-    const [endereco, setEndereco] = useState('Av. Monteiro Lobato');
-    const [numero, setNumero] = useState('779');
 
+    const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
+    const [nome, setNome] = useState(route.params?.nome);
+    const [telefone, setTelefone] = useState(route.params?.telefone);
+    const [cep, setCep] = useState(route.params?.cep);
+    const [estado, setEstado] = useState(route.params?.estado);
+    const [cidade, setCidade] = useState(route.params?.cidade);
+    const [bairro, setBairro] = useState(route.params?.bairro);
+    const [endereco, setEndereco] = useState(route.params?.endereco);
+    const [numero, setNumero] = useState(route.params?.numero);
+
+
+
+    async function atualizarcliente() {
+        // const db = getFirestore();
+        // const docRef = doc(db, "usuarios/tabela/cliente", Identificador);
+      
+        // try {
+        //   // Validation checks
+        //   if (!nome || !telefone || !cep || !estado || !cidade || !bairro || !endereco || !numero) {
+        //     console.error("Incomplete data. All fields must be filled.");
+        //     return;
+        //   }
+      
+        //   await updateDoc(docRef, {
+        //     nome: nome,
+        //     telefone: telefone,
+        //     cep: cep,
+        //     estado: estado,
+        //     cidade: cidade,
+        //     bairro: bairro,
+        //     endereco: endereco,
+        //     numero: numero,
+        //   });
+      
+        //   console.log("Dados atualizados com sucesso!");
+        //   // Uncomment and configure navigation here if needed
+        // } catch (error) {
+        //   console.error("Erro ao atualizar os dados: ", error);
+        // }
+        try {
+              // Validation checks
+              if (!nome || !telefone || !cep || !estado || !cidade || !bairro || !endereco || !numero) {
+                console.error("Incomplete data. All fields must be filled.");
+                return;
+              }
+            // Substitua com o UID desejado
+           const db = getFirestore();
+
+           const docRef = doc(db, "usuario/tabela/cliente", Identificador); // Crie uma referência ao documento com o UID específico
+
+           const dados = {
+               nome: nome,
+               telefone: telefone,
+               cep: cep,
+               estado: estado,
+               cidade: cidade,
+               bairro: bairro,
+               endereco: endereco,
+               numero: numero,
+           };
+
+           await setDoc(docRef, dados);
+            await navigation.pop(1)
+
+           console.log('Documento criado com sucesso'); // Redirecione ou faça o que desejar após criar o documento
+       } catch (e) {
+           console.error("Error adding document: ", e);
+       }
+
+      }
+      
 
     return (
         <View style={styles.container}>
@@ -149,19 +213,61 @@ export default function AlterarCliente() {
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => setModalVisible(!modalVisible)}
+                            onPress={() => {
+                                setModalVisible(!modalVisible);
+                            }}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Confirmar alteração</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
-                <ChangeModal
-                    modalVisible={modalVisible}
-                    setModalVisible={setModalVisible}
-                />
+                
             </ScrollView>
+            <Modal
+                visible={modalVisible}
+                transparent={true}
+                animationType='slide'
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalHeader}>
+                        <Text style={styles.modalHeaderTitle}>Aviso</Text>
+                        <TouchableOpacity
+                            style={styles.modalHeaderClose}
+                            onPress={() => setModalVisible(!modalVisible)} >
+                            <Image source={require('../../../img/close.png')} style={{ width: 30, height: 30 }} />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View>
+                        <Text style={styles.modalContentTitle}>
+                            Tem certeza que deseja alterar seus dados?
+                        </Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <TouchableOpacity
+                                onPress={() => setModalVisible(!modalVisible)}
+                                style={styles.modalBtn}>
+                                <Text style={styles.modalContent}>
+                                    Não
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    atualizarcliente()
+                                }
+                                }
+                                style={styles.modalBtn}
+                            >
+                                <Text style={styles.modalContent}>
+                                    Sim
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
+
     );
 }
 
@@ -228,5 +334,63 @@ const getstyles = (tema) => StyleSheet.create({
         marginTop: -20,
         borderBottomColor: '#000',
         borderBottomWidth: 0.7,
+    }, modalContainer: {
+        alignSelf: 'center',
+        marginTop: '50%',
+        width: 300,
+        backgroundColor: '#f2f2f2',
+        margin: 20,
+        borderRadius: 10,
+        height: 'fit-content',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 50
+    },
+    modalHeader: {
+        backgroundColor: '#ffc000',
+        width: '100%',
+        height: 40,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        padding: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 15
+    },
+    modalHeaderTitle: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#121212',
+        textAlign: 'center',
+    },
+    modalHeaderClose: {
+        justifyContent: 'flex-end',
+    },
+    modalContentTitle: {
+        fontSize: 18,
+        textAlign: 'center',
+        marginBottom: 20
+    },
+    modalContent: {
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: '#121212'
+    },
+    modalBtn: {
+        width: '45%',
+        height: 40,
+        borderRadius: 10,
+        backgroundColor: '#ffc000',
+        padding: 5,
+        marginBottom: 20,
+        alignSelf: 'center'
     },
 });

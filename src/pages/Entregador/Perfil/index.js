@@ -4,15 +4,38 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import LogoutModal from '../../../components/logoutModal';
+import { getFirestore, getDocs, collection} from "firebase/firestore";
 
+
+async function Namedeliveryman(callback) {
+    const db = getFirestore();
+    const querySnapshot = await getDocs(collection(db, "usuario/tabela/entregador"));
+    const dataArray = [];
+
+    querySnapshot.forEach((doc) => {
+        const userData = doc.data();
+        dataArray.push({ id: doc.id, ...userData });
+
+        // Chame o callback passando userData.nome
+        callback(userData.nome);
+    });
+}
 
 export default function PerfilEntregador() {
     const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    return (
 
+
+    const updateNameUser = (nome) => {
+        setnameUser(nome);
+    };
+    useEffect(() => {
+        Namedeliveryman(updateNameUser);
+    }, [updateNameUser])
+
+    return (
         <ScrollView
         showsVerticalScrollIndicator={false}
         overScrollMode='never'

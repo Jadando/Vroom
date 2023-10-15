@@ -1,19 +1,41 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import LogoutModal from '../../../components/logoutModal';
-import { getFirestore, getDocs, collection} from "firebase/firestore";
+import { getFirestore, onSnapshot, doc } from "firebase/firestore";
 
 
-
-export default function Perfil() {
+export default function Perfil({ route }) {
+    const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
     const [modalVisible, setModalVisible] = useState(false);
-    const [nameuser, setnameUser] = useState(null);
+    const [nameuser, setNameUser] = useState(null);
     const navigation = useNavigation();
     const tema = useTheme();
-    const styles = getstyles(tema);
+    const styles = getstyles(tema)
+
+    useEffect(() => {
+        const db = getFirestore();
+        const docRef = doc(db, "usuario", "tabela", "cliente", Identificador);
+
+        const unsubscribe = onSnapshot(docRef, (doc) => {
+            if (doc.exists()) {
+                const userData = doc.data();
+                setNameUser(userData.nome);
+            } else {
+                console.log("O documento não existe.");
+            }
+        });
+
+        return () => {
+            // Ao desmontar o componente, pare de ouvir as atualizações
+            unsubscribe();
+        };
+    }, [Identificador]);
+
+
+
 
     return (
 
@@ -33,26 +55,26 @@ export default function Perfil() {
 
             <View style={styles.btnArea}>
                 <TouchableOpacity style={styles.button}
-                onPress={() => navigation.navigate('DadosCliente')}>
+                    onPress={() => navigation.navigate('DadosCliente', { Identificador })}>
                     <Text style={styles.btnText}>Meus dados</Text>
                     <Icon name='information' size={30} color='#000' />
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={() => navigation.navigate('Config')}
-                style={styles.button}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('Config')}
+                    style={styles.button}>
                     <Text style={styles.btnText}>Configurações</Text>
                     <Icon name='cog' size={30} color='#000' />
                 </TouchableOpacity>
-                <TouchableOpacity 
-                style={styles.button}
-                onPress={() => setModalVisible(!modalVisible)}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => setModalVisible(!modalVisible)}>
                     <Text style={styles.btnText}>Sair da conta</Text>
                     <Icon name='log-out-outline' size={30} color='#000' />
                 </TouchableOpacity>
             </View>
             <LogoutModal
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
             />
         </View>
     );
