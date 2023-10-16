@@ -51,9 +51,13 @@ const icons = {
 }
 
 export function Tabs({ route }) {
+    
     const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
-    console.log(Identificador)
+
+    //console.log(Identificador)
+
     const tema = useTheme();
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -88,16 +92,17 @@ export function Tabs({ route }) {
                 },
             })}
         >
-            <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }}/>
-            <Tab.Screen name="Buscar" component={Search} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }}/>
-            <Tab.Screen name="Pedidos" component={LocalCliente} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }}/>
-            <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }}  initialParams={{ Identificador: Identificador }}/>
+            <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }} />
+            <Tab.Screen name="Buscar" component={Search} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }} />
+            <Tab.Screen name="Pedidos" component={LocalCliente} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }} />
+            <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} initialParams={{ Identificador: Identificador  }} />
         </Tab.Navigator>
     )
 }
 export function TabsEntregador({ route }) {
+
     const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
-    console.log(Identificador)
+    //console.log(Identificador)
     const tema = useTheme();
     return (
         <Tab.Navigator
@@ -133,9 +138,9 @@ export function TabsEntregador({ route }) {
                 },
             })}
         >
-            <Tab.Screen name="Pendentes" component={Pendentes} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }}/>
-            <Tab.Screen name="Histórico" component={Historico} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }}/>
-            <Tab.Screen name="Perfil" component={PerfilEntregador} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }}/>
+            <Tab.Screen name="Pendentes" component={Pendentes} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }} />
+            <Tab.Screen name="Histórico" component={Historico} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }} />
+            <Tab.Screen name="Perfil" component={PerfilEntregador} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }} />
         </Tab.Navigator>
 
 
@@ -143,7 +148,7 @@ export function TabsEntregador({ route }) {
 }
 export function TabsEmpresa({ route }) {
     const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
-    console.log(Identificador)
+    //console.log(Identificador)
     const tema = useTheme();
     return (
         <Tab.Navigator
@@ -179,10 +184,10 @@ export function TabsEmpresa({ route }) {
                 },
             })}
         >
-            <Tab.Screen name="IniciarﾠEntrega" component={IniciarEntrega} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }}/>
-            <Tab.Screen name="Pendentes" component={PendentesAndamento} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }}/>
-            <Tab.Screen name="Histórico" component={HistoricoEmpresa} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }}/>
-            <Tab.Screen name="Perfil" component={PerfilEmpresa} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }}/>
+            <Tab.Screen name="IniciarﾠEntrega" component={IniciarEntrega} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }} />
+            <Tab.Screen name="Pendentes" component={PendentesAndamento} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }} />
+            <Tab.Screen name="Histórico" component={HistoricoEmpresa} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }} />
+            <Tab.Screen name="Perfil" component={PerfilEmpresa} options={{ headerShown: false }} initialParams={{ Identificador: Identificador }} />
         </Tab.Navigator>
 
 

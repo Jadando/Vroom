@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ToastAndroid, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import { getFirestore, getDocs, collection, where } from "firebase/firestore";
@@ -9,15 +9,16 @@ import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as App from "../../firebaseConnection";
 
+
 WebBrowser.maybeCompleteAuthSession()
+
 
 export default function Login() {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [email, setEmail] = useState('vroomde@gmail.com');
+    const [email, setEmail] = useState('entregador@gmail.com');
     const [senha, setSenha] = useState('123456');
-    const [Identificador, setIdentificador] = useState(null);
     const [UserGoogle, SetUserGoogle] = React.useState(null);
     // const [request, response, promptAsync] = Google.useAuthRequest({
     //     androidClientId: '550744668475-82l8k7cubo8tt1jqfn3clneu0hjrhdmj.apps.googleusercontent.com',
@@ -68,18 +69,15 @@ export default function Login() {
                     .then(async (userCredential) => {
                         const user = userCredential.user;
                         const uide = user.uid
-                        setIdentificador(uide)
-                        //Não retirar o log a baixo sujeito a erro//
-                        console.log(Identificador)
+                        
                         const processarConsulta = (snapshot, dataArray, navigateCallback) => {
                             snapshot.forEach((doc) => {
                                 const data = doc.data();
                                 dataArray.push({ id: doc.id, ...data });
-                                if (doc.id === uide) {
-                                    navigateCallback();
-                                }
+                                navigateCallback();
                             });
                         };
+
                         try {
                             const [clienteSnapshot, empresaSnapshot, entregadorSnapshot] = await Promise.all([
                                 getDocs(collection(db, "usuario/tabela/cliente"), where('id', '==', uide)),
@@ -92,19 +90,22 @@ export default function Login() {
                             const dataArrayEntregador = [];
 
                             // Processar os resultados de cada consulta
+
                             processarConsulta(clienteSnapshot, dataArrayCliente, () => {
                                 navigation.navigate('Home', {
-                                    Identificador
-                                }); 
+                                    Identificador:uide
+                                });
                             });
+
                             processarConsulta(empresaSnapshot, dataArrayEmpresa, () => {
                                 navigation.navigate('IniciarEntrega', {
-                                    Identificador
-                                }); 
+                                    Identificador:uide
+                                });
                             });
+
                             processarConsulta(entregadorSnapshot, dataArrayEntregador, () => {
                                 navigation.navigate('Pendentes', {
-                                    Identificador
+                                    Identificador:uide
                                 });
                             });
 
@@ -159,7 +160,12 @@ export default function Login() {
                 <TouchableOpacity
                     style={styles.logar}
                     onPress={validarLogin}>
+
                     <Text style={styles.logarText}>Entrar</Text>
+                    <ActivityIndicator
+                        size={24}
+                        color={'#000'}
+                    />
                 </TouchableOpacity>
 
                 <View style={styles.separador}>

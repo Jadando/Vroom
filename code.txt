@@ -268,3 +268,25 @@ import RastrearEmpresa from './src/pages/Empresa/RastrearEmpresa';
           />
 
         </Stack.Navigator>
+
+
+           const processarConsulta = async (snapshot, dataArray, navigateCallback) => {
+                            snapshot.forEach((doc) => {
+                                const data = doc.data();
+                                dataArray.push({ id: doc.id, ...data });
+                                if (doc.id === uide) {
+                                    await aguardarIdentificadorNaoNulo();
+                                    console.log("Identificador não é null, chamando navigateCallback");
+                                    navigateCallback();
+                                }
+                                // console.log("penis")
+                                // setIdentificador(uide)
+                                // Callback()
+                                // async function Callback() {
+                                //     if (Identificador !== null) {
+                                //         console.log("penis2")
+                                //         navigateCallback();
+                                //     }
+                                // }
+                            });
+                        };

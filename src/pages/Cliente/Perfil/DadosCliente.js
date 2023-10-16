@@ -10,7 +10,7 @@ import { getFirestore, onSnapshot, doc } from "firebase/firestore";
 export default function DadosCliente({route}) {
   const navigation = useNavigation();
   const tema = useTheme();
-  const [Identificador, setIdentificador] = useState(route.params?.Identificador || 'cx2W1HltBKTkNxjKntUNd7w6Yyr1');
+  const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
   const styles = getstyles(tema);
   const [nome, setNome] = useState();
   const [telefone, setTelefone] = useState();
@@ -121,7 +121,7 @@ export default function DadosCliente({route}) {
 
           <View style={styles.buttons}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('PerfilCliente')}
+              onPress={() => navigation.pop(1)}
               style={styles.cadastrar}
             >
               <Text style={styles.cadastrarText}>Voltar</Text>

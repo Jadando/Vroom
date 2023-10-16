@@ -24,36 +24,17 @@ export default function AlterarCliente({route}) {
     const [bairro, setBairro] = useState(route.params?.bairro);
     const [endereco, setEndereco] = useState(route.params?.endereco);
     const [numero, setNumero] = useState(route.params?.numero);
+    const [cep2, setCep2] = useState(null);
+    const [estado2, setEstado2] = useState(null);
+    const [cidade2, setCidade2] = useState(null);
+    const [bairro2, setBairro2] = useState(null);
+    const [endereco2, setEndereco2] = useState(null);
+    const [numero2, setNumero2] = useState(null);
 
 
 
     async function atualizarcliente() {
-        // const db = getFirestore();
-        // const docRef = doc(db, "usuarios/tabela/cliente", Identificador);
-      
-        // try {
-        //   // Validation checks
-        //   if (!nome || !telefone || !cep || !estado || !cidade || !bairro || !endereco || !numero) {
-        //     console.error("Incomplete data. All fields must be filled.");
-        //     return;
-        //   }
-      
-        //   await updateDoc(docRef, {
-        //     nome: nome,
-        //     telefone: telefone,
-        //     cep: cep,
-        //     estado: estado,
-        //     cidade: cidade,
-        //     bairro: bairro,
-        //     endereco: endereco,
-        //     numero: numero,
-        //   });
-      
-        //   console.log("Dados atualizados com sucesso!");
-        //   // Uncomment and configure navigation here if needed
-        // } catch (error) {
-        //   console.error("Erro ao atualizar os dados: ", error);
-        // }
+
         try {
               // Validation checks
               if (!nome || !telefone || !cep || !estado || !cidade || !bairro || !endereco || !numero) {
@@ -74,6 +55,12 @@ export default function AlterarCliente({route}) {
                bairro: bairro,
                endereco: endereco,
                numero: numero,
+               cep2: cep2,
+               estado2: estado2,
+               cidade2: cidade2,
+               bairro2: bairro2,
+               endereco2: endereco2,
+               numero2: numero2,
            };
 
            await setDoc(docRef, dados);
@@ -169,38 +156,38 @@ export default function AlterarCliente({route}) {
                             <TextInputMask
                                 style={styles.input}
                                 type={'zip-code'}
-                                value={cep}
-                                onChangeText={setCep}
+                                value={cep2}
+                                onChangeText={setCep2}
                                 placeholder="CEP"
                             />
                             <TextInput
                                 style={styles.input}
-                                value={estado}
-                                onChangeText={setEstado}
+                                value={estado2}
+                                onChangeText={setEstado2}
                                 placeholder="Estado"
                             />
                             <TextInput
                                 style={styles.input}
-                                value={cidade}
-                                onChangeText={setCidade}
+                                value={cidade2}
+                                onChangeText={setCidade2}
                                 placeholder="Cidade"
                             />
                             <TextInput
                                 style={styles.input}
-                                value={bairro}
-                                onChangeText={setBairro}
+                                value={bairro2}
+                                onChangeText={setBairro2}
                                 placeholder="Bairro"
                             />
                             <TextInput
                                 style={styles.input}
-                                value={endereco}
-                                onChangeText={setEndereco}
+                                value={endereco2}
+                                onChangeText={setEndereco2}
                                 placeholder="Endereço"
                             />
                             <TextInput
                                 style={styles.input}
-                                value={numero}
-                                onChangeText={setNumero}
+                                value={numero2}
+                                onChangeText={setNumero2}
                                 placeholder="Número"
                             />
                         </View>
