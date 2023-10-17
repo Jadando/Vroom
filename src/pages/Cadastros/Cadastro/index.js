@@ -3,12 +3,13 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Modal } fro
 import { useNavigation } from '@react-navigation/native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useTheme } from 'styled-components';
+import LoadingModal from '../../../components/loadingModal';
 
 export default function Cadastro() {
   const navigation = useNavigation();
   const tema = useTheme();
   const styles = getstyles(tema);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('vroomde@gmail.com');
   const [senha, setSenha] = useState('123456');
   const [senhaConfirma, setSenhaConfirma] = useState('123456');
@@ -27,7 +28,7 @@ export default function Cadastro() {
   }
 
   async function validarCadastro() {
-
+    setIsLoading(true)
     if (senha === senhaConfirma && senha !== '' && senhaConfirma !== '' && email !== '') {
       if (validarEmail(email)) {
         const auth = getAuth();
@@ -38,6 +39,7 @@ export default function Cadastro() {
             const userUid = user.uid; 
             setIdentificador(userUid)
             setModalVisible(true);
+            setIsLoading(false)
             // ...
           })
           .catch((error) => {
@@ -45,12 +47,15 @@ export default function Cadastro() {
             const errorMessage = error.message;
             console.log(errorCode)
             console.log(errorMessage)
+            setIsLoading(false)
             // ..
           });
       } else {
+        setIsLoading(false)
         alert('Formato de email inválido');
       }
     } else {
+      setIsLoading(false)
       if (senha !== senhaConfirma && email !== '') {
         alert('Senhas não coincidem');
       } else {
@@ -167,7 +172,7 @@ export default function Cadastro() {
           </View>
         </View>
       </Modal>
-
+      <LoadingModal visible={isLoading}/>
     </View>
   );
 }
