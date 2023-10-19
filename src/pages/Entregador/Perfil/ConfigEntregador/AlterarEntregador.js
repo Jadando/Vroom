@@ -5,7 +5,7 @@ import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import ChangeModal from '../../../../components/changeModal';
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, updateDoc } from "firebase/firestore";
 
 export default function AlterarEntregador({ route }) {
     const [modalVisible, setModalVisible] = useState(false)
@@ -48,7 +48,7 @@ export default function AlterarEntregador({ route }) {
                 numero: numero
             };
 
-            await setDoc(docRef, dados);
+            await updateDoc(docRef, dados);
             await navigation.pop(1)
 
             console.log('Documento criado com sucesso'); // Redirecione ou faça o que desejar após criar o documento

@@ -5,7 +5,7 @@ import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 //import ChangeModal from './../../../components/changeModal/index';
-import { getFirestore,doc,setDoc } from "firebase/firestore";
+import { getFirestore,doc,setDoc, updateDoc } from "firebase/firestore";
 
 
 export default function AlterarCliente({route}) {
@@ -63,10 +63,10 @@ export default function AlterarCliente({route}) {
                numero2: numero2,
            };
 
-           await setDoc(docRef, dados);
+           await updateDoc(docRef, dados);
             await navigation.pop(1)
 
-           console.log('Documento criado com sucesso'); // Redirecione ou faça o que desejar após criar o documento
+           console.log('Documento alterado com sucesso'); // Redirecione ou faça o que desejar após criar o documento
        } catch (e) {
            console.error("Error adding document: ", e);
        }
