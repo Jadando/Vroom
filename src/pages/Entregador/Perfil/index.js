@@ -13,6 +13,7 @@ export default function PerfilEntregador({ route }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
     const [nameuser, setNameUser] = useState(null);
+    console.log(Identificador+" perfil entreagdor")
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
@@ -59,12 +60,14 @@ export default function PerfilEntregador({ route }) {
 
                 <View style={styles.btnArea}>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => navigation.navigate('DadosEntregador')}>
+                        onPress={() => navigation.navigate('DadosEntregador',{
+                            Identificador
+                            })}>
                         <Text style={styles.btnText}>Meus dados</Text>
                         <Icon name='information' size={30} color='#000' />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => navigation.navigate('EmpresasAfiliadas')}>
+                        onPress={() => navigation.navigate('EmpresasAfiliadas',{})}>
                         <Text style={styles.btnText}>Sua afiliação</Text>
                         <Icon name='business-outline' size={30} color='#000' />
                     </TouchableOpacity>

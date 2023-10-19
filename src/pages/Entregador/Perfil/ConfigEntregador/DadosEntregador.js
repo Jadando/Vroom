@@ -23,7 +23,7 @@ export default function DadosEntregador({ route }) {
     const [bairro, setBairro] = useState(null);
     const [endereco, setEndereco] = useState(null);
     const [numero, setNumero] = useState(null);
-
+ 
     useEffect(() => {
         const db = getFirestore();
         const docRef = doc(db, "usuario", "tabela", "entregador", Identificador);
@@ -31,7 +31,7 @@ export default function DadosEntregador({ route }) {
         const unsubscribe = onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
                 const userData = doc.data();
-                setCpf(userData.cpf)
+                setCpf(userData.cpf);
                 setNome(userData.nome);
                 setTelefone(userData.telefone);
                 setCep(userData.cep);
@@ -144,7 +144,19 @@ export default function DadosEntregador({ route }) {
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('AlterarEntregador')}
+                            onPress={() => navigation.navigate('AlterarEntregador',{
+                                Identificador,
+                                cpf,
+                                nome,
+                                dtNasc,
+                                telefone,
+                                cep,
+                                estado,
+                                cidade,
+                                bairro,
+                                endereco,
+                                numero,
+                            })}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Alterar dados</Text>

@@ -1,27 +1,62 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import ChangeModal from '../../../../components/changeModal';
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
-export default function AlterarEntregador() {
+export default function AlterarEntregador({ route }) {
     const [modalVisible, setModalVisible] = useState(false)
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [cpf, setCpf] = useState('11111111111');
-    const [nome, setNome] = useState('Agostinho Carrara');
-    const [dtNasc, setDtNasc] = useState('23/09/1990');
-    const [telefone, setTelefone] = useState('1344809900');
-    const [cep, setCep] = useState('11111111');
-    const [estado, setEstado] = useState('SP');
-    const [cidade, setCidade] = useState('Mongaguá');
-    const [bairro, setBairro] = useState('Agenor de Campos');
-    const [endereco, setEndereco] = useState('Rua Aimorés');
-    const [numero, setNumero] = useState('11111111111');
+    const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
+    const [cpf, setCpf] = useState(route.params?.cpf || '');
+    const [nome, setNome] = useState(route.params?.nome || '');
+    const [dtNasc, setDtNasc] = useState(route.params?.dtNasc || '');
+    const [telefone, setTelefone] = useState(route.params?.telefone || '');
+    const [cep, setCep] = useState(route.params?.cep || '');
+    const [estado, setEstado] = useState(route.params?.estado || '');
+    const [cidade, setCidade] = useState(route.params?.cidade || '');
+    const [bairro, setBairro] = useState(route.params?.bairro || '');
+    const [endereco, setEndereco] = useState(route.params?.endereco || '');
+    const [numero, setNumero] = useState(route.params?.numero || '');
 
+
+    async function atualizarEntregador() {
+
+        try {
+            // Validation checks
+            if (!nome || !telefone || !cep || !estado || !cidade || !bairro || !endereco || !numero) {
+                console.error("Incomplete data. All fields must be filled.");
+                return;
+            }
+            // Substitua com o UID desejado
+            const db = getFirestore();
+
+            const docRef = doc(db, "usuario/tabela/entregador", Identificador); // Crie uma referência ao documento com o UID específico
+
+            const dados = {
+                telefone: telefone,
+                cep: cep,
+                estado: estado,
+                cidade: cidade,
+                bairro: bairro,
+                endereco: endereco,
+                numero: numero
+            };
+
+            await setDoc(docRef, dados);
+            await navigation.pop(1)
+
+            console.log('Documento criado com sucesso'); // Redirecione ou faça o que desejar após criar o documento
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+
+    }
 
     return (
         <View style={styles.container}>
@@ -121,11 +156,47 @@ export default function AlterarEntregador() {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <ChangeModal
-                    modalVisible={modalVisible}
-                    setModalVisible={setModalVisible}
-                />
+
             </ScrollView >
+
+            <Modal
+                visible={modalVisible}
+                transparent={true}
+                animationType='slide'
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalHeader}>
+                        <Text style={styles.modalHeaderTitle}>Aviso</Text>
+                        <TouchableOpacity
+                            style={styles.modalHeaderClose}
+                            onPress={() => setModalVisible(!modalVisible)} >
+                            <Image source={require('../../../../img/close.png')} style={{ width: 30, height: 30 }} />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View>
+                        <Text style={styles.modalContentTitle}>
+                            Tem certeza que deseja alterar seus dados?
+                        </Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <TouchableOpacity
+                                onPress={() => setModalVisible(!modalVisible)}
+                                style={styles.modalBtn}>
+                                <Text style={styles.modalContent}>
+                                    Não
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => atualizarEntregador()}
+                                style={styles.modalBtn}>
+                                <Text style={styles.modalContent}>
+                                    Sim
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View >
     );
 }
@@ -184,5 +255,63 @@ const getstyles = (tema) => StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
     },
-
+    modalContainer: {
+        alignSelf: 'center',
+        marginTop: '50%',
+        width: 300,
+        backgroundColor: '#f2f2f2',
+        margin: 20,
+        borderRadius: 10,
+        height: 'fit-content',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 50
+    },
+    modalHeader: {
+        backgroundColor: '#ffc000',
+        width: '100%',
+        height: 40,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        padding: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 15
+    },
+    modalHeaderTitle: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#121212',
+        textAlign: 'center',
+    },
+    modalHeaderClose: {
+        justifyContent: 'flex-end',
+    },
+    modalContentTitle: {
+        fontSize: 18,
+        textAlign: 'center',
+        marginBottom: 20
+    },
+    modalContent: {
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: '#121212'
+    },
+    modalBtn: {
+        width: '45%',
+        height: 40,
+        borderRadius: 10,
+        backgroundColor: '#ffc000',
+        padding: 5,
+        marginBottom: 20,
+        alignSelf: 'center'
+    },
 });

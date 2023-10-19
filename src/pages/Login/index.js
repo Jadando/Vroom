@@ -17,7 +17,7 @@ export default function Login() {
     const tema = useTheme();
     const styles = getstyles(tema);
     const [isLoading, setIsLoading] = useState(false);
-    const [email, setEmail] = useState('entregador@gmail.com');
+    const [email, setEmail] = useState('Testee@gmail.com');
     const [senha, setSenha] = useState('123456');
     const [UserGoogle, SetUserGoogle] = React.useState(null);
     // const [request, response, promptAsync] = Google.useAuthRequest({
@@ -61,49 +61,71 @@ export default function Login() {
     }
 
     async function validarLogin() {
-        setIsLoading(true);
-        
-        if (email === '' || senha === '' || !validarEmail(email)) {
-            alert("Email inválido ou senha vazia");
-            setIsLoading(false);
-            return; // Encerra a função
-        }
-    
-        const auth = getAuth();
-        const db = getFirestore();
-    
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, senha);
-            const user = userCredential.user;
-            const uide = user.uid;
-    
-            const clienteSnapshot = await getDocs(collection(db, "usuario/tabela/cliente"), where('id', '==', uide));
-            if (!clienteSnapshot.empty) {
-                navigation.navigate('Home', { Identificador: uide });
-                setIsLoading(false);
-                return;
+       // setIsLoading(true);
+        if (email !== '' && senha !== '') {
+            if (validarEmail(email)) {
+                const auth = getAuth();
+                const db = getFirestore();
+                signInWithEmailAndPassword(auth, email, senha)
+                    .then(async (userCredential) => {
+                        const user = userCredential.user;
+                        const uide = user.uid
+
+                        const processarConsulta = (snapshot, dataArray, navigateCallback) => {
+                            snapshot.forEach((doc) => {
+                                const data = doc.data();
+                                dataArray.push({ id: doc.id, ...data });
+                                navigateCallback();
+                            });
+                        };
+
+                        try {
+                            const [clienteSnapshot, empresaSnapshot, entregadorSnapshot] = await Promise.all([
+                                getDocs(collection(db, "usuario/tabela/cliente"), where('id', '==', uide)),
+                                getDocs(collection(db, "usuario/tabela/empresa"), where('id', '==', uide)),
+                                getDocs(collection(db, "usuario/tabela/entregador"), where('id', '==', uide)),
+                            ]);
+
+                            const dataArrayCliente = [];
+                            const dataArrayEmpresa = [];
+                            const dataArrayEntregador = [];
+
+                            // Processar os resultados de cada consulta
+
+                            processarConsulta(clienteSnapshot, dataArrayCliente, () => {
+                                navigation.navigate('Home', {
+                                    Identificador: uide
+                                });
+                            });
+
+                            processarConsulta(empresaSnapshot, dataArrayEmpresa, () => {
+                                navigation.navigate('IniciarEntrega', {
+                                    Identificador: uide
+                                });
+                            });
+
+                            processarConsulta(entregadorSnapshot, dataArrayEntregador, () => {
+                                navigation.navigate('Pendentes', {
+                                    Identificador: uide
+                                });
+                            });
+
+                            // ...
+                        } catch (error) {
+                            console.error("Erro ao executar as consultas:", error);
+                        }
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        console.log(errorCode)
+                        console.log(errorMessage)
+                    });
             }
-    
-            const empresaSnapshot = await getDocs(collection(db, "usuario/tabela/empresa"), where('id', '==', uide));
-            if (!empresaSnapshot.empty) {
-                navigation.navigate('IniciarEntrega', { Identificador: uide });
-                setIsLoading(false);
-                return;
+            else {
+                alert("email ou senha incorreto")
             }
-    
-            const entregadorSnapshot = await getDocs(collection(db, "usuario/tabela/entregador"), where('id', '==', uide));
-            if (!entregadorSnapshot.empty) {
-                navigation.navigate('Pendentes', { Identificador: uide });
-                setIsLoading(false);
-                return;
-            }
-    
-            // Se chegou aqui, o usuário não pertence a nenhuma das tabelas
-            alert("Usuário não encontrado nas tabelas.");
-            setIsLoading(false);
-        } catch (error) {
-            console.error("Erro durante a validação de login:", error);
-            setIsLoading(false);
+            //setIsLoading(false);
         }
     }
     
