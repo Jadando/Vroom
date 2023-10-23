@@ -1,30 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
+import { getFirestore, onSnapshot, doc } from "firebase/firestore";
 import ChangeModal from '../../../../components/changeModal';
 
-export default function DadosEmpresa() {
+export default function DadosEmpresa({route}) {
     const [modalVisible, setModalVisible] = useState(false)
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [cnpj, setCnpj] = useState('35.123.000/0001-00');
-    const [nome, setNome] = useState('Luizia hamburgueria');
-    const [categoria, setCategoria] = useState('Restaurante');
-    const [telefone, setTelefone] = useState('1999819006');
-    const [cep, setCep] = useState('1173000');
-    const [estado, setEstado] = useState('RJ');
-    const [cidade, setCidade] = useState('Rio de Janeiro');
-    const [bairro, setBairro] = useState('Cristo Redentor');
-    const [endereco, setEndereco] = useState('Rua vicente casemiro');
-    const [numero, setNumero] = useState('90');
+    const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
+    const [cnpj, setCnpj] = useState(null);
+    const [nome, setNome] = useState(null);
+    const [categoria, setCategoria] = useState(null);
+    const [telefone, setTelefone] = useState(null);
+    const [cep, setCep] = useState(null);
+    const [estado, setEstado] = useState(null);
+    const [cidade, setCidade] = useState(null);
+    const [bairro, setBairro] = useState(null);
+    const [endereco, setEndereco] = useState(null);
+    const [numero, setNumero] = useState(null);
 
-    function aAlterarEntregador() {
-        navigation.navigate('')
-    }
+    useEffect(() => {
+        const db = getFirestore();
+        const docRef = doc(db, "usuario", "tabela", "empresa", IdentificadorEmpresa);
+      
+        const unsubscribe = onSnapshot(docRef, (doc) => {
+          if (doc.exists()) {
+            const userData = doc.data();
+            setCnpj(userData.cnpj);
+            setNome(userData.nome);
+            setCategoria(userData.categoria);
+            setTelefone(userData.telefone);
+            setCep(userData.cep);
+            setEstado(userData.estado);
+            setCidade(userData.cidade);
+            setBairro(userData.bairro);
+            setEndereco(userData.endereco);
+            setNumero(userData.numero);
+          } else {
+            console.log("Empresa não existe.");
+          }
+        });
+      
+        return () => {
+          // Ao desmontar o componente, pare de ouvir as atualizações
+          unsubscribe();
+        };
+      }, [IdentificadorEmpresa]);
 
     return (
         <View style={styles.container}>
@@ -116,7 +142,19 @@ export default function DadosEmpresa() {
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('AlterarEmpresa')}
+                            onPress={() => navigation.navigate('AlterarEmpresa',{
+                                IdentificadorEmpresa,
+                                cnpj ,
+                                nome,
+                                categoria,
+                                telefone,
+                                cep,
+                                estado,
+                                cidade,
+                                bairro,
+                                endereco,
+                                numero,
+                            })}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Alterar dados</Text>

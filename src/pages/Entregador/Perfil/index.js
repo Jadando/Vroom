@@ -11,9 +11,9 @@ import { getFirestore, onSnapshot, doc } from "firebase/firestore";
 
 export default function PerfilEntregador({ route }) {
     const [modalVisible, setModalVisible] = useState(false);
-    const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
+    const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');
     const [nameuser, setNameUser] = useState(null);
-    console.log(Identificador+" perfil entreagdor")
+    console.log(IdentificadorEntregador +" perfil entreagdor")
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
@@ -21,7 +21,7 @@ export default function PerfilEntregador({ route }) {
 
     useEffect(() => {
         const db = getFirestore();
-        const docRef = doc(db, "usuario", "tabela", "entregador", Identificador);
+        const docRef = doc(db, "usuario", "tabela", "entregador", IdentificadorEntregador);
 
         const unsubscribe = onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
@@ -36,7 +36,7 @@ export default function PerfilEntregador({ route }) {
             // Ao desmontar o componente, pare de ouvir as atualizações
             unsubscribe();
         };
-    }, [Identificador]);
+    }, [IdentificadorEntregador]);
 
     return (
         <ScrollView
@@ -61,7 +61,7 @@ export default function PerfilEntregador({ route }) {
                 <View style={styles.btnArea}>
                     <TouchableOpacity style={styles.button}
                         onPress={() => navigation.navigate('DadosEntregador',{
-                            Identificador
+                            IdentificadorEntregador
                             })}>
                         <Text style={styles.btnText}>Meus dados</Text>
                         <Icon name='information' size={30} color='#000' />

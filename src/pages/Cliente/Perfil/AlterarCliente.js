@@ -4,8 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
-//import ChangeModal from './../../../components/changeModal/index';
-import { getFirestore,doc,setDoc, updateDoc } from "firebase/firestore";
+import { getFirestore,doc,updateDoc } from "firebase/firestore";
 
 
 export default function AlterarCliente({route}) {
@@ -15,7 +14,7 @@ export default function AlterarCliente({route}) {
     const tema = useTheme();
     const styles = getstyles(tema);
 
-    const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
+    const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
     const [nome, setNome] = useState(route.params?.nome);
     const [telefone, setTelefone] = useState(route.params?.telefone);
     const [cep, setCep] = useState(route.params?.cep);
@@ -44,7 +43,7 @@ export default function AlterarCliente({route}) {
             // Substitua com o UID desejado
            const db = getFirestore();
 
-           const docRef = doc(db, "usuario/tabela/cliente", Identificador); // Crie uma referência ao documento com o UID específico
+           const docRef = doc(db, "usuario/tabela/cliente", IdentificadorCliente); // Crie uma referência ao documento com o UID específico
 
            const dados = {
                nome: nome,
@@ -209,9 +208,7 @@ export default function AlterarCliente({route}) {
                         </TouchableOpacity>
                     </View>
                 </View>
-                
-            </ScrollView>
-            <Modal
+                <Modal
                 visible={modalVisible}
                 transparent={true}
                 animationType='slide'
@@ -253,6 +250,7 @@ export default function AlterarCliente({route}) {
                     </View>
                 </View>
             </Modal>
+            </ScrollView>
         </View>
 
     );

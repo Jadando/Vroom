@@ -36,7 +36,7 @@ import Restaurante from './src/pages/Cliente/Search/Restaurante';
 
 // Imports relacionados à Empresa
 import PerfilEmpresa from './src/pages/Empresa/Perfil';
-import IniciarEntrega from './src/pages/Empresa/IniciarEntrega';
+// import IniciarEntrega from './src/pages/Empresa/IniciarEntrega';
 import PendentesAndamento from './src/pages/Empresa/PendentesAndamento';
 import RastrearEmpresa from './src/pages/Empresa/RastrearEmpresa';
 import ConfigEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
@@ -60,7 +60,7 @@ import SemAfiliacao from './src/pages/Entregador/Afiliacao/SemAfiliacao';
 import DadosEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/DadosEntregador';
 import AlterarEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/AlterarEntregador';
 import Historico from './src/pages/Entregador/Historico';
-import Pendentes from './src/pages/Entregador/Pendentes';
+//import Pendentes from './src/pages/Entregador/Pendentes';
 
 // Imports gerais
 import Teste from './src/pages/Teste';
@@ -75,25 +75,25 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const Tema = useTema()
-  useEffect(() => {
-    (async () => {
-        const locationPermission = await Location.requestForegroundPermissionsAsync();
-        if (locationPermission.status !== 'granted') {
-            console.error('A permissão para acessar o local foi negada');
-            alert("A permissão para acessar o local foi negada")
-            return;
-        }
+//   useEffect(() => {
+//     (async () => {
+//         const locationPermission = await Location.requestForegroundPermissionsAsync();
+//         if (locationPermission.status !== 'granted') {
+//             console.error('A permissão para acessar o local foi negada');
+//             alert("A permissão para acessar o local foi negada")
+//             return;
+//         }
 
 
-        const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (galleryPermission.status !== 'granted') {
-            console.error('A permissão para acessar a galeria foi negada');
-            alert("A permissão para acessar a galeria foi negada")
-            return;
-        }
+//         const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+//         if (galleryPermission.status !== 'granted') {
+//             console.error('A permissão para acessar a galeria foi negada');
+//             alert("A permissão para acessar a galeria foi negada")
+//             return;
+//         }
         
-    })();
-}, []);
+//     })();
+// }, []);
   return (
     <ThemeProvider theme={Tema}>
     <NavigationContainer>
@@ -125,14 +125,14 @@ export default function App() {
           <Stack.Group title="Empresa">
               <Stack.Screen name="PerfilEmpresa" component={PerfilEmpresa} />
               <Stack.Screen name="IniciarEntrega" component={TabsEmpresa} />
-              <Stack.Screen name="PendentesAndamento" component={TabsEmpresa} />
+              <Stack.Screen name="PendentesAndamento" component={PendentesAndamento} />
               <Stack.Screen name="RastrearEmpresa" component={RastrearEmpresa} />
               <Stack.Screen name="ConfigEmpresa" component={ConfigEmpresa} />
               <Stack.Screen name="CadastroEmpresa" component={CadastroEmpresa} />
               <Stack.Screen name="EmpresaRevisa" component={EmpresaRevisa} />
               <Stack.Screen name="Afiliado" component={Afiliado} />
               <Stack.Screen name="DadosEmpresa" component={DadosEmpresa} />
-              <Stack.Screen name="EditarPerfil" component={EditarPerfil } />
+              <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
               <Stack.Screen name='AlterarEmpresa' component={AlterarEmpresa} />
               <Stack.Screen name='Entregadores' component={Entregadores} />
           </Stack.Group>

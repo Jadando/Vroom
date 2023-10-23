@@ -53,7 +53,9 @@ export default function EmpresaRevisa({ route }) {
         };
 
         await setDoc(docRef, dados); // Use setDoc para criar o documento com os dados
-        navigation.navigate('IniciarEntrega')
+        navigation.navigate('IniciarEntrega',{
+          IdentificadorEmpresa:Identificador
+        })
         console.log('Documento criado com sucesso');
       } catch (e) {
         console.error("Error adding document: ", e);

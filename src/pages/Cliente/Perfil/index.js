@@ -8,7 +8,7 @@ import { getFirestore, onSnapshot, doc } from "firebase/firestore";
 
 
 export default function Perfil({ route }) {
-    const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
+    const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
     const [modalVisible, setModalVisible] = useState(false);
     const [nameuser, setNameUser] = useState(null);
     const navigation = useNavigation();
@@ -17,7 +17,7 @@ export default function Perfil({ route }) {
 
     useEffect(() => {
         const db = getFirestore();
-        const docRef = doc(db, "usuario", "tabela", "cliente", Identificador);
+        const docRef = doc(db, "usuario", "tabela", "cliente", IdentificadorCliente);
 
         const unsubscribe = onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
@@ -32,7 +32,7 @@ export default function Perfil({ route }) {
             // Ao desmontar o componente, pare de ouvir as atualizações
             unsubscribe();
         };
-    }, [Identificador]);
+    }, [IdentificadorCliente]);
 
 
 
@@ -55,7 +55,7 @@ export default function Perfil({ route }) {
 
             <View style={styles.btnArea}>
                 <TouchableOpacity style={styles.button}
-                    onPress={() => navigation.navigate('DadosCliente', { Identificador })}>
+                    onPress={() => navigation.navigate('DadosCliente', { IdentificadorCliente })}>
                     <Text style={styles.btnText}>Meus dados</Text>
                     <Icon name='information' size={30} color='#000' />
                 </TouchableOpacity>

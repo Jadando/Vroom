@@ -13,7 +13,7 @@ import { collection, getDocs, getFirestore } from "firebase/firestore";
 //import { getStorage, ref, uploadString } from "firebase/storage";
 //import * as ImagePicker from 'expo-image-picker';   
 //import * as FileSystem from 'expo-file-system';
-import { encode } from 'base-64';
+//import { encode } from 'base-64';
 //donwload
 //import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 //import  ImageUtils from 'expo-image-utils';
@@ -30,9 +30,9 @@ export default function Teste() {
 
     const [imageUrl, setImageUrl] = useState(null);
     const [imageUri, setImageUri] = useState(null);
-    if (typeof atob === 'undefined') {
-        global.atob = encode;
-    }
+    // if (typeof atob === 'undefined') {
+    //     global.atob = encode;
+    // }
     const chooseImageFromGallery = async () => {
         try {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -87,7 +87,7 @@ export default function Teste() {
 
         console.log(dataArray);
     }
-    async function imagem() {
+    async function DonwloadImage() {
         try {
             const storage = getStorage();
             const imageRef = ref(storage, 'caminho/dados');

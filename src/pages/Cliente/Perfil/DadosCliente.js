@@ -10,7 +10,7 @@ import { getFirestore, onSnapshot, doc } from "firebase/firestore";
 export default function DadosCliente({route}) {
   const navigation = useNavigation();
   const tema = useTheme();
-  const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
+  const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
   const styles = getstyles(tema);
   const [nome, setNome] = useState();
   const [telefone, setTelefone] = useState();
@@ -24,7 +24,7 @@ export default function DadosCliente({route}) {
 
   useEffect(() => {
     const db = getFirestore();
-    const docRef = doc(db, "usuario", "tabela", "cliente", Identificador);
+    const docRef = doc(db, "usuario", "tabela", "cliente", IdentificadorCliente);
   
     const unsubscribe = onSnapshot(docRef, (doc) => {
       if (doc.exists()) {
@@ -129,7 +129,7 @@ export default function DadosCliente({route}) {
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('AlterarCliente', {
-                  Identificador,
+                  IdentificadorCliente,
                   nome,
                   telefone,
                   cep,

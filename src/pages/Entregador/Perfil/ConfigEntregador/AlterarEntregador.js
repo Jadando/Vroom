@@ -12,7 +12,7 @@ export default function AlterarEntregador({ route }) {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
+    const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');
     const [cpf, setCpf] = useState(route.params?.cpf || '');
     const [nome, setNome] = useState(route.params?.nome || '');
     const [dtNasc, setDtNasc] = useState(route.params?.dtNasc || '');
@@ -36,7 +36,7 @@ export default function AlterarEntregador({ route }) {
             // Substitua com o UID desejado
             const db = getFirestore();
 
-            const docRef = doc(db, "usuario/tabela/entregador", Identificador); // Crie uma referência ao documento com o UID específico
+            const docRef = doc(db, "usuario/tabela/entregador", IdentificadorEntregador); // Crie uma referência ao documento com o UID específico
 
             const dados = {
                 telefone: telefone,

@@ -9,7 +9,7 @@ import { getFirestore, onSnapshot, doc } from "firebase/firestore";
 
 export default function DadosEntregador({ route }) {
     const [modalVisible, setModalVisible] = useState(false)
-    const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
+    const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
@@ -26,7 +26,7 @@ export default function DadosEntregador({ route }) {
  
     useEffect(() => {
         const db = getFirestore();
-        const docRef = doc(db, "usuario", "tabela", "entregador", Identificador);
+        const docRef = doc(db, "usuario", "tabela", "entregador", IdentificadorEntregador);
 
         const unsubscribe = onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
@@ -50,7 +50,7 @@ export default function DadosEntregador({ route }) {
             // Ao desmontar o componente, pare de ouvir as atualizações
             unsubscribe();
         };
-    }, [Identificador]);
+    }, [IdentificadorEntregador]);
 
 
     return (
@@ -145,7 +145,7 @@ export default function DadosEntregador({ route }) {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => navigation.navigate('AlterarEntregador',{
-                                Identificador,
+                                IdentificadorEntregador,
                                 cpf,
                                 nome,
                                 dtNasc,

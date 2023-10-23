@@ -6,9 +6,9 @@ import { useTheme } from 'styled-components';
 
 
 export default function Home({ route }) {
-  const [Identificado, setIdentificador] = useState(route.params?.Identificador || '');
+  const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
   const [endereco, setEndereco] = useState("Seu Endereço")
-  console.log(Identificado)
+  console.log(IdentificadorCliente)
 
   const tema = useTheme();
   const styles = getstyles(tema);

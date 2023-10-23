@@ -1,30 +1,62 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal } from 'react-native';
+import { Image,StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
-import ChangeModal from '../../../../components/changeModal';
+import { getFirestore,doc,updateDoc } from "firebase/firestore";
 
-export default function AlterarEntregador() {
+export default function AlterarEntregador({route}) {
+    const [viewlVisible, setViewVisible] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [cnpj, setCnpj] = useState('35.123.000/0001-00');
-    const [nome, setNome] = useState('Luizia hamburgueria');
-    const [categoria, setCategoria] = useState('Restaurante');
-    const [telefone, setTelefone] = useState('1999819006');
-    const [cep, setCep] = useState('1173000');
-    const [estado, setEstado] = useState('RJ');
-    const [cidade, setCidade] = useState('Rio de Janeiro');
-    const [bairro, setBairro] = useState('Cristo Redentor');
-    const [endereco, setEndereco] = useState('Rua vicente casemiro');
-    const [numero, setNumero] = useState('90');
+    const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
+    const [cnpj, setCnpj] = useState(route.params?.cnpj || null);
+    const [nome, setNome] = useState(route.params?.nome || null);
+    const [categoria, setCategoria] = useState(route.params?.categoria || null);
+    const [telefone, setTelefone] = useState(route.params?.telefone || null);
+    const [cep, setCep] = useState(route.params?.cep || null);
+    const [estado, setEstado] = useState(route.params?.estado || null);
+    const [cidade, setCidade] = useState(route.params?.cidade || null);
+    const [bairro, setBairro] = useState(route.params?.bairro || null);
+    const [endereco, setEndereco] = useState(route.params?.endereco || null);
+    const [numero, setNumero] = useState(route.params?.numero || null);
 
-    function aAlterarEntregador() {
-        navigation.navigate('')
-    }
+    async function atualizarEmpresa() {
+
+        try {
+              // Validation checks
+              if (!nome || !telefone || !cep || !estado || !cidade || !bairro || !endereco || !numero) {
+                console.error("Incomplete data. All fields must be filled.");
+                return;
+              }
+            // Substitua com o UID desejado
+           const db = getFirestore();
+
+           const docRef = doc(db, "usuario/tabela/empresa", IdentificadorEmpresa); // Crie uma referência ao documento com o UID específico
+
+           const dados = {
+               telefone: telefone,
+               cep: cep,
+               estado: estado,
+               cidade: cidade,
+               bairro: bairro,
+               endereco: endereco,
+               numero: numero,
+           };
+
+           await updateDoc(docRef, dados);
+            await navigation.pop(1)
+
+           console.log('Documento alterado com sucesso'); // Redirecione ou faça o que desejar após criar o documento
+       } catch (e) {
+           console.error("Error adding document: ", e);
+       }
+
+      }
+      
 
     return (
         <View style={styles.container}>
@@ -123,10 +155,48 @@ export default function AlterarEntregador() {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <ChangeModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                />
+                <Modal
+                visible={modalVisible}
+                transparent={true}
+                animationType='slide'
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalHeader}>
+                        <Text style={styles.modalHeaderTitle}>Aviso</Text>
+                        <TouchableOpacity
+                            style={styles.modalHeaderClose}
+                            onPress={() => setModalVisible(!modalVisible)} >
+                            <Image source={require('../../../../img/close.png')} style={{ width: 30, height: 30 }} />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View>
+                        <Text style={styles.modalContentTitle}>
+                            Tem certeza que deseja alterar seus dados?
+                        </Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <TouchableOpacity
+                                onPress={() => setModalVisible(!modalVisible)}
+                                style={styles.modalBtn}>
+                                <Text style={styles.modalContent}>
+                                    Não
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    atualizarEmpresa()
+                                }
+                                }
+                                style={styles.modalBtn}
+                            >
+                                <Text style={styles.modalContent}>
+                                    Sim
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             </ScrollView>
         </View>
     );
@@ -186,5 +256,64 @@ const getstyles = (tema) => StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
     },
+    modalContainer: {
+        alignSelf: 'center',
+        marginTop: '50%',
+        width: 300,
+        backgroundColor: '#f2f2f2',
+        margin: 20,
+        borderRadius: 10,
+        height: 'fit-content',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 50
+      },
+      modalHeader: {
+        backgroundColor: '#ffc000',
+        width: '100%',
+        height: 40,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        padding: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 15
+      },
+      modalHeaderTitle: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#121212',
+        textAlign: 'center',
+      },
+      modalHeaderClose: {
+        justifyContent: 'flex-end',
+      },
+      modalContentTitle: {
+        fontSize: 18,
+        textAlign: 'center',
+        marginBottom: 20
+      },
+      modalContent: {
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: '#121212'
+      },
+      modalBtn: {
+        width: '45%',
+        height: 40,
+        borderRadius: 10,
+        backgroundColor: '#ffc000',
+        padding: 5,
+        marginBottom: 20,
+        alignSelf: 'center'
+      },
 
 });

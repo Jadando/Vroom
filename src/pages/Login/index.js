@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
-import { getFirestore, getDocs, collection, where } from "firebase/firestore";
+import { getFirestore, getDocs, collection, where, collectionGroup, query } from "firebase/firestore";
 import { useTheme } from 'styled-components';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
@@ -17,7 +17,7 @@ export default function Login() {
     const tema = useTheme();
     const styles = getstyles(tema);
     const [isLoading, setIsLoading] = useState(false);
-    const [email, setEmail] = useState('Testee@gmail.com');
+    const [email, setEmail] = useState('empresa@gmail.com');
     const [senha, setSenha] = useState('123456');
     const [UserGoogle, SetUserGoogle] = React.useState(null);
     // const [request, response, promptAsync] = Google.useAuthRequest({
@@ -61,7 +61,7 @@ export default function Login() {
     }
 
     async function validarLogin() {
-       // setIsLoading(true);
+        // setIsLoading(true);
         if (email !== '' && senha !== '') {
             if (validarEmail(email)) {
                 const auth = getAuth();
@@ -70,12 +70,12 @@ export default function Login() {
                     .then(async (userCredential) => {
                         const user = userCredential.user;
                         const uide = user.uid
+                        console.log(uide)
 
-                        const processarConsulta = (snapshot, dataArray, navigateCallback) => {
+                        const processarConsulta = (snapshot, dataArray) => {
                             snapshot.forEach((doc) => {
                                 const data = doc.data();
                                 dataArray.push({ id: doc.id, ...data });
-                                navigateCallback();
                             });
                         };
 
@@ -92,25 +92,33 @@ export default function Login() {
 
                             // Processar os resultados de cada consulta
 
-                            processarConsulta(clienteSnapshot, dataArrayCliente, () => {
+                            processarConsulta(clienteSnapshot, dataArrayCliente);
+                            processarConsulta(empresaSnapshot, dataArrayEmpresa);
+                            processarConsulta(entregadorSnapshot, dataArrayEntregador);
+
+                            if (dataArrayCliente[0].id === uide) {
                                 navigation.navigate('Home', {
-                                    Identificador: uide
+                                    IdentificadorCliente: uide
                                 });
-                            });
+                                console.log("Os campos correspondem a um cliente:", dataArrayCliente[0].id);
 
-                            processarConsulta(empresaSnapshot, dataArrayEmpresa, () => {
+                                // Faça algo específico para clientes
+                            } else if (dataArrayEmpresa[0].id === uide) {
+                                console.log("Os campos correspondem a uma empresa:", dataArrayEmpresa[0].id);
                                 navigation.navigate('IniciarEntrega', {
-                                    Identificador: uide
+                                    IdentificadorEmpresa: uide
                                 });
-                            });
-
-                            processarConsulta(entregadorSnapshot, dataArrayEntregador, () => {
+                                // Faça algo específico para empresas
+                            } else if (dataArrayEntregador[0].id === uide) {
+                                console.log("Os campos correspondem a um entregador:", dataArrayEntregador[0].id);
                                 navigation.navigate('Pendentes', {
-                                    Identificador: uide
+                                    IdentificadorEntregador: uide
                                 });
-                            });
+                                // Faça algo específico para entregadores
+                            } else {
+                                console.log("Nenhum campo correspondente encontrado.");
+                            }
 
-                            // ...
                         } catch (error) {
                             console.error("Erro ao executar as consultas:", error);
                         }
@@ -128,7 +136,7 @@ export default function Login() {
             //setIsLoading(false);
         }
     }
-    
+
 
 
     return (
@@ -200,7 +208,7 @@ export default function Login() {
                         todos direitos reservados
                     </Text>
                 </View>
-                <LoadingModal visible={isLoading}/>
+                <LoadingModal visible={isLoading} />
             </ScrollView>
         </View>
     );
