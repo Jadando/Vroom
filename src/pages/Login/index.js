@@ -9,6 +9,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as App from "../../firebaseConnection";
 import LoadingModal from '../../components/loadingModal';
+import { Alert } from 'react-native';
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -61,13 +62,15 @@ export default function Login() {
     }
 
     async function validarLogin() {
-        // setIsLoading(true);
+      //  setIsLoading(true);
         if (email !== '' && senha !== '') {
+           // setIsLoading(true);
             if (validarEmail(email)) {
                 const auth = getAuth();
                 const db = getFirestore();
                 signInWithEmailAndPassword(auth, email, senha)
                     .then(async (userCredential) => {
+                        setIsLoading(true);
                         const user = userCredential.user;
                         const uide = user.uid
                         console.log(uide)
@@ -78,7 +81,6 @@ export default function Login() {
                                 dataArray.push({ id: doc.id, ...data });
                             });
                         };
-
                         try {
                             const [clienteSnapshot, empresaSnapshot, entregadorSnapshot] = await Promise.all([
                                 getDocs(collection(db, "usuario/tabela/cliente"), where('id', '==', uide)),
@@ -97,6 +99,7 @@ export default function Login() {
                             processarConsulta(entregadorSnapshot, dataArrayEntregador);
 
                             if (dataArrayCliente[0].id === uide) {
+                                setIsLoading(false);
                                 navigation.navigate('Home', {
                                     IdentificadorCliente: uide
                                 });
@@ -104,18 +107,22 @@ export default function Login() {
 
                                 // Faça algo específico para clientes
                             } else if (dataArrayEmpresa[0].id === uide) {
+                                setIsLoading(false);
                                 console.log("Os campos correspondem a uma empresa:", dataArrayEmpresa[0].id);
                                 navigation.navigate('IniciarEntrega', {
                                     IdentificadorEmpresa: uide
                                 });
                                 // Faça algo específico para empresas
                             } else if (dataArrayEntregador[0].id === uide) {
+                                setIsLoading(false);
                                 console.log("Os campos correspondem a um entregador:", dataArrayEntregador[0].id);
                                 navigation.navigate('Pendentes', {
                                     IdentificadorEntregador: uide
                                 });
                                 // Faça algo específico para entregadores
                             } else {
+                                setIsLoading(false);
+                                Alert('Erro');
                                 console.log("Nenhum campo correspondente encontrado.");
                             }
 
@@ -124,16 +131,19 @@ export default function Login() {
                         }
                     })
                     .catch((error) => {
+                        setIsLoading(false);
                         const errorCode = error.code;
                         const errorMessage = error.message;
                         console.log(errorCode)
                         console.log(errorMessage)
+                        Alert.alert(errorMessage)
                     });
             }
             else {
+                setIsLoading(false);
                 alert("email ou senha incorreto")
             }
-            //setIsLoading(false);
+            setIsLoading(false);
         }
     }
 
@@ -170,8 +180,7 @@ export default function Login() {
 
                 <TouchableOpacity
                     style={styles.logar}
-                    onPress={validarLogin}>
-
+                    onPress={() => { validarLogin(); setIsLoading(true);}}>
                     <Text style={styles.logarText}>Entrar</Text>
                 </TouchableOpacity>
 
