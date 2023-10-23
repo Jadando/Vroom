@@ -5,6 +5,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import LogoutModal from '../../../components/logoutModal';
 import { getFirestore, onSnapshot, doc } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL,uploadString } from 'firebase/storage';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 
 export default function Perfil({ route }) {
@@ -12,13 +15,12 @@ export default function Perfil({ route }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [nameuser, setNameUser] = useState(null);
     const navigation = useNavigation();
+    const [imageUrl, setImageUrl] = useState()
     const tema = useTheme();
     const styles = getstyles(tema)
-
+    const storage = getFirestore();
     useEffect(() => {
-        const db = getFirestore();
-        const docRef = doc(db, "usuario", "tabela", "cliente", IdentificadorCliente);
-
+        const docRef = doc(storage, "usuario", "tabela", "cliente", IdentificadorCliente);
         const unsubscribe = onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
                 const userData = doc.data();
@@ -27,14 +29,63 @@ export default function Perfil({ route }) {
                 console.log("O documento não existe.");
             }
         });
+        async function DonwloadImage() {
+            try {
+                const storage = getStorage();
+                const imageRef = ref(storage, `usuario/imagem/cliente/${IdentificadorCliente}/logouser`);
+                const url = await getDownloadURL(imageRef);
+                const response = await fetch(url);
+                const data = await response.text();
+                const numericArray = data.split(",");
+                const asciiString = numericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join("");
+                setImageUrl('data:image/jpeg;base64,' + asciiString);
+            } catch (error) {
+                console.error('Erro ao recuperar a URL da imagem:', error);
+            }
+        }
 
         return () => {
             // Ao desmontar o componente, pare de ouvir as atualizações
+            DonwloadImage()
             unsubscribe();
         };
     }, [IdentificadorCliente]);
 
+    const chooseImageFromGallery = async () => {
+        try {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
+            if (status !== 'granted') {
+                console.error('A permissão para acessar a galeria foi negada');
+                return;
+            }
+
+            const result = await ImagePicker.launchImageLibraryAsync();
+
+            if (!result.canceled) {
+                const localUri = result.assets[0].uri;
+                //Lê o arquivo da imagem como uma string base64 diretamente
+                const imageFile = await FileSystem.readAsStringAsync(localUri, {
+                    encoding: FileSystem.EncodingType.Base64,
+                });
+                setImageUrl(`data:image/jpeg;base64,${imageFile}`);
+                uploadImageToFirebase()
+            }
+        } catch (error) {
+            console.error('Erro ao escolher a imagem:', error);
+        }
+    };
+    const uploadImageToFirebase = async () => {
+        try {
+            const storageRef = ref(storage, `usuario/imagem/cliente/${IdentificadorCliente}/logouser`);
+            uploadString(storageRef, imageUrl).then((snapshot) => {
+                console.log('Uploaded a raw string!');
+            });
+        }
+        catch (error) {
+            console.error('Erro ao enviar o arquivo:', error);
+        }
+    };
 
 
     return (
@@ -47,9 +98,13 @@ export default function Perfil({ route }) {
             </View>
 
             <View style={styles.user}>
-                <View style={styles.userImg}>
-                    <Icon name='person' size={70} color='#939598ff' />
-                </View>
+                <TouchableOpacity onPress={chooseImageFromGallery}>
+                    <View style={styles.userImg}>
+                        <Image source={imageUrl}>
+                        </Image>
+                    </View>
+                </TouchableOpacity>
+
                 <Text style={styles.userInfo}>{nameuser}</Text>
             </View>
 

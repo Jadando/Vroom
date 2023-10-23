@@ -32,8 +32,7 @@ export default function EditarPerfil({ route }) {
     const storage = getStorage();
 
     useEffect(() => {
-        const db = getFirestore();
-        const docRef = doc(db, "usuario", "tabela", "empresa", IdentificadorEmpresa);
+        const docRef = doc(storage, "usuario", "tabela", "empresa", IdentificadorEmpresa);
       
         const unsubscribe = onSnapshot(docRef, (doc) => {
           if (doc.exists()) {
@@ -49,8 +48,6 @@ export default function EditarPerfil({ route }) {
       
         async function DonwloadImages() {
             try {
-                const storage = getStorage();
-        
                 const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/logo`);
                 const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner`);
         
