@@ -121,7 +121,7 @@ export default function Afiliado({ route }) {
 
                 <View style={styles.buttons}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('CadastroEmpresa')}
+                        onPress={() => navigation.pop(1)}
                         style={styles.cadastrar}
                     >
                         <Text style={styles.cadastrarText}>Voltar</Text>
@@ -192,7 +192,7 @@ const getstyles = (tema) => StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'center',
         width: '30%',
-        marginLeft: -30,
+        marginLeft: -28,
         marginRight: -5,
         marginBottom: 20,
     },

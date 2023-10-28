@@ -30,26 +30,26 @@ export default function IniciarEntrega() {
   const url = 'https://figma.com/file/c97hMDfgLoFFWEAcetzH9C/TCC?type=design&node-id=0-1&mode=design&t=nfWUP24yYaj2kbHm-0';
   const displayUrl = isExpanded ? url : url.substring(0, 35) + '...';
 
-//   useEffect(() => {
-//     // Adicionando ouvinte
-//     Linking.addEventListener('url', handleOpenURL);
-  
-//     // Ao inicializar, verifica se o aplicativo foi aberto por um link
-//     Linking.getInitialURL().then(url => {
-//       if (url) handleOpenURL({ url });
-//     });
-  
-//     // Não esqueça de remover o ouvinte ao desmontar
-//     return () => {
-//       Linking.removeEventListener('url', handleOpenURL);
-//     };
-//   }, []);
-  
+  //   useEffect(() => {
+  //     // Adicionando ouvinte
+  //     Linking.addEventListener('url', handleOpenURL);
+
+  //     // Ao inicializar, verifica se o aplicativo foi aberto por um link
+  //     Linking.getInitialURL().then(url => {
+  //       if (url) handleOpenURL({ url });
+  //     });
+
+  //     // Não esqueça de remover o ouvinte ao desmontar
+  //     return () => {
+  //       Linking.removeEventListener('url', handleOpenURL);
+  //     };
+  //   }, []);
+
   function handleOpenURL(event) {
     console.log(event.url);
     // Aqui você pode navegar para uma determinada tela ou fazer outra ação conforme o URL
   }
-  
+
   const generateDynamicLink = async () => {
     try {
       const selectedPaymentOption = items.find(item => item.value === value);
@@ -58,10 +58,11 @@ export default function IniciarEntrega() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          value, 
-          order, 
-          paymentOption: selectedPaymentOption }), // Aqui enviamos items
+        body: JSON.stringify({
+          value,
+          order,
+          paymentOption: selectedPaymentOption
+        }), // Aqui enviamos items
       });
 
       const responseData = await response.json();
@@ -99,23 +100,23 @@ export default function IniciarEntrega() {
             <Text>
               Nome do cliente:
             </Text>
-              <TextInput
-              style={{fontSize: 16}}
+            <TextInput
+              style={{ fontSize: 16 }}
               placeholder='Preencha o nome do cliente'
               value={nome}
               onChangeText={setNome}
-              >
-              </TextInput>
+            >
+            </TextInput>
           </View>
           <View style={styles.recentsContent}>
             <Text>
               Endereço:
             </Text>
             <TextInput
-            style={{fontSize: 16}}
-            placeholder='Preencha o endereço de entrega'
-            value={endereco}
-            onChangeText={setEndereco}
+              style={{ fontSize: 16 }}
+              placeholder='Preencha o endereço de entrega'
+              value={endereco}
+              onChangeText={setEndereco}
             />
           </View>
           <View style={styles.comanda}>
@@ -142,8 +143,18 @@ export default function IniciarEntrega() {
                 dropDownContainerStyle={{ borderColor: 'transparent' }}
               />
             </View>
-            <Text style={styles.comandaTitle}>Valor do pedido:</Text>
-            <View style={styles.comandaPaymentValue}>
+            <Text style={[
+              styles.comandaTitle,
+              {
+                zIndex: -1
+              }
+            ]}>Valor do pedido:</Text>
+            <View style={[
+              styles.comandaPaymentValue,
+              {
+                zIndex: -1
+              }
+            ]}>
               <TextInput
                 value={inputValue}
                 onChangeText={text => {
