@@ -1,26 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import ChangeModal from '../../../../components/changeModal';
+import { getFirestore, onSnapshot, doc } from "firebase/firestore";
 
-export default function DadosEntregador() {
+export default function DadosEntregador({ route }) {
     const [modalVisible, setModalVisible] = useState(false)
+    const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [cpf, setCpf] = useState('11111111111');
-    const [nome, setNome] = useState('Agostinho Carrara');
-    const [dtNasc, setDtNasc] = useState('23/09/1990');
-    const [telefone, setTelefone] = useState('1344809900');
-    const [cep, setCep] = useState('11111111');
-    const [estado, setEstado] = useState('SP');
-    const [cidade, setCidade] = useState('Mongaguá');
-    const [bairro, setBairro] = useState('Agenor de Campos');
-    const [endereco, setEndereco] = useState('Rua Aimorés');
-    const [numero, setNumero] = useState('11111111111');
+    const [cpf, setCpf] = useState(null);
+    const [nome, setNome] = useState(null);
+    const [dtNasc, setDtNasc] = useState(null);
+    const [telefone, setTelefone] = useState(null);
+    const [cep, setCep] = useState(null);
+    const [estado, setEstado] = useState(null);
+    const [cidade, setCidade] = useState(null);
+    const [bairro, setBairro] = useState(null);
+    const [endereco, setEndereco] = useState(null);
+    const [numero, setNumero] = useState(null);
+ 
+    useEffect(() => {
+        const db = getFirestore();
+        const docRef = doc(db, "usuario", "tabela", "entregador", IdentificadorEntregador);
+
+        const unsubscribe = onSnapshot(docRef, (doc) => {
+            if (doc.exists()) {
+                const userData = doc.data();
+                setCpf(userData.cpf);
+                setNome(userData.nome);
+                setTelefone(userData.telefone);
+                setCep(userData.cep);
+                setEstado(userData.estado);
+                setCidade(userData.cidade);
+                setBairro(userData.bairro);
+                setEndereco(userData.endereco);
+                setNumero(userData.numero);
+                setDtNasc(userData.dtNasc)
+            } else {
+                console.log("O documento não existe.");
+            }
+        });
+
+        return () => {
+            // Ao desmontar o componente, pare de ouvir as atualizações
+            unsubscribe();
+        };
+    }, [IdentificadorEntregador]);
 
 
     return (
@@ -37,12 +67,12 @@ export default function DadosEntregador() {
                     </View>
                 </View>
                 <TextInputMask
-                        style={styles.input}
-                        type={'cpf'}
-                        value={cpf}
-                        placeholder="CPF"
-                        editable={false}
-                    />
+                    style={styles.input}
+                    type={'cpf'}
+                    value={cpf}
+                    placeholder="CPF"
+                    editable={false}
+                />
                 <View style={styles.main}>
                     <TextInput
                         style={styles.input}
@@ -108,13 +138,25 @@ export default function DadosEntregador() {
                     />
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                           onPress={()=> navigation.navigate('PerfilEntregador')}
+                            onPress={() => navigation.pop(1)}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                             onPress={()=> navigation.navigate('AlterarEntregador')}
+                            onPress={() => navigation.navigate('AlterarEntregador',{
+                                IdentificadorEntregador,
+                                cpf,
+                                nome,
+                                dtNasc,
+                                telefone,
+                                cep,
+                                estado,
+                                cidade,
+                                bairro,
+                                endereco,
+                                numero,
+                            })}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Alterar dados</Text>
@@ -122,8 +164,8 @@ export default function DadosEntregador() {
                     </View>
                 </View>
                 <ChangeModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
                 />
             </ScrollView>
         </View>
@@ -144,6 +186,7 @@ const getstyles = (tema) => StyleSheet.create({
         padding: 10,
         width: '100%',
         justifyContent: 'center',
+        marginBottom: 15,
     },
     pedidosText: {
         fontSize: 20,

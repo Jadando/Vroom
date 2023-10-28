@@ -14,6 +14,7 @@ export default function CadastroEmpresa({route}) {
   const [cnpj, setCnpj] = useState('35.123.000/0001-00');
   const [nomeEmpresa, setNomeEmpresa] = useState('Luizia hamburgueria');
   const [categoria, setCategoria] = useState('Restaurante');
+  const [celular, setCelular] = useState('1999819006');
   const [telefone, setTelefone] = useState('1999819006');
   const [cep, setCep] = useState('11730000');
   const [estado, setEstado] = useState('RJ');
@@ -47,7 +48,8 @@ export default function CadastroEmpresa({route}) {
         cidade,
         bairro,
         endereco,
-        numero
+        numero,
+        celular
       });
     } else {
       alert('Campos obrigatórios não preenchidos');
@@ -122,11 +124,11 @@ export default function CadastroEmpresa({route}) {
             type={'cel-phone'}
             value={telefone}
             onChangeText={setTelefone}
-            placeholder="Telefone"
+            placeholder="Telefone Fixo"
             options={{
               maskType: 'BRL',
               withDDD: true,
-              dddMask: '(99) ',
+              dddMask: '(99)',
             }}
           />
           <TextInputMask

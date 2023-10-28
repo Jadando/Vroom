@@ -6,11 +6,12 @@ import { useTheme } from 'styled-components';
 import LogoutModal from '../../../components/logoutModal';
 
 
-export default function PerfilEmpresa() {
+export default function PerfilEmpresa({route}) {
     const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
+    const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
     return (
 
         <ScrollView
@@ -35,23 +36,31 @@ export default function PerfilEmpresa() {
 
             <View style={styles.btnArea}>
                 <TouchableOpacity 
-                onPress={() => navigation.navigate('EditarPerfil')}
+                onPress={() => navigation.navigate('EditarPerfil',{
+                    IdentificadorEmpresa
+                })}
                 style={styles.button}>
                     <Text style={styles.btnText}>Editar perfil</Text>
                     <Icon name='person-outline' size={30} color='#000' />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
-                 onPress={() => navigation.navigate('DadosEmpresa')}>
+                 onPress={() => navigation.navigate('DadosEmpresa',{
+                    IdentificadorEmpresa
+                 })}>
                     <Text style={styles.btnText}>Meus dados</Text>
                     <Icon name='information' size={30} color='#000' />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
-                onPress={() => navigation.navigate('Entregadores')}>
+                onPress={() => navigation.navigate('Entregadores',{
+                    IdentificadorEmpresa
+                })}>
                     <Text style={styles.btnText}>Entregadores</Text>
                     <Icon name='bicycle-outline' size={30} color='#000' />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Config')}
+                    onPress={() => navigation.navigate('ConfigEmpresa',{
+                        IdentificadorEmpresa
+                    })}
                     style={styles.button}>
                     <Text style={styles.btnText}>Configurações</Text>
                     <Icon name='cog' size={30} color='#000' />

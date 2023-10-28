@@ -53,7 +53,9 @@ export default function EntregadorRevisa({ route }) {
         };
 
         await setDoc(docRef, dados); // Use setDoc para criar o documento com os dados
-        navigation.navigate('Pendente')
+        navigation.navigate('Pendentes',{
+          IdentificadorEntregador:Identificador
+        })
         console.log('Documento criado com sucesso');
          // Redirecione ou faça o que desejar após criar o documento
       } catch (e) {

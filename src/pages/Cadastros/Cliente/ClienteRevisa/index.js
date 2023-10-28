@@ -49,7 +49,9 @@ export default function ClienteRevisa({ route }) {
                 };
 
                 await setDoc(docRef, dados);
-                 navigation.navigate('Home') 
+                 navigation.navigate('Home',{
+                    IdentificadorCliente:Identificador
+                 }) 
 
                 console.log('Documento criado com sucesso'); // Redirecione ou faça o que desejar após criar o documento
             } catch (e) {

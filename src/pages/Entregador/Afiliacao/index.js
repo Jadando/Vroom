@@ -12,7 +12,14 @@ export default function EmpresasAfiliadas() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
+            <TouchableOpacity
+                    style={styles.Chevron}
+                    onPress={() => navigation.pop(1)}>
+                    <Icon name='chevron-back' size={30} color='#000' />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Icon name='notifications' size={30} color='#ffc000' />
+                </TouchableOpacity>
             </View>
             <View style={{flexDirection: 'row'}}>
             <Text style={styles.title}>Empresas Afiliadas</Text>
@@ -90,9 +97,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flex: 1,
         marginLeft: 70
-    },
-    headerBell: {
-        marginLeft: '90%',
     },
     title: {
         fontSize: 24,

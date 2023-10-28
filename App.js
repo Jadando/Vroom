@@ -4,9 +4,22 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useTema } from './src/theme';
 import { ThemeProvider } from 'styled-components';
-import { Tabs, TabsEmpresa1,TabsEmpresa, TabsEntregador } from './src/components/BottomTab';
-
-
+import { Tabs,TabsEmpresa, TabsEntregador } from './src/components/BottomTab';
+import * as Location from 'expo-location';
+import * as ImagePicker from 'expo-image-picker';   
+//
+//
+//
+//
+//
+// coisa a fazer passar o uid para todas as telas e termina a sesson
+//
+//
+//
+//
+//
+//atualização de usuario na fase de teste 
+// ps nao lemnro o que eu tava fazendo
 // Imports relacionados ao Cliente
 import Home from './src/pages/Cliente/Home';
 import Search from './src/pages/Cliente/Search';
@@ -15,7 +28,7 @@ import AlterarCliente from './src/pages/Cliente/Perfil/AlterarCliente';
 import Config from './src/pages/Cliente/Perfil/Config1';
 import CadastroCliente from './src/pages/Cadastros/Cliente/CadastroCliente';
 import ClienteRevisa from './src/pages/Cadastros/Cliente/ClienteRevisa';
-import PerfilCliente from './src/pages/Cliente/Perfil';
+import PerfilCliente from './src/pages/Cliente/Perfil/index';
 import VisualizarEmpresa from './src/pages/Cliente/VisualizarEmpresa';
 import LocalCliente from './src/pages/Cliente/Pedidos'; 
 import Pedidos from './src/pages/Cliente/Pedidos';
@@ -23,7 +36,7 @@ import Restaurante from './src/pages/Cliente/Search/Restaurante';
 
 // Imports relacionados à Empresa
 import PerfilEmpresa from './src/pages/Empresa/Perfil';
-import IniciarEntrega from './src/pages/Empresa/IniciarEntrega';
+// import IniciarEntrega from './src/pages/Empresa/IniciarEntrega';
 import PendentesAndamento from './src/pages/Empresa/PendentesAndamento';
 import RastrearEmpresa from './src/pages/Empresa/RastrearEmpresa';
 import ConfigEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
@@ -47,7 +60,7 @@ import SemAfiliacao from './src/pages/Entregador/Afiliacao/SemAfiliacao';
 import DadosEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/DadosEntregador';
 import AlterarEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/AlterarEntregador';
 import Historico from './src/pages/Entregador/Historico';
-import Pendentes from './src/pages/Entregador/Pendentes';
+//import Pendentes from './src/pages/Entregador/Pendentes';
 
 // Imports gerais
 import Teste from './src/pages/Teste';
@@ -62,6 +75,25 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const Tema = useTema()
+//   useEffect(() => {
+//     (async () => {
+//         const locationPermission = await Location.requestForegroundPermissionsAsync();
+//         if (locationPermission.status !== 'granted') {
+//             console.error('A permissão para acessar o local foi negada');
+//             alert("A permissão para acessar o local foi negada")
+//             return;
+//         }
+
+
+//         const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+//         if (galleryPermission.status !== 'granted') {
+//             console.error('A permissão para acessar a galeria foi negada');
+//             alert("A permissão para acessar a galeria foi negada")
+//             return;
+//         }
+        
+//     })();
+// }, []);
   return (
     <ThemeProvider theme={Tema}>
     <NavigationContainer>
@@ -93,14 +125,14 @@ export default function App() {
           <Stack.Group title="Empresa">
               <Stack.Screen name="PerfilEmpresa" component={PerfilEmpresa} />
               <Stack.Screen name="IniciarEntrega" component={TabsEmpresa} />
-              <Stack.Screen name="PendentesAndamento" component={TabsEmpresa} />
+              <Stack.Screen name="PendentesAndamento" component={PendentesAndamento} />
               <Stack.Screen name="RastrearEmpresa" component={RastrearEmpresa} />
               <Stack.Screen name="ConfigEmpresa" component={ConfigEmpresa} />
               <Stack.Screen name="CadastroEmpresa" component={CadastroEmpresa} />
               <Stack.Screen name="EmpresaRevisa" component={EmpresaRevisa} />
               <Stack.Screen name="Afiliado" component={Afiliado} />
               <Stack.Screen name="DadosEmpresa" component={DadosEmpresa} />
-              <Stack.Screen name="EditarPerfil" component={EditarPerfil } />
+              <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
               <Stack.Screen name='AlterarEmpresa' component={AlterarEmpresa} />
               <Stack.Screen name='Entregadores' component={Entregadores} />
           </Stack.Group>

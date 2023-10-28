@@ -12,11 +12,6 @@ export default function LocalCliente() {
     const [iconRotation, setIconRotation] = useState(0);
     useEffect(() => {
         (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                console.error('Permission to access location was denied');
-                return;
-            }
             const subscription = Location.watchPositionAsync({
                 accuracy: Location.Accuracy.High,
                 timeInterval: 5000,

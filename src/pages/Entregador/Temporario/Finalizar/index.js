@@ -50,11 +50,15 @@ export default function FinalizarEntrega() {
             scrollEnabled={!isMapExpanded}
         >
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
-                </View>
-
-
+            <View style={styles.header}>
+            <TouchableOpacity
+                    onPress={() => navigation.pop(2)}>
+                    <Icon name='chevron-back' size={30} color='#000' />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Icon name='notifications' size={30} color='#ffc000' />
+                </TouchableOpacity>
+            </View>
                 <View style={styles.pedidos}>
                     <Text style={styles.pedidosText}>Entregas pendentes</Text>
                     <View style={styles.pedidosClock}>

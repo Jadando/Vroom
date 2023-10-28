@@ -1,32 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
+import { getFirestore, onSnapshot, doc } from "firebase/firestore";
 
-export default function DadosCliente() {
+
+
+export default function DadosCliente({route}) {
   const navigation = useNavigation();
   const tema = useTheme();
+  const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
   const styles = getstyles(tema);
-  const [nome, setNome] = useState('João Adriano');
-  const [telefone, setTelefone] = useState('1898180400');
-  const [cep, setCep] = useState('11730000');
-  const [estado, setEstado] = useState('sp');
-  const [cidade, setCidade] = useState('sao paulo');
-  const [bairro, setBairro] = useState('Agenor de Campos');
-  const [endereco, setEndereco] = useState('Av. Monteiro Lobato');
-  const [numero, setNumero] = useState('779');
+  const [nome, setNome] = useState();
+  const [telefone, setTelefone] = useState();
+  const [cep, setCep] = useState();
+  const [estado, setEstado] = useState();
+  const [cidade, setCidade] = useState();
+  const [bairro, setBairro] = useState();
+  const [endereco, setEndereco] = useState();
+  const [numero, setNumero] = useState();
 
 
+  useEffect(() => {
+    const db = getFirestore();
+    const docRef = doc(db, "usuario", "tabela", "cliente", IdentificadorCliente);
+  
+    const unsubscribe = onSnapshot(docRef, (doc) => {
+      if (doc.exists()) {
+        const userData = doc.data();
+        setNome(userData.nome);
+        setTelefone(userData.telefone);
+        setCep(userData.cep);
+        setEstado(userData.estado);
+        setCidade(userData.cidade);
+        setBairro(userData.bairro);
+        setEndereco(userData.endereco);
+        setNumero(userData.numero);
+      } else {
+        console.log("O documento não existe.");
+      }
+    });
+  
+    return () => {
+      // Ao desmontar o componente, pare de ouvir as atualizações
+      unsubscribe();
+    };
+  }, [Identificador]);
 
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-          <Text style={styles.title}>
-            Meus Dados
-          </Text>
+        <Text style={styles.title}>
+          Meus Dados
+        </Text>
       </View>
 
       <ScrollView
@@ -87,19 +115,31 @@ export default function DadosCliente() {
           <TextInput
             style={styles.input}
             value={numero}
-            onChangeText={setNumero}
+            editable={false}
             placeholder="Número"
           />
 
           <View style={styles.buttons}>
             <TouchableOpacity
-              onPress={()=>navigation.navigate('PerfilCliente')}
+              onPress={() => navigation.pop(1)}
               style={styles.cadastrar}
             >
               <Text style={styles.cadastrarText}>Voltar</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={()=>navigation.navigate('AlterarCliente')}
+              onPress={() => {
+                navigation.navigate('AlterarCliente', {
+                  IdentificadorCliente,
+                  nome,
+                  telefone,
+                  cep,
+                  estado,
+                  cidade,
+                  bairro,
+                  endereco,
+                  numero
+                });
+              }}
               style={styles.cadastrar}
             >
               <Text style={styles.cadastrarText}>Alterar Dados</Text>

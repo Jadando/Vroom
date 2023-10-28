@@ -12,6 +12,11 @@ export default function Restaurante() {
 
         <View style={styles.container}>
             <View style={styles.header}>
+            <TouchableOpacity
+                    style={styles.Chevron}
+                    onPress={() => navigation.pop(1)}>
+                    <Icon name='chevron-back' size={30} color='#000' />
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.headerContent}>
                     <Text style={styles.title}>
                         Seu endereço
