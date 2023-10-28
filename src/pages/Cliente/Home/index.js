@@ -9,10 +9,65 @@ export default function Home({ route }) {
   const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
   const [endereco, setEndereco] = useState("Seu Endereço")
   console.log(IdentificadorCliente)
-
+  const gambiarra = "gambiarra";
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
+
+
+
+
+
+  const Gambiarra = () => {
+    if (gambiarra === null) {
+      return (
+        <ScrollView>
+          <View style={styles.recents}>
+            <Text style={styles.recentsTitle}>
+              Pedido Recentemente
+            </Text>
+            <View style={styles.recentsContainer}>
+              <View style={styles.recentsContent}>
+                <View style={styles.recentsImages}>
+                </View>
+                <Text style={styles.categoriaText}>
+                  Luzia Hamburgers {'\n'}
+                  Ultimo pedido dia: 11/04/2023
+                </Text>
+              </View>
+              <View style={styles.recentsContent}>
+                <View style={styles.recentsImages}>
+                </View>
+                <Text style={styles.categoriaText}>
+                  Mix Shakes {'\n'}
+                  Ultimo pedido dia: 09/04/2023
+                </Text>
+              </View>
+              <View style={styles.recentsContent}>
+                <View style={styles.recentsImages}>
+                </View>
+                <Text style={styles.categoriaText}>
+                  JusFarma {'\n'}
+                  Ultimo pedido dia: 28/03/2023
+                </Text>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      )
+    } else {
+      return (
+        <View style={styles.recents}>
+          <Text style={styles.recentsTitle}>
+            Pedido Recentemente !!!
+          </Text>
+        </View>
+      )
+
+    }
+  }
+
+
   return (
 
     <View style={styles.container}>
@@ -76,38 +131,7 @@ export default function Home({ route }) {
             </TouchableOpacity>
           </View>
         </View>
-
-        <View style={styles.recents}>
-          <Text style={styles.recentsTitle}>
-            Pedido Recentemente
-          </Text>
-          <View style={styles.recentsContainer}>
-            <View style={styles.recentsContent}>
-              <View style={styles.recentsImages}>
-              </View>
-              <Text style={styles.categoriaText}>
-                Luzia Hamburgers {'\n'}
-                Ultimo pedido dia: 11/04/2023
-              </Text>
-            </View>
-            <View style={styles.recentsContent}>
-              <View style={styles.recentsImages}>
-              </View>
-              <Text style={styles.categoriaText}>
-                Mix Shakes {'\n'}
-                Ultimo pedido dia: 09/04/2023
-              </Text>
-            </View>
-            <View style={styles.recentsContent}>
-              <View style={styles.recentsImages}>
-              </View>
-              <Text style={styles.categoriaText}>
-                JusFarma {'\n'}
-                Ultimo pedido dia: 28/03/2023
-              </Text>
-            </View>
-          </View>
-        </View>
+        {Gambiarra()}
       </ScrollView>
 
     </View>

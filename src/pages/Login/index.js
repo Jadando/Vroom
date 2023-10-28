@@ -18,7 +18,7 @@ export default function Login() {
     const tema = useTheme();
     const styles = getstyles(tema);
     const [isLoading, setIsLoading] = useState(false);
-    const [email, setEmail] = useState('empresa@gmail.com');
+    const [email, setEmail] = useState('vroomde@gmail.com');
     const [senha, setSenha] = useState('123456');
     const [UserGoogle, SetUserGoogle] = React.useState(null);
     // const [request, response, promptAsync] = Google.useAuthRequest({
@@ -122,7 +122,7 @@ export default function Login() {
                                 // Faça algo específico para entregadores
                             } else {
                                 setIsLoading(false);
-                                Alert('Erro');
+                               // Alert('Erro');
                                 console.log("Nenhum campo correspondente encontrado.");
                             }
 
@@ -131,12 +131,11 @@ export default function Login() {
                         }
                     })
                     .catch((error) => {
-                        setIsLoading(false);
+                        //setIsLoading(false);
                         const errorCode = error.code;
                         const errorMessage = error.message;
                         console.log(errorCode)
                         console.log(errorMessage)
-                        Alert.alert(errorMessage)
                     });
             }
             else {

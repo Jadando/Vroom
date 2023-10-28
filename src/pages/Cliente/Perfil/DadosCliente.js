@@ -46,7 +46,7 @@ export default function DadosCliente({route}) {
       // Ao desmontar o componente, pare de ouvir as atualizações
       unsubscribe();
     };
-  }, [Identificador]);
+  }, [IdentificadorCliente]);
 
 
   return (

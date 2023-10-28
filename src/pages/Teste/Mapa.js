@@ -13,79 +13,90 @@ export default function EditarPerfil({ route }) {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
+    const [what, setWha] = useState(null);
     const [whatsapp, setWhatsapp] = useState('18998191748');
     
-    return (
 
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            overScrollMode='never'
-        >
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <TouchableOpacity
-                        style={styles.Chevron}
-                        onPress={() => navigation.pop(1)}>
-                        <Icon name='chevron-back' size={30} color='#000' />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Icon name='notifications' size={30} color='#ffc000' />
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.pedidos}>
-                    <Text style={styles.pedidosText}>Editar perfil</Text>
-                    <View style={styles.pedidosClock}>
-                        <Icon name='person-outline' size={30} color='#000' />
+
+    if(what===null){
+        return (
+
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                overScrollMode='never'
+            >
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <TouchableOpacity
+                            style={styles.Chevron}
+                            onPress={() => navigation.pop(1)}>
+                            <Icon name='chevron-back' size={30} color='#000' />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Icon name='notifications' size={30} color='#ffc000' />
+                        </TouchableOpacity>
                     </View>
-                </View>
-                <Text style={{ fontSize: 18, marginBottom: 10 }}>Veja como está seu perfil</Text>
-                <View style={{ borderRadius: 10, overflow: 'hidden', }}>
-                    <TouchableOpacity
-                        onPress={() => console.log("Teste")}
-                    >
-                        <ImageBackground
-                            source={require('../../img/header.png')}
-                            style={styles.imageBackground}>
-                            <View style={styles.user}>
-
-                                <View style={styles.userImg}>
-                                    <Image
-                                        style={{ width: '100%', height: '145%', top: -25 }}
-                                        source={require('../../img/luzia.png')} />
+                    <View style={styles.pedidos}>
+                        <Text style={styles.pedidosText}>Editar perfil</Text>
+                        <View style={styles.pedidosClock}>
+                            <Icon name='person-outline' size={30} color='#000' />
+                        </View>
+                    </View>
+                    <Text style={{ fontSize: 18, marginBottom: 10 }}>Veja como está seu perfil</Text>
+                    <View style={{ borderRadius: 10, overflow: 'hidden', }}>
+                        <TouchableOpacity
+                            onPress={() => console.log("Teste")}
+                        >
+                            <ImageBackground
+                                source={require('../../img/header.png')}
+                                style={styles.imageBackground}>
+                                <View style={styles.user}>
+    
+                                    <View style={styles.userImg}>
+                                        <Image
+                                            style={{ width: '100%', height: '145%', top: -25 }}
+                                            source={require('../../img/luzia.png')} />
+                                    </View>
+                                    <View style={styles.userInfo}>
+                                        <Text style={styles.userInfo}>Luzia Hamburgers</Text>
+                                    </View>
                                 </View>
-                                <View style={styles.userInfo}>
-                                    <Text style={styles.userInfo}>Luzia Hamburgers</Text>
-                                </View>
-                            </View>
-                        </ImageBackground>
-
-                    </TouchableOpacity>
-
+                            </ImageBackground>
+    
+                        </TouchableOpacity>
+    
+                    </View>
+    
+                    <View style={styles.btnArea}>
+                        <TouchableOpacity style={styles.button}>
+                            <Icon name='location' size={30} color='#000' />
+                            <Text style={styles.btnText}>Endereço {'\n'} Rua João Deodorio N°215</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button}>
+                            <Icon name='call' size={30} color='#000' />
+                            <Text style={styles.btnText}>Telefone {'\n'} (13) 3507-4489</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonZap}
+                            onPress={() => Linking.openURL(`https://wa.me/55${whatsapp}`)}
+                        >
+                            <Text style={styles.btnZapText}>Entrar em contato via Whatsapp</Text>
+                            <Icon name='logo-whatsapp' size={30} color='#000' />
+                        </TouchableOpacity>
+                    </View>
+                    <LogoutModal
+                        modalVisible={modalVisible}
+                        setModalVisible={setModalVisible}
+                    />
                 </View>
+            </ScrollView>
+        );
+    }else
+    {
+        alert("penis")
+    }
 
-                <View style={styles.btnArea}>
-                    <TouchableOpacity style={styles.button}>
-                        <Icon name='location' size={30} color='#000' />
-                        <Text style={styles.btnText}>Endereço {'\n'} Rua João Deodorio N°215</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                        <Icon name='call' size={30} color='#000' />
-                        <Text style={styles.btnText}>Telefone {'\n'} (13) 3507-4489</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonZap}
-                        onPress={() => Linking.openURL(`https://wa.me/55${whatsapp}`)}
-                    >
-                        <Text style={styles.btnZapText}>Entrar em contato via Whatsapp</Text>
-                        <Icon name='logo-whatsapp' size={30} color='#000' />
-                    </TouchableOpacity>
-                </View>
-                <LogoutModal
-                    modalVisible={modalVisible}
-                    setModalVisible={setModalVisible}
-                />
-            </View>
-        </ScrollView>
-    );
+
+  
 }
 
 const getstyles = (tema) => StyleSheet.create({

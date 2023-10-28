@@ -30,9 +30,10 @@ export default function EditarPerfil({ route }) {
     const [numero, setNumero] = useState(null);
 
     const storage = getStorage();
+    const db=getFirestore();
 
     useEffect(() => {
-        const docRef = doc(storage, "usuario", "tabela", "empresa", IdentificadorEmpresa);
+        const docRef = doc(db, "usuario", "tabela", "empresa", IdentificadorEmpresa);
       
         const unsubscribe = onSnapshot(docRef, (doc) => {
           if (doc.exists()) {

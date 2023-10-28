@@ -15,7 +15,7 @@ import PerfilEntregador from '../../pages/Entregador/Perfil';
 import PerfilEmpresa from '../../pages/Empresa/Perfil';
 import PendentesAndamento from '../../pages/Empresa/PendentesAndamento';
 import HistoricoEmpresa from '../../pages/Empresa/HistoricoEmpresa'
-import LocalCliente from '../../pages/Cliente/Pedidos/local';
+import LocalCliente from '../../pages/Cliente/Pedidos/index';
 
 const Tab = createBottomTabNavigator();
 

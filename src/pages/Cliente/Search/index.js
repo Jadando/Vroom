@@ -3,71 +3,128 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
+import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 export default function Search() {
     const tema = useTheme();
     const styles = getstyles(tema);
-    return (
+    const [pesquisa, setPesquisa] = useState(null)
+    const [resultados, setResultados] = useState([]);
+    const [imageUrl, setImageUrl] = useState([]);
+    const [mostrarResultados, setMostrarResultados] = useState(false);
+    const db = getFirestore();
 
+    const Consultar = async (pesquisa) => {
+        const empresaRef = collection(db, 'usuario/tabela/empresa');
+
+        const q = query(empresaRef, where('nome', '==', pesquisa));
+
+        try {
+            const querySnapshot = await getDocs(q);
+            const documentosEncontrados = [];
+
+            querySnapshot.forEach((doc) => {
+                //console.log(documentosEncontrados)
+                const documentoComID = { id: doc.id, data: doc.data() };
+                documentosEncontrados.push(documentoComID);
+            });
+
+
+            return documentosEncontrados;
+        } catch (error) {
+            console.error('Erro ao consultar o Firestore:', error);
+        }
+    };
+    async function DonwloadImg(documento) {
+        try {
+            const storage = getStorage();
+            const imageRef = ref(storage, `usuario/imagem/empresa/${documento.id}/logo`);
+            const url = await getDownloadURL(imageRef);
+            const response = await fetch(url);
+            const data = await response.text();
+            const numericArray = data.split(",");
+            const asciiString = numericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join("");
+            const UrlImg = {
+                [documento.id]: 'data:image/jpeg;base64,' + asciiString
+            }
+            setImageUrl(UrlImg);
+          //  console.log(imageUrl)
+        } catch (error) {
+            console.error('Erro ao recuperar a URL da imagem:', error);
+        }
+    }
+    async function Pesquisar() {
+        try {
+            const resultadoDaConsulta = await Consultar(pesquisa);
+            resultadoDaConsulta.forEach((documento) => {
+                DonwloadImg(documento);
+            });
+            setResultados(resultadoDaConsulta);
+            setMostrarResultados(true);
+        } catch (error) {
+            console.error('Erro ao consultar o Firestore:', error);
+        }
+    }
+    const renderizarResultados = () => {
+        if (mostrarResultados) {
+            if (resultados.length > 0) {
+                return (
+                    <View style={styles.recents}>
+                        <Text style={styles.recentsTitle}>Resultado --Corrigir--</Text>
+                        <View style={styles.recentsContainer}>
+                            {resultados.map((documento, index) => (
+                                <View style={styles.recentsContent} key={index}>
+                                    <View style={styles.recentsImages}>
+                                        {Object.keys(imageUrl).map((imageKey) => (
+                                            <Image source={{ uri: imageUrl[imageKey] }} key={imageKey}  style={styles.image}/>
+                                        ))}
+                                    </View>
+                                    <Text style={styles.Text}>
+                                        {documento.data.nome} {'\n'}
+                                        A {documento.data.nome} KM De você
+                                    </Text>
+                                </View>
+                            ))}
+                        </View>
+                    </View>
+
+                );
+            } else {
+                return (
+                    <Text style={styles.Text}>Nenhum resultado encontrado.</Text>
+                );
+            }
+        }
+    };
+
+    return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.headerContent}>
-                    <Text style={styles.title}>
-                        Seu endereço
-                    </Text>
-                    <Icon name='chevron-down' size={30} color ={tema.Tema.color}/>
+                    <Text style={styles.title}>Seu endereço</Text>
+                    <Icon name="chevron-down" size={30} color={tema.Tema.color} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
+                <TouchableOpacity style={styles.headerBell}>
+                    <Icon name="notifications" size={30} color="#ffc000" />
+                </TouchableOpacity>
             </View>
 
             <View style={styles.search}>
-                <View style={styles.searchLupe}>
-                    <Icon name='search' size={25} color={tema.Tema.color} />
-                </View>
+                <TouchableOpacity onPress={Pesquisar}>
+                    <View style={styles.searchLupe}>
+                        <Icon name="search" size={25} color={tema.Tema.color} />
+                    </View>
+                </TouchableOpacity>
                 <TextInput
-                placeholder="Buscar estabelecimentos" 
-                style={{fontSize: 18, color: tema.Tema.color }}
-                placeholderTextColor={tema.Tema.color}
+                    placeholder="Buscar estabelecimentos"
+                    style={{ fontSize: 18, color: tema.Tema.color }}
+                    placeholderTextColor={tema.Tema.color}
+                    onChangeText={setPesquisa}
                 />
             </View>
 
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                overScrollMode='never'
-            >
-                <View style={styles.recents}>
-                    <Text style={styles.recentsTitle}>
-                        Pedido Recentemente
-                    </Text>
-                    <View style={styles.recentsContainer}>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            </View>
-                            <Text style={styles.Text}>
-                                Luzia Hamburgers {'\n'}
-                                Ultimo pedido dia: 11/04/2023
-                            </Text>
-                        </View>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            </View>
-                            <Text style={styles.Text}>
-                                Mix Shakes {'\n'}
-                                Ultimo pedido dia: 09/04/2023
-                            </Text>
-                        </View>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            </View>
-                            <Text style={styles.Text}>
-                                JusFarma {'\n'}
-                                Ultimo pedido dia: 28/03/2023
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
-
+            {renderizarResultados()}
         </View>
     );
 }
@@ -82,7 +139,7 @@ const getstyles = (tema) => StyleSheet.create({
     },
     Text: {
         color: tema.Tema.color,
-      },
+    },
     header: {
         flexDirection: 'row',
         width: '100%',
@@ -137,7 +194,7 @@ const getstyles = (tema) => StyleSheet.create({
     },
     recentsContent: {
         flexDirection: 'row',
-        backgroundColor: tema.Tema.content, 
+        backgroundColor: tema.Tema.content,
         padding: 20,
         width: 320,
         height: 80,
@@ -153,5 +210,13 @@ const getstyles = (tema) => StyleSheet.create({
         width: 70,
         height: 70,
         marginRight: 10,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    image: {
+        borderRadius: 50,
+        width: 70,
+        height: 70,
     },
 })
