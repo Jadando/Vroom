@@ -4,11 +4,11 @@ import { View } from "react-native";
 
 export default function Splash() {
     return (
-        <View>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <LottieView
                 source={require('../../../assets/splash.json')}
                 autoPlay
-            />
+                loop />
         </View>
     )
 }

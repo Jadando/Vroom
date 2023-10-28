@@ -3,17 +3,25 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { useTheme } from 'styled-components';
+import DropDownPicker from 'react-native-dropdown-picker';
 
-
-
-export default function CadastroEmpresa({route}) {
+export default function CadastroEmpresa({ route }) {
   const navigation = useNavigation();
   const tema = useTheme();
+  const [open, setOpen] = useState(false);
   const styles = getstyles(tema);
   const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
   const [cnpj, setCnpj] = useState('35.123.000/0001-00');
   const [nomeEmpresa, setNomeEmpresa] = useState('Luizia hamburgueria');
-  const [categoria, setCategoria] = useState('Restaurante');
+  const [categoria, setCategoria] = useState('');
+  const [items, setItems] = useState([
+    { label: 'Restaurante', value: 'restaurante' },
+    { label: 'Fármacia', value: 'farmacia' },
+    { label: 'Bebidas', value: 'bebidas' },
+    { label: 'Mercado', value: 'mercado' },
+    { label: 'Jardinagem', value: 'jardinagem' },
+    { label: 'Outros', value: 'outros' }
+  ]);
   const [celular, setCelular] = useState('1999819006');
   const [telefone, setTelefone] = useState('1999819006');
   const [cep, setCep] = useState('11730000');
@@ -22,7 +30,6 @@ export default function CadastroEmpresa({route}) {
   const [bairro, setBairro] = useState('Cristo Redentor');
   const [endereco, setEndereco] = useState('Rua vicente casemiro');
   const [numero, setNumero] = useState('90');
-
 
   function verificaInput() {
     if (
@@ -37,7 +44,8 @@ export default function CadastroEmpresa({route}) {
       endereco !== '' &&
       numero !== ''
     ) {
-      navigation.navigate('EmpresaRevisa', {
+      console.log(categoria);
+      navigation.navigate('Afiliado', {
         Identificador,
         cnpj,
         nomeEmpresa,
@@ -101,23 +109,17 @@ export default function CadastroEmpresa({route}) {
         <Text style={styles.title}>Informações da empresa</Text>
         <View style={styles.main}>
           <TextInputMask
-          style={styles.input}
-          type={'cnpj'}
-          value={cnpj}
-          onChangeText={setCnpj}
-          placeholder='CNPJ'
+            style={styles.input}
+            type={'cnpj'}
+            value={cnpj}
+            onChangeText={setCnpj}
+            placeholder='CNPJ'
           />
           <TextInput
             style={styles.input}
             value={nomeEmpresa}
             onChangeText={setNomeEmpresa}
             placeholder="Nome da empresa"
-          />
-          <TextInput
-          style={styles.input}
-          value={categoria}
-          onChangeText={setCategoria}
-          placeholder='Categoria'
           />
           <TextInputMask
             style={styles.input}
@@ -168,10 +170,49 @@ export default function CadastroEmpresa({route}) {
             onChangeText={setNumero}
             placeholder="Número"
           />
+          <DropDownPicker
+            open={open}
+            value={categoria}
+            items={items}
+            setOpen={setOpen}
+            setValue={setCategoria}
+            setItems={setItems}
+            placeholder='Selecione uma categoria'
+            style={[
+              styles.input,
+              {
+               borderColor: 'transparent',
+                fontSize: 20,
+                borderBottomWidth: 1,
+              }
+            ]}
+            dropDownContainerStyle={[
+              styles.input,
+              {
+                borderColor: 'transparent',
+              }
+            ]}
+            textStyle={{ 
+              fontSize: 18, 
+              opacity: 0.8,
+           //   borderBottomWidth: 1,
+            //  borderBottomColor: '#000'
+            }}
+            scrollViewProps={{
+              onTouchStart: () => {
+                console.log("onTouchStart");
+                this.scroll.setNativeProps({ scrollEnabled: false });
+              },
+              onTouchEnd: () => {
+                console.log("onTouchEnd");
+                this.scroll.setNativeProps({ scrollEnabled: true });
+              },
+            }}
+          />
 
           <View style={styles.buttons}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Cadastro')}
+              onPress={() => navigation.pop(1)}
               style={styles.cadastrar}
             >
               <Text style={styles.cadastrarText}>Voltar</Text>
@@ -241,7 +282,7 @@ const getstyles = (tema) => StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     width: '30%',
-    marginLeft: -30,
+    marginLeft: -28,
     marginRight: -5,
     marginBottom: 20,
   },
