@@ -149,7 +149,7 @@ export default function AlterarCliente({route}) {
                         <Text style={{ textDecorationLine: 'none' }}>Adicionar segundo endereço</Text>
                     </TouchableOpacity>
                     {viewlVisible && (
-                        <View style={styles.modalContainer}>
+                        <View style={styles.main}>
 
                             <Text style={[styles.pedidosText, { alignSelf: 'center', marginBottom: 5 }]}> Segundo endereço</Text>
                             <TextInputMask
@@ -193,7 +193,7 @@ export default function AlterarCliente({route}) {
                     )}
                     <View style={styles.buttons}>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('DadosCliente')}
+                            onPress={() => navigation.pop(1)}
                             style={styles.cadastrar}
                         >
                             <Text style={styles.cadastrarText}>Voltar</Text>
