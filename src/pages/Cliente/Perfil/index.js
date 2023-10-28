@@ -102,7 +102,7 @@ export default function Perfil({ route }) {
             <View style={styles.user}>
                 <TouchableOpacity onPress={chooseImageFromGallery}>
                     <View style={styles.userImg}>
-                        <Image source={imageUrl} style={{ width: 30, height: 30 }}/>
+                        <Image source={imageUrl} style={{ width: '100%', height: '100%' }}/>
                     </View>
                 </TouchableOpacity>
 
@@ -167,7 +167,8 @@ const getstyles = (tema) => StyleSheet.create({
         borderRadius: 50,
         alignContent: 'center',
         alignItems: 'center',
-        paddingTop: 10
+        paddingTop: 10,
+        overflow: 'hidden'
     },
     userInfo: {
         fontSize: 20,
