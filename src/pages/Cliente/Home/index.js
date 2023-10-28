@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
-
 
 export default function Home({ route }) {
   const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
@@ -13,10 +12,6 @@ export default function Home({ route }) {
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
-
-
-
-
 
   const Gambiarra = () => {
     if (gambiarra === null) {
@@ -57,19 +52,25 @@ export default function Home({ route }) {
       )
     } else {
       return (
+        <>
         <View style={styles.recents}>
           <Text style={styles.recentsTitle}>
-            Pedido Recentemente !!!
+            Pedido Recentemente
           </Text>
         </View>
+        <View
+        style={{
+          backgroundColor: '#fff',
+          height: 150,
+        }}
+        />
+        </>
       )
 
     }
   }
 
-
   return (
-
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.headerContent}>
