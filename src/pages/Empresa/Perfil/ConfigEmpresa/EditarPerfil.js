@@ -48,46 +48,47 @@ export default function EditarPerfil({ route }) {
             }
         });
 
+        async function DonwloadImages() {
+            try {
+                const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/logo_company`);
+                const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
+
+                const [logoUrl, bannerUrl] = await Promise.all([
+                    getDownloadURL(logoRef),
+                    getDownloadURL(bannerRef),
+                ]);
+
+                const [logoResponse, bannerResponse] = await Promise.all([
+                    fetch(logoUrl),
+                    fetch(bannerUrl),
+                ]);
+
+                const [logoData, bannerData] = await Promise.all([
+                    logoResponse.text(),
+                    bannerResponse.text(),
+                ]);
+
+                const [logoNumericArray, bannerNumericArray] = await Promise.all([
+                    logoData.split(","),
+                    bannerData.split(","),
+                ]);
+
+                const [logoAsciiString, bannerAsciiString] = await Promise.all([
+                    logoNumericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join(""),
+                    bannerNumericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join(""),
+                ]);
+
+                setlogoImageUrl('data:image/jpeg;base64,' + logoAsciiString);
+                setbannerImageUrl('data:image/jpeg;base64,' + bannerAsciiString);
+            } catch (error) {
+                console.error('Erro ao recuperar as URLs das imagens:', error);
+                setlogoImageUrl("https://i.imgur.com/ithUisk.png");
+            }
+        }
+
         DonwloadImages();
     }, [IdentificadorEmpresa]);
 
-    async function DonwloadImages() {
-        try {
-            const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/logo_company`);
-            const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
-
-            const [logoUrl, bannerUrl] = await Promise.all([
-                getDownloadURL(logoRef),
-                getDownloadURL(bannerRef),
-            ]);
-
-            const [logoResponse, bannerResponse] = await Promise.all([
-                fetch(logoUrl),
-                fetch(bannerUrl),
-            ]);
-
-            const [logoData, bannerData] = await Promise.all([
-                logoResponse.text(),
-                bannerResponse.text(),
-            ]);
-
-            const [logoNumericArray, bannerNumericArray] = await Promise.all([
-                logoData.split(","),
-                bannerData.split(","),
-            ]);
-
-            const [logoAsciiString, bannerAsciiString] = await Promise.all([
-                logoNumericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join(""),
-                bannerNumericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join(""),
-            ]);
-
-            setlogoImageUrl('data:image/jpeg;base64,' + logoAsciiString);
-            setbannerImageUrl('data:image/jpeg;base64,' + bannerAsciiString);
-        } catch (error) {
-            console.error('Erro ao recuperar as URLs das imagens:', error);
-            setlogoImageUrl("https://i.imgur.com/ithUisk.png");
-        }
-    }
 
 
     const chooseImageFromGallery = async (imageType) => {
@@ -126,7 +127,7 @@ export default function EditarPerfil({ route }) {
         try {
             uploadString(storageRef, imageUrl).then((snapshot) => {
                 console.log('Imagem upada com sucesso2');
-            }),  DonwloadImages()
+            });
         } catch (error) {
             console.error('Erro ao enviar o arquivo:', error);
         }
