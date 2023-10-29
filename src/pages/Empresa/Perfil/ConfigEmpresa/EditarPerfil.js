@@ -124,8 +124,9 @@ export default function EditarPerfil({ route }) {
     const uploadImageToFirebase = async (storageRef, imageUrl) => {
         try {
             uploadString(storageRef, imageUrl).then((snapshot) => {
-                console.log('Imagem upada com sucesso2');
-            }), DonwloadImages()
+                console.log('Imagem upada com sucesso');
+                DonwloadImages()
+            })
         } catch (error) {
             console.error('Erro ao enviar o arquivo:', error);
         }
