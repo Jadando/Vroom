@@ -16,7 +16,8 @@ export default function VisualizarPerfil({ route }) {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '43oxJ7genGepR01ULf3FzRuTEyj1');
+    const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
+    console.log(IdentificadorEmpresa)
     const [logoImageUrl, setlogoImageUrl] = useState(null);
     const [bannerImageUrl, setbannerImageUrl] = useState(null);
     const [whatsapp, setWhatsapp] = useState(null);
@@ -26,7 +27,7 @@ export default function VisualizarPerfil({ route }) {
     const [estado, setEstado] = useState(null);
     const [cidade, setCidade] = useState(null);
     const [bairro, setBairro] = useState(null);
-    const [endereco, setEndereco] = useState("teste");
+    const [endereco, setEndereco] = useState(null);
     const [numero, setNumero] = useState(null);
 
     const storage = getStorage();
@@ -53,7 +54,7 @@ export default function VisualizarPerfil({ route }) {
 
     async function DonwloadImages() {
         try {
-            const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/logo_company`);
+            const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}`);
             const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
 
             const [logoUrl, bannerUrl] = await Promise.all([
@@ -89,48 +90,6 @@ export default function VisualizarPerfil({ route }) {
         }
     }
 
-    const chooseImageFromGallery = async (imageType) => {
-        try {
-            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-            if (status !== 'granted') {
-                console.error('A permissão para acessar a galeria foi negada');
-                return;
-            }
-
-            const result = await ImagePicker.launchImageLibraryAsync();
-
-            if (!result.canceled) {
-                const localUri = result.assets[0].uri;
-                const imageFile = await FileSystem.readAsStringAsync(localUri, {
-                    encoding: FileSystem.EncodingType.Base64,
-                });
-                if (imageType === 'logo') {
-                    // Usar referência da logo
-                    const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/logo_company`);;
-                    uploadImageToFirebase(logoRef, imageFile);
-                    console.log("logo")
-                } else if (imageType === 'banner') {
-                    // Usar referência do banner
-                    const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
-                    uploadImageToFirebase(bannerRef, imageFile);
-                    console.log("banner")
-                }
-            }
-        } catch (error) {
-            console.error('Erro ao escolher a imagem:', error);
-        }
-    };
-    const uploadImageToFirebase = async (storageRef, imageUrl) => {
-        try {
-            uploadString(storageRef, imageUrl).then((snapshot) => {
-                console.log('Imagem upada com sucesso');
-                DonwloadImages()
-            })
-        } catch (error) {
-            console.error('Erro ao enviar o arquivo:', error);
-        }
-    };
 
     const openMaps = () => {
         const formattedAddres = endereco.replace(' ', '+');

@@ -40,7 +40,7 @@ export default function Search() {
     async function DonwloadImg(documento) {
         try {
             const storage = getStorage();
-            const imageRef = ref(storage, `usuario/imagem/empresa/${documento.id}/logo_company`);
+            const imageRef = ref(storage, `usuario/imagem/empresa/${documento.id}/${documento.id}`);
             const url = await getDownloadURL(imageRef);
             const response = await fetch(url);
             const data = await response.text();
@@ -74,24 +74,23 @@ export default function Search() {
                 return (
                     <View style={styles.recents}>
                         <Text style={styles.recentsTitle}>Resultado da busca</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('VisualizarEmpresa')}>
-
-                            <View style={styles.recentsContainer}>
-                                {resultados.map((documento, index) => (
-                                    <View style={styles.recentsContent} key={index}>
+                        <View style={styles.recentsContainer}>
+                            {resultados.map((documento, index) => (
+                                <TouchableOpacity onPress={() => navigation.navigate('VisualizarEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
+                                    <View style={styles.recentsContent}>
                                         <View style={styles.recentsImages}>
                                             {Object.keys(imageUrl).map((imageKey) => (
-                                                <Image source={{ uri: imageUrl[imageKey] }} key={imageKey} style={styles.image} />
+                                                <Image source={{ uri: imageUrl[documento.id] }} key={documento.id} style={styles.image} />
                                             ))}
                                         </View>
                                         <Text style={styles.Text}>
                                             {documento.data.nome} {'\n'}
-                                            A 1.1km De você
+                                            A 0.1km De você
                                         </Text>
                                     </View>
-                                ))}
-                            </View>
-                        </TouchableOpacity>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
                     </View>
 
                 );
