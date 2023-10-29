@@ -114,7 +114,9 @@ export default function Perfil({ route }) {
             <View style={styles.user}>
                 <TouchableOpacity onPress={() => chooseImageFromGallery()}>
                     <View style={styles.userImg}>
-                        <Image source={{uri:imageUrl}} style={{ width: 100, height: 100 }} />
+
+                        <Image source={{uri:imageUrl}} style={{ width: '100%', height: '100%' }}/>
+
                     </View>
                 </TouchableOpacity>
 
