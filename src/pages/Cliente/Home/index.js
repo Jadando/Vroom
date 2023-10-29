@@ -8,13 +8,13 @@ export default function Home({ route }) {
   const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
   const [endereco, setEndereco] = useState("Seu Endereço")
   console.log(IdentificadorCliente)
-  const gambiarra = "gambiarra";
+  const gambiarra = "gkIyZ0DV78eAMEooMsqxMnKFQdg1";
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
 
   const Gambiarra = () => {
-    if (gambiarra === null) {
+    if (gambiarra === IdentificadorCliente) {
       return (
         <ScrollView>
           <View style={styles.recents}>

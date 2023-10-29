@@ -52,6 +52,7 @@ export default function Search() {
             //  console.log(imageUrl)
         } catch (error) {
             console.error('Erro ao recuperar a URL da imagem:', error);
+            setImageUrl(["https://i.imgur.com/ithUisk.png"]);
         }
     }
     async function Pesquisar() {

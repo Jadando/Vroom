@@ -5,7 +5,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import LogoutModal from '../../../components/logoutModal';
 import { getFirestore, onSnapshot, doc } from "firebase/firestore";
-
+import { getStorage, ref, getDownloadURL, uploadString } from 'firebase/storage';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 
 
@@ -13,14 +15,16 @@ export default function PerfilEntregador({ route }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');
     const [nameuser, setNameUser] = useState(null);
-    console.log(IdentificadorEntregador +" perfil entreagdor")
+    const [imageUrl, setImageUrl] = useState(null);
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
 
+    const db = getFirestore();
+    const storage = getStorage();
+
 
     useEffect(() => {
-        const db = getFirestore();
         const docRef = doc(db, "usuario", "tabela", "entregador", IdentificadorEntregador);
 
         const unsubscribe = onSnapshot(docRef, (doc) => {
@@ -31,13 +35,67 @@ export default function PerfilEntregador({ route }) {
                 console.log("O documento não existe.");
             }
         });
-
+        DonwloadImage()
         return () => {
             // Ao desmontar o componente, pare de ouvir as atualizações
             unsubscribe();
         };
     }, [IdentificadorEntregador]);
 
+    async function DonwloadImage() {
+        try {
+            const imageRef = ref(storage, `usuario/imagem/entregador/${IdentificadorEntregador}/logo_deliveryman`);
+            const url = await getDownloadURL(imageRef);
+            const response = await fetch(url);
+            const data = await response.text();
+            const numericArray = data.split(",");
+            const asciiString = numericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join("");
+            setImageUrl('data:image/jpeg;base64,' + asciiString);
+            //console.log(imageUrl)
+        } catch (error) {
+            console.error('Erro ao recuperar a URL da imagem:', error);
+            setImageUrl("https://i.imgur.com/ithUisk.png");
+        }
+    }
+
+
+    const chooseImageFromGallery = async () => {
+        try {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+            if (status !== 'granted') {
+                console.error('A permissão para acessar a galeria foi negada');
+                return;
+            }
+
+            const result = await ImagePicker.launchImageLibraryAsync();
+
+            if (!result.canceled) {
+                const localUri = result.assets[0].uri;
+                //Lê o arquivo da imagem como uma string base64 diretamente
+                const imageFile = await FileSystem.readAsStringAsync(localUri, {
+                    encoding: FileSystem.EncodingType.Base64,
+                });
+                //Armazena a string base64 na variável de estado imageUrl
+                const storageRef = ref(storage, `usuario/imagem/entregador/${IdentificadorEntregador}/logo_deliveryman`);
+                uploadImageToFirebase(storageRef, imageFile);
+            }
+        } catch (error) {
+            console.error('Erro ao escolher a imagem:', error);
+        }
+    };
+
+    const uploadImageToFirebase = async (storageRef, imageUrl) => {
+        try {
+            uploadString(storageRef, imageUrl).then((snapshot) => {
+                console.log('Imagem upada com sucesso');
+            },
+                 DonwloadImage()
+            );
+        } catch (error) {
+            console.error('Erro ao enviar o arquivo:', error);
+        }
+    };
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
@@ -50,24 +108,28 @@ export default function PerfilEntregador({ route }) {
                     </TouchableOpacity>
                 </View>
 
+
                 <View style={styles.user}>
-                    <View style={styles.userImg}>
-                        <Image
-                            source={require('../../../img/perfil.jpg')} />
-                    </View>
+                    <TouchableOpacity onPress={chooseImageFromGallery}>
+                        <View style={styles.userImg}>
+                            <Image source={{ uri: imageUrl }} style={{ width: 110, height: 110 }}/>
+                        </View>
+                    </TouchableOpacity>
+
+
                     <Text style={styles.userInfo}>{nameuser}</Text>
                 </View>
 
                 <View style={styles.btnArea}>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => navigation.navigate('DadosEntregador',{
+                        onPress={() => navigation.navigate('DadosEntregador', {
                             IdentificadorEntregador
-                            })}>
+                        })}>
                         <Text style={styles.btnText}>Meus dados</Text>
                         <Icon name='information' size={30} color='#000' />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => navigation.navigate('EmpresasAfiliadas',{})}>
+                        onPress={() => navigation.navigate('EmpresasAfiliadas', {})}>
                         <Text style={styles.btnText}>Sua afiliação</Text>
                         <Icon name='business-outline' size={30} color='#000' />
                     </TouchableOpacity>

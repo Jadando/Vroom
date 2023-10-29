@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation,StackActions } from '@react-navigation/native';
+import { useNavigation, StackActions } from '@react-navigation/native';
 
 export default function EmpresasAfiliadas() {
     const navigation = useNavigation();
@@ -9,71 +9,104 @@ export default function EmpresasAfiliadas() {
     const closeModal = () => {
         setModalVisible(false);
     }
-    return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-            <TouchableOpacity
-                    style={styles.Chevron}
-                    onPress={() => navigation.pop(1)}>
-                    <Icon name='chevron-back' size={30} color='#000' />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Icon name='notifications' size={30} color='#ffc000' />
-                </TouchableOpacity>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-            <Text style={styles.title}>Empresas Afiliadas</Text>
-            <Icon name='business' size={30} color='#00'/>
-            </View>
-            <View style={styles.rectangle}>
-                <View style={styles.circle} />
-                <View style={styles.textContainer}>
-                    <Text style={styles.companyName}>Empresa: Luzia Hamburgers</Text>
-                    <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.button}>
-                        <Text style={styles.buttonText}>Desafiliar-se da Empresa</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <Modal
-                visible={modalVisible}
-                transparent={true}
-                animationType='slide'
-                onRequestClose={closeModal}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalHeader}>
-                        <Text style={styles.modalHeaderTitle}>Aviso</Text>
+    const [Gambiarra, setGambiarra] = useState("nao")
+
+    const Gambi = () => {
+        if (Gambiarra === "sim") {
+            return (
+                <View style={styles.container}>
+                    <View style={styles.header}>
                         <TouchableOpacity
-                            style={styles.modalHeaderClose}
-                            onPress={() => setModalVisible(!modalVisible)} >
-                            <Image source={require('../../../img/close.png')} style={{ width: 30, height: 30 }} />
+                            style={styles.Chevron}
+                            onPress={() => navigation.pop(1)}>
+                            <Icon name='chevron-back' size={30} color='#000' />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Icon name='notifications' size={30} color='#ffc000' />
                         </TouchableOpacity>
                     </View>
-
-                    <View>
-                        <Text style={styles.modalContentTitle}>
-                            Tem certeza que deseja desafiliar-se dessa empresa?
-                        </Text>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                            <TouchableOpacity
-                                onPress={() => {setModalVisible(!modalVisible); navigation.navigate('SemAfiliacao');}}
-                                style={styles.modalBtn}>
-                                <Text style={styles.modalContent}>
-                                    Não
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => {setModalVisible(!modalVisible); navigation.navigate('SemAfiliacao')}}
-                                style={styles.modalBtn}>
-                                <Text style={styles.modalContent}>
-                                    Sim
-                                </Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={styles.title}>Empresas Afiliadas</Text>
+                        <Icon name='business' size={30} color='#00' />
+                    </View>
+                    <Text style={styles.content}>Você não tem afiliação com {'\n'} nenhuma empresa</Text>
+                    <Icon name='sad-outline' size={50} color='#000' />
+                </View>
+            )
+        }
+        else {
+            return (
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <TouchableOpacity
+                            style={styles.Chevron}
+                            onPress={() => navigation.pop(1)}>
+                            <Icon name='chevron-back' size={30} color='#000' />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Icon name='notifications' size={30} color='#ffc000' />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={styles.title}>Empresas Afiliadas</Text>
+                        <Icon name='business' size={30} color='#00' />
+                    </View>
+                    <View style={styles.rectangle}>
+                        <View style={styles.circle} />
+                        <View style={styles.textContainer}>
+                            <Text style={styles.companyName}>Empresa: Luzia Hamburgers</Text>
+                            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.button}>
+                                <Text style={styles.buttonText}>Desafiliar-se da Empresa</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
+                    <Modal
+                        visible={modalVisible}
+                        transparent={true}
+                        animationType='slide'
+                        onRequestClose={closeModal}
+                    >
+                        <View style={styles.modalContainer}>
+                            <View style={styles.modalHeader}>
+                                <Text style={styles.modalHeaderTitle}>Aviso</Text>
+                                <TouchableOpacity
+                                    style={styles.modalHeaderClose}
+                                    onPress={() => setModalVisible(!modalVisible)} >
+                                    <Image source={require('../../../img/close.png')} style={{ width: 30, height: 30 }} />
+                                </TouchableOpacity>
+                            </View>
+
+                            <View>
+                                <Text style={styles.modalContentTitle}>
+                                    Tem certeza que deseja desafiliar-se dessa empresa?
+                                </Text>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                                    <TouchableOpacity
+                                        onPress={() => { setModalVisible(!modalVisible); navigation.pop(1); }}
+                                        style={styles.modalBtn}>
+                                        <Text style={styles.modalContent}>
+                                            Não
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => { setModalVisible(!modalVisible); setGambiarra("sim") }}
+                                        style={styles.modalBtn}>
+                                        <Text style={styles.modalContent}>
+                                            Sim
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
                 </View>
-            </Modal>
-        </View>
+            )
+        }
+    }
+
+    return (
+
+        Gambi()
     );
 };
 

@@ -62,9 +62,9 @@ export default function Login() {
     }
 
     async function validarLogin() {
-      //  setIsLoading(true);
+        //  setIsLoading(true);
         if (email !== '' && senha !== '') {
-           // setIsLoading(true);
+          //   setIsLoading(true);
             if (validarEmail(email)) {
                 const auth = getAuth();
                 const db = getFirestore();
@@ -91,6 +91,7 @@ export default function Login() {
                             const dataArrayCliente = [];
                             const dataArrayEmpresa = [];
                             const dataArrayEntregador = [];
+
 
                             // Processar os resultados de cada consulta
 
@@ -122,7 +123,7 @@ export default function Login() {
                                 // Faça algo específico para entregadores
                             } else {
                                 setIsLoading(false);
-                               // Alert('Erro');
+                                // Alert('Erro');
                                 console.log("Nenhum campo correspondente encontrado.");
                             }
 
@@ -139,7 +140,7 @@ export default function Login() {
                     });
             }
             else {
-                setIsLoading(false);
+                //setIsLoading(false);
                 alert("email ou senha incorreto")
             }
             setIsLoading(false);
@@ -179,7 +180,7 @@ export default function Login() {
 
                 <TouchableOpacity
                     style={styles.logar}
-                    onPress={() => { validarLogin(); setIsLoading(true);}}>
+                    onPress={() => { validarLogin(); setIsLoading(true); }}>
                     <Text style={styles.logarText}>Entrar</Text>
                 </TouchableOpacity>
 

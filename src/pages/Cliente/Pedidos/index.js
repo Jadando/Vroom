@@ -7,9 +7,10 @@ import * as Location from 'expo-location';
 
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
-export default function LocalCliente() {
+export default function LocalCliente({route}) {
     const navigation = useNavigation();
     const [iconRotation, setIconRotation] = useState(0);
+    const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
     useEffect(() => {
         (async () => {
             const subscription = Location.watchPositionAsync({
@@ -46,10 +47,10 @@ export default function LocalCliente() {
     const handleMapPress = () => {
         setIsMapExpanded(!isMapExpanded);
     };
-    const gambiarra = ""
+    const gambiarra = "gkIyZ0DV78eAMEooMsqxMnKFQdg1"
 
     const Gambiarra = () => {
-        if (gambiarra === null) {
+        if (gambiarra === IdentificadorCliente) {
             return (<ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
                 showsVerticalScrollIndicator={false}
@@ -208,6 +209,11 @@ export default function LocalCliente() {
 const styles = StyleSheet.create({
     wrapper: {
         flexGrow: 1,
+    },
+    alertIcon: {
+  position: 'absolute',
+    top: -3,
+      left: 13,
     },
     container: {
         flex: 1,
