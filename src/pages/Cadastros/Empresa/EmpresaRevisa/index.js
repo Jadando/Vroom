@@ -4,11 +4,13 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { useTheme } from 'styled-components';
+import LoadingModal from '../../../../components/loadingModal';
 
 export default function EmpresaRevisa({ route }) {
   const navigation = useNavigation();
   const tema = useTheme();
   const styles = getstyles(tema);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
   const [cnpj, setCnpj] = useState(route.params?.cnpj || '');
@@ -34,6 +36,8 @@ export default function EmpresaRevisa({ route }) {
       numero !== ''
     ) {
       try {
+        setIsLoading(true);
+        console.log(isLoading)
         // Substitua com o UID desejado
         const db = getFirestore();
 
@@ -56,7 +60,9 @@ export default function EmpresaRevisa({ route }) {
         navigation.navigate('IniciarEntrega',{
           IdentificadorEmpresa:Identificador
         })
+        setIsLoading(false);
         console.log('Documento criado com sucesso');
+        setIsLoading(false);
       } catch (e) {
         console.error("Error adding document: ", e);
       }
@@ -194,6 +200,7 @@ export default function EmpresaRevisa({ route }) {
             </TouchableOpacity>
           </View>
         </View>
+        <LoadingModal visible={isLoading} />
       </ScrollView>
     </View>
   );
