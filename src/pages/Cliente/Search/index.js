@@ -39,7 +39,7 @@ export default function Search() {
     async function DonwloadImg(documento) {
         try {
             const storage = getStorage();
-            const imageRef = ref(storage, `usuario/imagem/empresa/${documento.id}/logo`);
+            const imageRef = ref(storage, `usuario/imagem/empresa/${documento.id}/logo_company`);
             const url = await getDownloadURL(imageRef);
             const response = await fetch(url);
             const data = await response.text();
@@ -49,7 +49,7 @@ export default function Search() {
                 [documento.id]: 'data:image/jpeg;base64,' + asciiString
             }
             setImageUrl(UrlImg);
-          //  console.log(imageUrl)
+            //  console.log(imageUrl)
         } catch (error) {
             console.error('Erro ao recuperar a URL da imagem:', error);
         }
@@ -71,18 +71,18 @@ export default function Search() {
             if (resultados.length > 0) {
                 return (
                     <View style={styles.recents}>
-                        <Text style={styles.recentsTitle}>Resultado --Corrigir--</Text>
+                        <Text style={styles.recentsTitle}>Resultado da busca</Text>
                         <View style={styles.recentsContainer}>
                             {resultados.map((documento, index) => (
                                 <View style={styles.recentsContent} key={index}>
                                     <View style={styles.recentsImages}>
                                         {Object.keys(imageUrl).map((imageKey) => (
-                                            <Image source={{ uri: imageUrl[imageKey] }} key={imageKey}  style={styles.image}/>
+                                            <Image source={{ uri: imageUrl[imageKey] }} key={imageKey} style={styles.image} />
                                         ))}
                                     </View>
                                     <Text style={styles.Text}>
                                         {documento.data.nome} {'\n'}
-                                        A {documento.data.nome} KM De você
+                                        A 1.1km De você
                                     </Text>
                                 </View>
                             ))}
@@ -92,7 +92,13 @@ export default function Search() {
                 );
             } else {
                 return (
-                    <Text style={styles.Text}>Nenhum resultado encontrado.</Text>
+                    <>
+                        <View style={{
+                            height: '100%',
+                        }}>
+                            <Text style={styles.Text}>Nenhum resultado encontrado</Text>
+                        </View>
+                    </>
                 );
             }
         }
@@ -139,6 +145,7 @@ const getstyles = (tema) => StyleSheet.create({
     },
     Text: {
         color: tema.Tema.color,
+        fontSize: 18,
     },
     header: {
         flexDirection: 'row',
@@ -147,7 +154,7 @@ const getstyles = (tema) => StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginRight: 20,
-        marginBottom: 30
+        marginBottom: 30,
     },
     headerContent: {
         flexDirection: 'row',
@@ -213,10 +220,11 @@ const getstyles = (tema) => StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden'
     },
     image: {
         borderRadius: 50,
-        width: 70,
-        height: 70,
+        width: 95,
+        height: 95,
     },
 })

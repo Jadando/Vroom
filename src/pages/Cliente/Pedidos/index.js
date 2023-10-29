@@ -184,7 +184,6 @@ export default function LocalCliente() {
                                 onPress={() => setModalVisible(!modalVisible)}
                                 style={styles.headerBell}>
                                 <Icon name='notifications' size={30} color='#ffc000' />
-                                <Icon name='alert-circle' size={20} color='#cf2e2e' style={styles.alertIcon} />
                             </TouchableOpacity>
                         </View>
 
@@ -240,11 +239,6 @@ const styles = StyleSheet.create({
         height: 30,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    alertIcon: {
-        position: 'absolute',
-        top: -3,
-        left: 13,
     },
     title: {
         fontSize: 20,
