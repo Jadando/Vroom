@@ -30,54 +30,54 @@ export default function EditarPerfil({ route }) {
     const [numero, setNumero] = useState(null);
 
     const storage = getStorage();
-    const db=getFirestore();
+    const db = getFirestore();
 
     useEffect(() => {
         const docRef = doc(db, "usuario", "tabela", "empresa", IdentificadorEmpresa);
-      
+
         const unsubscribe = onSnapshot(docRef, (doc) => {
-          if (doc.exists()) {
-            const userData = doc.data();
-            setNome(userData.nome);
-            setTelefone(userData.telefone);
-           setEndereco(userData.endereco);
-            setNumero(userData.numero);
-            setWhatsapp(userData.telefone)
-          } else {
-            console.log("Empresa não existe.");
-          }
+            if (doc.exists()) {
+                const userData = doc.data();
+                setNome(userData.nome);
+                setTelefone(userData.telefone);
+                setEndereco(userData.endereco);
+                setNumero(userData.numero);
+                setWhatsapp(userData.telefone)
+            } else {
+                console.log("Empresa não existe.");
+            }
         });
-      
+
         async function DonwloadImages() {
             try {
                 const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/logo_company`);
                 const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
-        
+
                 const [logoUrl, bannerUrl] = await Promise.all([
                     getDownloadURL(logoRef),
                     getDownloadURL(bannerRef),
                 ]);
-        
+
                 const [logoResponse, bannerResponse] = await Promise.all([
                     fetch(logoUrl),
                     fetch(bannerUrl),
                 ]);
-        
+
                 const [logoData, bannerData] = await Promise.all([
                     logoResponse.text(),
                     bannerResponse.text(),
                 ]);
-        
+
                 const [logoNumericArray, bannerNumericArray] = await Promise.all([
                     logoData.split(","),
                     bannerData.split(","),
                 ]);
-        
+
                 const [logoAsciiString, bannerAsciiString] = await Promise.all([
                     logoNumericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join(""),
                     bannerNumericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join(""),
                 ]);
-        
+
                 setlogoImageUrl('data:image/jpeg;base64,' + logoAsciiString);
                 setbannerImageUrl('data:image/jpeg;base64,' + bannerAsciiString);
             } catch (error) {
@@ -85,10 +85,10 @@ export default function EditarPerfil({ route }) {
                 setlogoImageUrl("https://i.imgur.com/ithUisk.png");
             }
         }
-    
+
         DonwloadImages();
     }, [IdentificadorEmpresa]);
-    
+
 
 
     const chooseImageFromGallery = async (imageType) => {
@@ -133,6 +133,31 @@ export default function EditarPerfil({ route }) {
         }
     };
 
+    const openMaps = () => {
+        const formattedAddres = endereco.replace(' ', '+');
+
+        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${formattedAddres}`;
+
+        Linking.openURL(mapsUrl)
+    }
+
+    const openTelefone = () => {
+        const numeroFormatado = telefone.replace(/[^0-9]/g, '');
+        const url = `tel:${numeroFormatado}`;
+        Linking.openURL(url);
+    };
+
+    function formatTelefone(telefone) {
+        if (telefone && telefone.length === 11) {
+            const telefoneFormatado = `(${telefone.slice(0, 2)}) ${telefone.slice(2, 7)}-${telefone.slice(7)}`;
+            return telefoneFormatado;
+        } else {
+            return telefone;
+        }
+    }
+
+    const telefoneFormatado = formatTelefone(telefone || '');
+
     return (
 
         <ScrollView
@@ -157,7 +182,7 @@ export default function EditarPerfil({ route }) {
                     </View>
                 </View>
                 <Text style={{ fontSize: 18, marginBottom: 10 }}>Veja como está seu perfil</Text>
-                <View style={{ borderRadius: 10, overflow: 'hidden', width: '100%'}}>
+                <View style={{ borderRadius: 10, overflow: 'hidden', width: '100%' }}>
                     <TouchableOpacity
                         onPress={() => chooseImageFromGallery('banner')}
                     >
@@ -185,28 +210,32 @@ export default function EditarPerfil({ route }) {
                 </View>
 
                 <View style={styles.btnArea}>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity
+                        onPress={openMaps}
+                        style={styles.button}>
                         <Icon name='location' size={30} color='#000' />
                         <Text style={styles.btnText}>Endereço {'\n'} {endereco} N°{numero}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}
+                    <TouchableOpacity
+                        onPress={openTelefone}
+                    style={styles.button}
                         >
-                        <Icon name='call' size={30} color='#000' />
-                        <Text style={styles.btnText}>Telefone {'\n'} {telefone}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonZap}
-                        onPress={() => Linking.openURL(`https://wa.me/55${whatsapp}`)}
-                    >
-                        <Text style={styles.btnZapText}>Entrar em contato via Whatsapp</Text>
-                        <Icon name='logo-whatsapp' size={30} color='#000' />
-                    </TouchableOpacity>
-                </View>
-                <LogoutModal
-                    modalVisible={modalVisible}
-                    setModalVisible={setModalVisible}
-                />
+                    <Icon name='call' size={30} color='#000' />
+                    <Text style={styles.btnText}>Telefone {'\n'} {formatTelefone(telefone)}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonZap}
+                    onPress={() => Linking.openURL(`https://wa.me/55${whatsapp}`)}
+                >
+                    <Text style={styles.btnZapText}>Entrar em contato via Whatsapp</Text>
+                    <Icon name='logo-whatsapp' size={30} color='#000' />
+                </TouchableOpacity>
             </View>
-        </ScrollView>
+            <LogoutModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+            />
+        </View>
+        </ScrollView >
     );
 }
 

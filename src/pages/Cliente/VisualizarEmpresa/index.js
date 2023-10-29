@@ -3,14 +3,38 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ImageBackg
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
-import LogoutModal from '../../../components/logoutModal';
-
+import * as Linking from 'expo-linking';
 
 export default function VisualizarPerfil() {
-    const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
+
+    // const openMaps = () => {
+    //     const formattedAddres = endereco.replace(' ', '+');
+
+    //     const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${formattedAddres}`;
+
+    //     Linking.openURL(mapsUrl)
+    // }
+
+    // const openTelefone = () => {
+    //     const numeroFormatado = telefone.replace(/[^0-9]/g, '');
+    //     const url = `tel:${numeroFormatado}`;
+    //     Linking.openURL(url);
+    // };
+
+    // function formatTelefone(telefone) {
+    //     if (telefone && telefone.length === 11) {
+    //         const telefoneFormatado = `(${telefone.slice(0, 2)}) ${telefone.slice(2, 7)}-${telefone.slice(7)}`;
+    //         return telefoneFormatado;
+    //     } else {
+    //         return telefone;
+    //     }
+    // }
+
+    // const telefoneFormatado = formatTelefone(telefone || '');
+
     return (
 
         <ScrollView
@@ -31,7 +55,7 @@ export default function VisualizarPerfil() {
 
                         <View style={styles.userImg}>
                         <Image
-                                style={{width: '100%', height: '145%', top: -25}}
+                                style={{width: '100%', height: '100%'}}
                                 source={require('../../../img/luzia.png')} />
                         </View>
                         <View style={styles.userInfo}>
@@ -55,10 +79,6 @@ export default function VisualizarPerfil() {
                         <Icon name='logo-whatsapp' size={30} color='#000' />
                     </TouchableOpacity>
                 </View>
-                <LogoutModal
-                    modalVisible={modalVisible}
-                    setModalVisible={setModalVisible}
-                />
             </View>
         </ScrollView>
     );
@@ -93,12 +113,11 @@ const getstyles = (tema) => StyleSheet.create({
     userImg: {
         backgroundColor: '#d1d3d4ff',
         marginRight: 20,
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+        width: 140,
+        height: 140,
+        borderRadius: 100,
         alignContent: 'center',
         alignItems: 'center',
-        paddingTop: 10,
         overflow: 'hidden',
         borderWidth: 3,
         borderColor: '#ffc000'
