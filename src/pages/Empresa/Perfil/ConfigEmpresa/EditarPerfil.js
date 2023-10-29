@@ -125,7 +125,7 @@ export default function EditarPerfil({ route }) {
         try {
             uploadString(storageRef, imageUrl).then((snapshot) => {
                 console.log('Imagem upada com sucesso2');
-            }) , DonwloadImages()
+            }), DonwloadImages()
         } catch (error) {
             console.error('Erro ao enviar o arquivo:', error);
         }
@@ -216,23 +216,23 @@ export default function EditarPerfil({ route }) {
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={openTelefone}
-                    style={styles.button}
-                        >
-                    <Icon name='call' size={30} color='#000' />
-                    <Text style={styles.btnText}>Telefone {'\n'} {formatTelefone(telefone)}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonZap}
-                    onPress={() => Linking.openURL(`https://wa.me/55${whatsapp}`)}
-                >
-                    <Text style={styles.btnZapText}>Entrar em contato via Whatsapp</Text>
-                    <Icon name='logo-whatsapp' size={30} color='#000' />
-                </TouchableOpacity>
+                        style={styles.button}
+                    >
+                        <Icon name='call' size={30} color='#000' />
+                        <Text style={styles.btnText}>Telefone {'\n'} {formatTelefone(telefone)}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonZap}
+                        onPress={() => Linking.openURL(`https://wa.me/55${whatsapp}`)}
+                    >
+                        <Text style={styles.btnZapText}>Entrar em contato via Whatsapp</Text>
+                        <Icon name='logo-whatsapp' size={30} color='#000' />
+                    </TouchableOpacity>
+                </View>
+                <LogoutModal
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                />
             </View>
-            <LogoutModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-            />
-        </View>
         </ScrollView >
     );
 }
