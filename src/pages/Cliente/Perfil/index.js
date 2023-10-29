@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
@@ -8,48 +8,59 @@ import { getFirestore, onSnapshot, doc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL, uploadString } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
+import { encode } from 'base-64';
 
 export default function Perfil({ route }) {
     const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
     const [modalVisible, setModalVisible] = useState(false);
     const [nameuser, setNameUser] = useState(null);
     const navigation = useNavigation();
-    const [imageUrl, setImageUrl] = useState(require('../../../../assets/person.png'));
+    const [imageUrl, setImageUrl] = useState(null);
     const tema = useTheme();
     const styles = getstyles(tema)
-    const storage = getFirestore();
-    // useEffect(() => {
-    //     const docRef = doc(storage, "usuario", "tabela", "cliente", IdentificadorCliente);
-    //     const unsubscribe = onSnapshot(docRef, (doc) => {
-    //         if (doc.exists()) {
-    //             const userData = doc.data();
-    //             setNameUser(userData.nome);
-    //         } else {
-    //             console.log("O documento não existe.");
-    //         }
-    //     });
-    //     async function DonwloadImage() {
-    //         try {
-    //             const storage = getStorage();
-    //             const imageRef = ref(storage, `usuario/imagem/cliente/${IdentificadorCliente}/logouser`);
-    //             const url = await getDownloadURL(imageRef);
-    //             const response = await fetch(url);
-    //             const data = await response.text();
-    //             const numericArray = data.split(",");
-    //             const asciiString = numericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join("");
-    //             setImageUrl('data:image/jpeg;base64,' + asciiString);
-    //         } catch (error) {
-    //             console.error('Erro ao recuperar a URL da imagem:', error);
-    //         }
-    //     }
+    const db = getFirestore();
+    const storage = getStorage();
+    //require('../../../../assets/person.png')
+    //a atualização de dados e imagem
+    useEffect(() => {
 
-    //     return () => {
-    //         // Ao desmontar o componente, pare de ouvir as atualizações
-    //         DonwloadImage()
-    //         unsubscribe();
-    //     };
-    // }, [IdentificadorCliente]);
+        console.log("Iniciando pesquisa");
 
+        const docRef = doc(db, "usuario", "tabela", "cliente", IdentificadorCliente);
+        const unsubscribe = onSnapshot(docRef, (doc) => {
+            if (doc.exists()) {
+                const userData = doc.data();
+                setNameUser(userData.nome);
+            } else {
+                console.log("O documento não existe.");
+            }
+        });
+
+        DonwloadImage()
+
+        return () => {
+            unsubscribe();
+        };
+    }, [IdentificadorCliente]);
+
+
+    async function DonwloadImage() {
+        try {
+            const imageRef = ref(storage, `usuario/imagem/cliente/${IdentificadorCliente}/logo_client`);
+            const url = await getDownloadURL(imageRef);
+            const response = await fetch(url);
+            const data = await response.text();
+            const numericArray = data.split(",");
+            const asciiString = numericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join("");
+            setImageUrl('data:image/jpeg;base64,' + asciiString);
+            //console.log(imageUrl)
+        } catch (error) {
+            console.error('Erro ao recuperar a URL da imagem:', error);
+            setImageUrl('https://sujeitoprogramador.com/reactlogo.png');
+        }
+    }
+
+    
     const chooseImageFromGallery = async () => {
         try {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -67,27 +78,28 @@ export default function Perfil({ route }) {
                 const imageFile = await FileSystem.readAsStringAsync(localUri, {
                     encoding: FileSystem.EncodingType.Base64,
                 });
-                setImageUrl(`data:image/jpeg;base64,${imageFile}`);
-               // console.log(imageUrl)
-                uploadImageToFirebase()
-
+                //Armazena a string base64 na variável de estado imageUrl
+                const storageRef = ref(storage, `usuario/imagem/cliente/${IdentificadorCliente}/logo_client`);
+                uploadImageToFirebase(storageRef, imageFile);
             }
         } catch (error) {
             console.error('Erro ao escolher a imagem:', error);
         }
     };
-    const uploadImageToFirebase = async () => {
+
+    const uploadImageToFirebase = async (storageRef, imageUrl) => {
         try {
-           // console.log(imageUrl)
-            const storageRef = ref(storage, `usuario/imagem/cliente/${IdentificadorCliente}/logouser`);
             uploadString(storageRef, imageUrl).then((snapshot) => {
-                console.log('Uploaded a raw string!');
-            });
-        }
-        catch (error) {
+                console.log('Imagem upada com sucesso');
+
+            },
+            DonwloadImage()
+            );
+        } catch (error) {
             console.error('Erro ao enviar o arquivo:', error);
         }
     };
+
 
 
     return (
@@ -100,9 +112,9 @@ export default function Perfil({ route }) {
             </View>
 
             <View style={styles.user}>
-                <TouchableOpacity onPress={chooseImageFromGallery}>
+                <TouchableOpacity onPress={() => chooseImageFromGallery()}>
                     <View style={styles.userImg}>
-                        <Image source={imageUrl} style={{ width: 30, height: 30 }}/>
+                        <Image source={{uri:imageUrl}} style={{ width: 100, height: 100 }} />
                     </View>
                 </TouchableOpacity>
 
@@ -167,7 +179,7 @@ const getstyles = (tema) => StyleSheet.create({
         borderRadius: 50,
         alignContent: 'center',
         alignItems: 'center',
-        paddingTop: 10
+        overflow: 'hidden'
     },
     userInfo: {
         fontSize: 20,

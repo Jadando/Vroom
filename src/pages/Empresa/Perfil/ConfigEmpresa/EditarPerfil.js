@@ -107,14 +107,12 @@ export default function EditarPerfil({ route }) {
                 });
                 if (imageType === 'logo') {
                     // Usar referência da logo
-                    const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/logo`);
-                    setlogoImageUrl(`data:image/jpeg;base64,${imageFile}`);
+                    const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/logo_company`);;
                     uploadImageToFirebase(logoRef, imageFile);
                     console.log("logo")
                 } else if (imageType === 'banner') {
                     // Usar referência do banner
-                    const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner`);
-                    setbannerImageUrl(`data:image/jpeg;base64,${imageFile}`);
+                    const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
                     uploadImageToFirebase(bannerRef, imageFile);
                     console.log("banner")
                 }

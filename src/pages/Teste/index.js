@@ -30,9 +30,9 @@ export default function Teste() {
 
     const [imageUrl, setImageUrl] = useState(null);
     const [imageUri, setImageUri] = useState(null);
-    // if (typeof atob === 'undefined') {
-    //     global.atob = encode;
-    // }
+     if (typeof atob === 'undefined') {
+         global.atob = encode;
+     }
     const chooseImageFromGallery = async () => {
         try {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
