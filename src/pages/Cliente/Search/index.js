@@ -39,7 +39,7 @@ export default function Search() {
     async function DonwloadImg(documento) {
         try {
             const storage = getStorage();
-            const imageRef = ref(storage, `usuario/imagem/empresa/${documento.id}/logo`);
+            const imageRef = ref(storage, `usuario/imagem/empresa/${documento.id}/logo_company`);
             const url = await getDownloadURL(imageRef);
             const response = await fetch(url);
             const data = await response.text();

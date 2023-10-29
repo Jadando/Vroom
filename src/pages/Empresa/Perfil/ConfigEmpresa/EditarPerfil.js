@@ -49,8 +49,8 @@ export default function EditarPerfil({ route }) {
       
         async function DonwloadImages() {
             try {
-                const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/logo`);
-                const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner`);
+                const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/logo_company`);
+                const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
         
                 const [logoUrl, bannerUrl] = await Promise.all([
                     getDownloadURL(logoRef),
@@ -81,6 +81,7 @@ export default function EditarPerfil({ route }) {
                 setbannerImageUrl('data:image/jpeg;base64,' + bannerAsciiString);
             } catch (error) {
                 console.error('Erro ao recuperar as URLs das imagens:', error);
+                setlogoImageUrl("https://i.imgur.com/ithUisk.png");
             }
         }
     
