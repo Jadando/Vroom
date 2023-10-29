@@ -8,7 +8,6 @@ import { getFirestore, onSnapshot, doc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL, uploadString } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
-import { encode } from 'base-64';
 
 export default function Perfil({ route }) {
     const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
@@ -20,8 +19,8 @@ export default function Perfil({ route }) {
     const styles = getstyles(tema)
     const db = getFirestore();
     const storage = getStorage();
-    //require('../../../../assets/person.png')
-    //a atualização de dados e imagem
+
+
     useEffect(() => {
 
         console.log("Iniciando pesquisa");
@@ -56,7 +55,7 @@ export default function Perfil({ route }) {
             //console.log(imageUrl)
         } catch (error) {
             console.error('Erro ao recuperar a URL da imagem:', error);
-            setImageUrl('https://sujeitoprogramador.com/reactlogo.png');
+            setImageUrl("https://i.imgur.com/ithUisk.png");
         }
     }
 
@@ -115,7 +114,7 @@ export default function Perfil({ route }) {
                 <TouchableOpacity onPress={() => chooseImageFromGallery()}>
                     <View style={styles.userImg}>
 
-                        <Image source={{uri:imageUrl}} style={{ width: '100%', height: '100%' }}/>
+                        <Image source={{uri:imageUrl}} style={{ width: 110, height: 110 }}/>
 
                     </View>
                 </TouchableOpacity>

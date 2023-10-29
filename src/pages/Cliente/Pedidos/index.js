@@ -190,7 +190,7 @@ export default function LocalCliente() {
 
 
                         <View style={styles.pedidos}>
-                            <Text style={styles.pedidosText}>Nenhum Pedido a Caminho =)</Text>
+                            <Text style={styles.pedidosText}>Nenhum Pedido a Caminho</Text>
                             <View style={styles.pedidosClock}>
                             </View>
                         </View>
