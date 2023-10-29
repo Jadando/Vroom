@@ -13,7 +13,7 @@ export default function Restaurante() {
         <View style={styles.container}>
             <View style={styles.header}>
             <TouchableOpacity
-                    style={styles.Chevron}
+                    // style={{marginLeft: 10}}
                     onPress={() => navigation.pop(1)}>
                     <Icon name='chevron-back' size={30} color='#000' />
                 </TouchableOpacity>
@@ -98,20 +98,22 @@ const getstyles = (tema) => StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginRight: 20,
+        marginLeft: 20,
         marginBottom: 30
     },
     headerContent: {
         flexDirection: 'row',
         justifyContent: 'center',
         flex: 1,
-        marginLeft: 70
     },
     headerBell: {
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
+        marginRight: 10
     },
     title: {
         fontSize: 20,
-        color: tema.Tema.color
+        color: tema.Tema.color,
+        alignSelf: 'center'
     },
     search: {
         flexDirection: 'row',

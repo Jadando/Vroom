@@ -104,6 +104,7 @@ export default function Login() {
                                 navigation.navigate('Home', {
                                     IdentificadorCliente: uide
                                 });
+                                setIsLoading(false);
                                 console.log("Os campos correspondem a um cliente:", dataArrayCliente[0].id);
 
                                 // Faça algo específico para clientes
@@ -128,11 +129,12 @@ export default function Login() {
                             }
 
                         } catch (error) {
+                            setIsLoading(false);
                             console.error("Erro ao executar as consultas:", error);
                         }
                     })
                     .catch((error) => {
-                        //setIsLoading(false);
+                        setIsLoading(false);
                         const errorCode = error.code;
                         const errorMessage = error.message;
                         console.log(errorCode)
@@ -140,7 +142,7 @@ export default function Login() {
                     });
             }
             else {
-                //setIsLoading(false);
+                setIsLoading(false);
                 alert("email ou senha incorreto")
             }
             setIsLoading(false);
@@ -297,7 +299,7 @@ const getstyles = (tema) => StyleSheet.create({
         marginBottom: 15,
     },
     footer: {
-        flex: 1,
+        height: 230,
         alignContent: 'flex-end',
         justifyContent: 'flex-end',
         paddingBottom: 15

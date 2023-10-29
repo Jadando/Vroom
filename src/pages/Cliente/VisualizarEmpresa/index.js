@@ -130,16 +130,21 @@ export default function VisualizarPerfil({ route }) {
                         <Icon name='chevron-back' size={30} color='#000' />
                     </TouchableOpacity>
                     <TouchableOpacity>
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}
+                    >
+                        <Text style={{ fontSize: 18 }}>
+                            Seu Endereço
+                        </Text>
+                        <Icon name='chevron-down' size={30} color='#000' />
+                    </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
                         <Icon name='notifications' size={30} color='#ffc000' />
                     </TouchableOpacity>
                 </View>
-                <View style={styles.pedidos}>
-                    <Text style={styles.pedidosText}>Editar perfil</Text>
-                    <View style={styles.pedidosClock}>
-                        <Icon name='person-outline' size={30} color='#000' />
-                    </View>
-                </View>
-                <Text style={{ fontSize: 18, marginBottom: 10 }}>Veja como está seu perfil</Text>
                 <View style={{ borderRadius: 10, overflow: 'hidden', width: '100%' }}>
                     <TouchableOpacity
                         onPress={() => chooseImageFromGallery('banner')}

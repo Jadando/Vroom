@@ -97,9 +97,11 @@ export default function Search() {
             } else {
                 return (
                     <>
-                        <View style={{
-                            height: '100%',
-                        }}>
+                        <View
+                            style={{
+                                height: '100%',
+                            }}
+                        >
                             <Text style={styles.Text}>Nenhum resultado encontrado</Text>
                         </View>
                     </>
@@ -133,6 +135,16 @@ export default function Search() {
                     onChangeText={setPesquisa}
                 />
             </View>
+            {/* {resultados.length === 0 && (
+                <View
+                    style={{
+                        height: 1000,
+                        backgroundColor: 'white', // Use 'white' para definir o fundo branco
+                        position: 'absolute',     // Use 'position: absolute' para cobrir o conteúdo
+                        width: '100%',            // Defina a largura como 100%
+                    }}
+                />
+            )} */}
 
             {renderizarResultados()}
         </View>
