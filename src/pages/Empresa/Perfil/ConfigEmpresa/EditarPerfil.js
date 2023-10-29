@@ -127,7 +127,7 @@ export default function EditarPerfil({ route }) {
         try {
             uploadString(storageRef, imageUrl).then((snapshot) => {
                 console.log('Imagem upada com sucesso2');
-            });
+            }), DonwloadImages()
         } catch (error) {
             console.error('Erro ao enviar o arquivo:', error);
         }
