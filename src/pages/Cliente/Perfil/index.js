@@ -90,9 +90,9 @@ export default function Perfil({ route }) {
         try {
             uploadString(storageRef, imageUrl).then((snapshot) => {
                 console.log('Imagem upada com sucesso');
-
-            },
-            DonwloadImage()
+                DonwloadImage()
+            }
+           // DonwloadImage()
             );
         } catch (error) {
             console.error('Erro ao enviar o arquivo:', error);

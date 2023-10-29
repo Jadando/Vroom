@@ -82,6 +82,7 @@ export default function EditarPerfil({ route }) {
                 setbannerImageUrl('data:image/jpeg;base64,' + bannerAsciiString);
             } catch (error) {
                 console.error('Erro ao recuperar as URLs das imagens:', error);
+                setlogoImageUrl("https://i.imgur.com/ithUisk.png");
             }
         }
 
