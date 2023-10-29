@@ -15,7 +15,7 @@ export default function Restaurante() {
             <TouchableOpacity
                     // style={{marginLeft: 10}}
                     onPress={() => navigation.pop(1)}>
-                    <Icon name='chevron-back' size={30} color='#000' />
+                    <Icon name='chevron-back' size={30} color='#000' style={{marginLeft: 30}}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.headerContent}>
                     <Text style={styles.title}>
@@ -49,6 +49,7 @@ export default function Restaurante() {
                         <TouchableOpacity onPress={() => navigation.navigate('VisualizarEmpresa')}>
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
+                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
                             </View>
                             <Text style={styles.Text}>
                                 Luzia Hamburgers {'\n'}
@@ -58,6 +59,7 @@ export default function Restaurante() {
                         </TouchableOpacity>
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
+                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
                             </View>
                             <Text style={styles.Text}>
                                 Mix Shakes {'\n'}
@@ -66,6 +68,7 @@ export default function Restaurante() {
                         </View>
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
+                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
                             </View>
                             <Text style={styles.Text}>
                                 JusFarma {'\n'}
@@ -163,5 +166,12 @@ const getstyles = (tema) => StyleSheet.create({
         width: 70,
         height: 70,
         marginRight: 10,
-    },
+        overflow: 'hidden',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      img: {
+        width: 100,
+        height: 100
+      }
 })

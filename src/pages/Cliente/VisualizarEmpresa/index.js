@@ -168,7 +168,7 @@ export default function VisualizarPerfil({ route }) {
                     <TouchableOpacity
                         style={styles.Chevron}
                         onPress={() => navigation.pop(1)}>
-                        <Icon name='chevron-back' size={30} color='#000' />
+                        <Icon name='chevron-back' size={30} color='#000' style={{marginLeft:30}}/>
                     </TouchableOpacity>
                     <TouchableOpacity>
                     <View style={{
@@ -199,7 +199,7 @@ export default function VisualizarPerfil({ route }) {
                                 >
                                     <View style={styles.userImg}>
                                         <Image
-                                            style={{ width: '100%', height: '100%' }}
+                                            style={{ width: '100%', height: '115%' }}
                                             source={{ uri: logoImageUrl }} />
                                     </View>
                                 </TouchableOpacity>

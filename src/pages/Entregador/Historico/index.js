@@ -27,6 +27,7 @@ export default function Historico() {
                     <View style={styles.recentsContainer}>
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
+                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
                             </View>
                             <Text>
                                 Luzia Hamburgers {'\n'}
@@ -35,6 +36,7 @@ export default function Historico() {
                         </View>
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
+                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
                             </View>
                             <Text>
                                 Mix Shakes {'\n'}
@@ -43,6 +45,7 @@ export default function Historico() {
                         </View>
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
+                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
                             </View>
                             <Text>
                                 JusFarma {'\n'}
@@ -135,5 +138,12 @@ const styles = StyleSheet.create({
         width: 70,
         height: 70,
         marginRight: 10,
-    },
+        overflow: 'hidden',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      img: {
+        width: 100,
+        height: 100
+      }
 })

@@ -18,7 +18,7 @@ export default function AceitarEntrega() {
             <View style={styles.header}>
             <TouchableOpacity
                     onPress={() => navigation.pop(1)}>
-                    <Icon name='chevron-back' size={30} color='#000' />
+                    <Icon name='chevron-back' size={30} color='#000' style={{marginLeft:30}}/>
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <Icon name='notifications' size={30} color='#ffc000' />
