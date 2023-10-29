@@ -9,6 +9,7 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 export default function Search() {
     const tema = useTheme();
     const styles = getstyles(tema);
+    const navigation = useNavigation();
     const [pesquisa, setPesquisa] = useState(null)
     const [resultados, setResultados] = useState([]);
     const [imageUrl, setImageUrl] = useState([]);
@@ -73,21 +74,24 @@ export default function Search() {
                 return (
                     <View style={styles.recents}>
                         <Text style={styles.recentsTitle}>Resultado da busca</Text>
-                        <View style={styles.recentsContainer}>
-                            {resultados.map((documento, index) => (
-                                <View style={styles.recentsContent} key={index}>
-                                    <View style={styles.recentsImages}>
-                                        {Object.keys(imageUrl).map((imageKey) => (
-                                            <Image source={{ uri: imageUrl[imageKey] }} key={imageKey} style={styles.image} />
-                                        ))}
+                        <TouchableOpacity onPress={() => navigation.navigate('VisualizarEmpresa')}>
+
+                            <View style={styles.recentsContainer}>
+                                {resultados.map((documento, index) => (
+                                    <View style={styles.recentsContent} key={index}>
+                                        <View style={styles.recentsImages}>
+                                            {Object.keys(imageUrl).map((imageKey) => (
+                                                <Image source={{ uri: imageUrl[imageKey] }} key={imageKey} style={styles.image} />
+                                            ))}
+                                        </View>
+                                        <Text style={styles.Text}>
+                                            {documento.data.nome} {'\n'}
+                                            A 1.1km De você
+                                        </Text>
                                     </View>
-                                    <Text style={styles.Text}>
-                                        {documento.data.nome} {'\n'}
-                                        A 1.1km De você
-                                    </Text>
-                                </View>
-                            ))}
-                        </View>
+                                ))}
+                            </View>
+                        </TouchableOpacity>
                     </View>
 
                 );

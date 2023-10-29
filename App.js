@@ -70,6 +70,7 @@ import Cadastro from './src/pages/Cadastros/Cadastro';
 
 
 
+
 const Stack = createStackNavigator();
 
 
