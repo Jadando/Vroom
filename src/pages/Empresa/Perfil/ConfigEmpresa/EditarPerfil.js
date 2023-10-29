@@ -19,7 +19,7 @@ export default function EditarPerfil({ route }) {
     const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
     const [logoImageUrl, setlogoImageUrl] = useState(null);
     const [bannerImageUrl, setbannerImageUrl] = useState(null);
-    const [whatsapp, setWhatsapp] = useState('18998191748');
+    const [whatsapp, setWhatsapp] = useState(null);
     const [nome, setNome] = useState(null);
     const [telefone, setTelefone] = useState(null);
     const [cep, setCep] = useState(null);
@@ -42,6 +42,7 @@ export default function EditarPerfil({ route }) {
             setTelefone(userData.telefone);
            setEndereco(userData.endereco);
             setNumero(userData.numero);
+            setWhatsapp(userData.telefone)
           } else {
             console.log("Empresa não existe.");
           }
@@ -156,7 +157,7 @@ export default function EditarPerfil({ route }) {
                     </View>
                 </View>
                 <Text style={{ fontSize: 18, marginBottom: 10 }}>Veja como está seu perfil</Text>
-                <View style={{ borderRadius: 10, overflow: 'hidden', }}>
+                <View style={{ borderRadius: 10, overflow: 'hidden', width: '100%'}}>
                     <TouchableOpacity
                         onPress={() => chooseImageFromGallery('banner')}
                     >
@@ -169,7 +170,7 @@ export default function EditarPerfil({ route }) {
                                 >
                                     <View style={styles.userImg}>
                                         <Image
-                                            style={{ width: '100%', height: '145%', top: -25 }}
+                                            style={{ width: '100%', height: '100%' }}
                                             source={{ uri: logoImageUrl }} />
                                     </View>
                                 </TouchableOpacity>
@@ -251,14 +252,13 @@ const getstyles = (tema) => StyleSheet.create({
         alignItems: 'center',
     },
     userImg: {
-        backgroundColor: '#d1d3d4ff',
+        backgroundColor: '#fff',
         marginRight: 20,
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        alignContent: 'center',
+        width: 140,
+        height: 140,
+        borderRadius: 100,
+        justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 10,
         overflow: 'hidden',
         borderWidth: 3,
         borderColor: '#ffc000'

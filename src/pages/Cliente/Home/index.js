@@ -18,9 +18,12 @@ export default function Home({ route }) {
       return (
         <ScrollView>
           <View style={styles.recents}>
+            <View style={{flexDirection: 'row'}}>
             <Text style={styles.recentsTitle}>
               Pedido Recentemente
             </Text>
+            <Icon name='time-outline' color='#000' size={30} />
+            </View>
             <View style={styles.recentsContainer}>
               <View style={styles.recentsContent}>
                 <View style={styles.recentsImages}>
@@ -54,8 +57,14 @@ export default function Home({ route }) {
       return (
         <>
         <View style={styles.recents}>
+          <View style={{flexDirection: 'row'}}>
           <Text style={styles.recentsTitle}>
             Pedido Recentemente
+          </Text>
+          <Icon name='time-outline' color='#000' size={30} />
+          </View>
+          <Text>
+            Você ainda não fez nenhum pedido
           </Text>
         </View>
         <View
@@ -199,6 +208,7 @@ const getstyles = (tema) => StyleSheet.create({
     alignSelf: 'flex-start',
     marginBottom: 10,
     color: tema.Tema.color,
+    marginRight: 5,
   },
   recentsContainer: {
     flex: 1,
