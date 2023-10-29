@@ -14,7 +14,7 @@ export default function Search() {
     const [imageUrl, setImageUrl] = useState([]);
     const [mostrarResultados, setMostrarResultados] = useState(false);
     const db = getFirestore();
-
+lllllllll
     const Consultar = async (pesquisa) => {
         const empresaRef = collection(db, 'usuario/tabela/empresa');
 
