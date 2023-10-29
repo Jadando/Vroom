@@ -100,7 +100,7 @@ export default function Home({ route }) {
       >
         <View style={styles.categorias}>
           <View style={styles.categoriasContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('Restaurante')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Restaurante',{IdentificadorCliente})}>
               <View style={styles.categoriasContent}>
                 <Text style={{ ...styles.categoriaText, marginBottom: -15 }}>
                   Restaurantes

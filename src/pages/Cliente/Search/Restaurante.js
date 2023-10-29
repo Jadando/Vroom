@@ -3,82 +3,106 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
+import react from 'react';
 
-export default function Restaurante() {
+export default function Restaurante({ route }) {
+    const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
+    const Gambiarra = "RL3S21xXFlgft8VXwqA9Xq2TfL32"
+
+    const Gambi = () => {
+if (Gambiarra===IdentificadorCliente) {
+    return(
+        <ScrollView
+        showsVerticalScrollIndicator={false}
+        overScrollMode='never'
+    >
+        <View style={styles.recents}>
+            <View style={styles.recentsContainer}>
+                <TouchableOpacity onPress={() => navigation.navigate('VisualizarEmpresa')}>
+                    <View style={styles.recentsContent}>
+                        <View style={styles.recentsImages}>
+                            <Image source={require('../../../img/luzia.png')} style={styles.img} />
+                        </View>
+                        <Text style={styles.Text}>
+                            Luzia Hamburgers {'\n'}
+                            1,1Km de você
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                <View style={styles.recentsContent}>
+                    <View style={styles.recentsImages}>
+                        <Image source={require('../../../img/luzia.png')} style={styles.img} />
+                    </View>
+                    <Text style={styles.Text}>
+                        Mix Shakes {'\n'}
+                        2,1Km de você
+                    </Text>
+                </View>
+                <View style={styles.recentsContent}>
+                    <View style={styles.recentsImages}>
+                        <Image source={require('../../../img/luzia.png')} style={styles.img} />
+                    </View>
+                    <Text style={styles.Text}>
+                        JusFarma {'\n'}
+                        3,1Km de você
+                    </Text>
+                </View>
+            </View>
+        </View>
+    </ScrollView>
+    )
+} else {
+    return(
+        <Text style={styles.Text}>
+        Mix Shakes {'\n'}
+        2,1Km de você
+    </Text>
+    )
+}
+
+
+    }
+
+
+
     return (
 
         <View style={styles.container}>
             <View style={styles.header}>
-            <TouchableOpacity
+                <TouchableOpacity
                     // style={{marginLeft: 10}}
                     onPress={() => navigation.pop(1)}>
-                    <Icon name='chevron-back' size={30} color='#000' style={{marginLeft: 30}}/>
+                    <Icon name='chevron-back' size={30} color='#000' style={{ marginLeft: 30 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.headerContent}>
                     <Text style={styles.title}>
                         Seu endereço
                     </Text>
-                    <Icon name='chevron-down' size={30} color ={tema.Tema.color}/>
+                    <Icon name='chevron-down' size={30} color={tema.Tema.color} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
             </View>
 
+
             <Text style={styles.recentsTitle}>
-                        Restaurantes
-                    </Text>
+                Restaurantes
+            </Text>
             <View style={styles.search}>
                 <View style={styles.searchLupe}>
                     <Icon name='search' size={25} color={tema.Tema.color} />
                 </View>
                 <TextInput
-                placeholder="Buscar em resturantes" 
-                style={{fontSize: 18, color: tema.Tema.color }}
-                placeholderTextColor={tema.Tema.color}
+                    placeholder="Buscar em resturantes"
+                    style={{ fontSize: 18, color: tema.Tema.color }}
+                    placeholderTextColor={tema.Tema.color}
                 />
             </View>
 
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                overScrollMode='never'
-            >
-                <View style={styles.recents}>
-                    <View style={styles.recentsContainer}>
-                        <TouchableOpacity onPress={() => navigation.navigate('VisualizarEmpresa')}>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
-                            </View>
-                            <Text style={styles.Text}>
-                                Luzia Hamburgers {'\n'}
-                                1,1Km de você
-                            </Text>
-                        </View>
-                        </TouchableOpacity>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
-                            </View>
-                            <Text style={styles.Text}>
-                                Mix Shakes {'\n'}
-                                2,1Km de você
-                            </Text>
-                        </View>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
-                            </View>
-                            <Text style={styles.Text}>
-                                JusFarma {'\n'}
-                                3,1Km de você
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
-
+       
+{Gambi()}
         </View>
     );
 }
@@ -93,7 +117,7 @@ const getstyles = (tema) => StyleSheet.create({
     },
     Text: {
         color: tema.Tema.color,
-      },
+    },
     header: {
         flexDirection: 'row',
         width: '100%',
@@ -150,7 +174,7 @@ const getstyles = (tema) => StyleSheet.create({
     },
     recentsContent: {
         flexDirection: 'row',
-        backgroundColor: tema.Tema.content, 
+        backgroundColor: tema.Tema.content,
         padding: 20,
         width: 320,
         height: 80,
@@ -169,9 +193,9 @@ const getstyles = (tema) => StyleSheet.create({
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center',
-      },
-      img: {
+    },
+    img: {
         width: 100,
         height: 100
-      }
+    }
 })
