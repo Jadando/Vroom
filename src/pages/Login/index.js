@@ -299,7 +299,7 @@ const getstyles = (tema) => StyleSheet.create({
         marginBottom: 15,
     },
     footer: {
-        flex: 1,
+        height: 230,
         alignContent: 'flex-end',
         justifyContent: 'flex-end',
         paddingBottom: 15
