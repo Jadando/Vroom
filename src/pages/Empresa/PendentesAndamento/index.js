@@ -29,7 +29,7 @@ export default function PendentesAndamento() {
                         onPress={()=> navigation.navigate('RastrearEmpresa')}>
                         <View style={styles.recentsContent}>
                             <Text>
-                                Pedido cd 1 {'\n'}
+                                Pedido cd 4 {'\n'}
                                 Em andamento
                             </Text> 
                             <View style={styles.recentsImages}>
@@ -39,18 +39,6 @@ export default function PendentesAndamento() {
                             </View>
                         </View>
                         </TouchableOpacity>
-                        <View style={styles.recentsContent}>
-                            <Text>
-                                Pedido cd 2 {'\n'}
-                                Pendente
-                            </Text>
-                        </View>
-                        <View style={styles.recentsContent}>
-                            <Text>
-                                Pedido cd 3 {'\n'}
-                                Pendente
-                            </Text>
-                        </View>
                     </View>
                 </View>
             </ScrollView>

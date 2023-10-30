@@ -93,7 +93,7 @@ export default function Search() {
                                                 </View>
                                                 <Text style={styles.Text}>
                                                     {documento.data.nome} {'\n'}
-                                                    A 3.45km De você
+                                                    A 5.75km de você
                                                 </Text>
                                             </View>
                                         </TouchableOpacity>

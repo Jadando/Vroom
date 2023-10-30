@@ -106,11 +106,11 @@ export default function LocalCliente({ route }) {
                         <View style={styles.card}>
                             <View style={styles.recentsContent}>
                                 <View style={styles.recentsImages}>
-                                    <Image source={require('../../../img/luzia.png')} style={styles.img} />
+                                    <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img} />
                                 </View>
                                 <Text>
-                                    Luzia Hamburgers {'\n'}
-                                    Cd pedido: 01
+                                    SF Refrigeração {'\n'}
+                                    Cd pedido: 04
                                 </Text>
                             </View>
                             <View style={styles.locTitle}>
@@ -149,11 +149,11 @@ export default function LocalCliente({ route }) {
                             </View>
                             <View style={styles.recentsContent}>
                                 <View style={styles.recentsImages}>
-                                <Image source={require('../../../img/luzia.png')} style={styles.img} />
+                                <Image source={require('../../../img/entregador.jpg')} style={styles.img} />
                                 </View>
                                 <Text>
                                     Nome do entregador {'\n'}
-                                    Pedro
+                                    Daniel Oliveira da Silva
                                 </Text>
                             </View>
                         </View>
@@ -326,8 +326,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     img: {
-        width: 100,
-        height: 100
+        width: 70,
+        height: 70
     },
     deliveryTime: {
         backgroundColor: 'rgba(255, 255, 255, 0.6)',

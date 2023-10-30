@@ -129,7 +129,7 @@ export default function PerfilEntregador({ route }) {
                         <Icon name='information' size={30} color='#000' />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => navigation.navigate('EmpresasAfiliadas', {})}>
+                        onPress={() => navigation.navigate('EmpresasAfiliadas', {IdentificadorEntregador})}>
                         <Text style={styles.btnText}>Sua afiliação</Text>
                         <Icon name='business-outline' size={30} color='#000' />
                     </TouchableOpacity>

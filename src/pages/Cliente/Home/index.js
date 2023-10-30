@@ -31,25 +31,25 @@ export default function Home({ route }) {
                 </View>
                 <Text style={styles.categoriaText}>
                   Luzia Hamburgers {'\n'}
-                  Ultimo pedido dia: 11/04/2023
+                  Ultimo pedido dia: 29/10/2023
                 </Text>
               </View>
               <View style={styles.recentsContent}>
                 <View style={styles.recentsImages}>
-                <Image source={require('../../../img/luzia.png')} style={styles.img}/>
+                <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img}/>
                 </View>
                 <Text style={styles.categoriaText}>
-                  Mix Shakes {'\n'}
-                  Ultimo pedido dia: 09/04/2023
+                  SF Refrigerações {'\n'}
+                  Ultimo pedido dia: 28/10/2023
                 </Text>
               </View>
               <View style={styles.recentsContent}>
                 <View style={styles.recentsImages}>
-                <Image source={require('../../../img/luzia.png')} style={styles.img}/>
+                <Image source={require('../../../img/logo_juss.png')} style={styles.img}/>
                 </View>
                 <Text style={styles.categoriaText}>
-                  JusFarma {'\n'}
-                  Ultimo pedido dia: 28/03/2023
+                  JussFarma {'\n'}
+                  Ultimo pedido dia: 26/10/2023
                 </Text>
               </View>
             </View>
@@ -247,7 +247,7 @@ const getstyles = (tema) => StyleSheet.create({
     borderColor: '#ffc000'
   },
   img: {
-    width: 100,
-    height: 100
+    width: 70,
+    height: 70
   }
 })

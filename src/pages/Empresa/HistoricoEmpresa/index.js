@@ -26,26 +26,11 @@ export default function HistoricoEmpresa() {
                     <View style={styles.recentsContainer}>
                         <View style={styles.recentsContent}>
                             <View style={styles.recentsImages}>
+                            <Image source={require('../../../img/entregador.jpg')} style={styles.img}/>
                             </View>
                             <Text>
-                                Rua Agenor de Campos {'\n'}
-                                Ultimo pedido dia: 11/04/2023
-                            </Text>
-                        </View>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            </View>
-                            <Text>
-                                Av. Nossa Senhora de Fátima {'\n'}
-                                Ultimo pedido dia: 09/04/2023
-                            </Text>
-                        </View>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            </View>
-                            <Text>
-                                Av. Monteiro Lobato {'\n'}
-                                Ultimo pedido dia: 28/03/2023
+                                Rua Água Marinha {'\n'}
+                                Ultimo pedido dia: 28/10/2023
                             </Text>
                         </View>
                     </View>
@@ -129,10 +114,14 @@ const styles = StyleSheet.create({
     },
     recentsImages: {
         borderRadius: 50,
-        padding: 10,
         backgroundColor: '#fff',
         width: 70,
         height: 70,
         marginRight: 10,
+        overflow: 'hidden'
     },
+    img: {
+        width: 70,
+        height: 70
+      },
 })

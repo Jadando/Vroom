@@ -11,7 +11,7 @@ export default function IniciarEntrega() {
   const [modalVisible, setModalVisible] = useState(false);
   const [nome, setNome] = useState('');
   const [endereco, setEndereco] = useState('');
-  const [order, setOrder] = useState("1 X-salada\n1 Coca cola");
+  const [order, setOrder] = useState("");
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(0.0);
   const [inputValue, setInputValue] = useState('R$ 0,00');
@@ -123,6 +123,7 @@ export default function IniciarEntrega() {
             <Text style={styles.comandaTitle}>Comanda do pedido:</Text>
             <View style={styles.comandaDescription}>
               <TextInput
+              placeholder='Descrição do pedido'
                 multiline={true}
                 onChangeText={text => setOrder(text)}
                 numberOfLines={4}

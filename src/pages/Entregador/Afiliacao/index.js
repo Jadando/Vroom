@@ -3,16 +3,17 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, Image } from 'react-na
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation, StackActions } from '@react-navigation/native';
 
-export default function EmpresasAfiliadas() {
+export default function EmpresasAfiliadas({ route }) {
+    const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const closeModal = () => {
         setModalVisible(false);
     }
-    const [Gambiarra, setGambiarra] = useState("nao")
+    const [Gambiarra, setGambiarra] = useState("ABcH9bNye3SS6tpbHqKqItMREn72")
 
     const Gambi = () => {
-        if (Gambiarra === "sim") {
+        if (Gambiarra !== IdentificadorEntregador) {
             return (
                 <View style={styles.container}>
                     <View style={styles.header}>
@@ -53,11 +54,35 @@ export default function EmpresasAfiliadas() {
                     </View>
                     <View style={styles.rectangle}>
                         <View style={styles.circle}>
+                            <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img} />
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.companyName}>Empresa: SF Refrigeração</Text>
+                            <Text style={styles.companyName}>Endereço: Rua vicente casemiro</Text>
+                            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.button}>
+                                <Text style={styles.buttonText}>Desafiliar-se da Empresa</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.rectangle}>
+                        <View style={styles.circle}>
                             <Image source={require('../../../img/luzia.png')} style={styles.img} />
                         </View>
                         <View style={styles.textContainer}>
                             <Text style={styles.companyName}>Empresa: Luzia Hamburgers</Text>
-                            <Text style={styles.companyName}>Endereço: Rua vicente casemiro</Text>
+                            <Text style={styles.companyName}>Endereço: Av. Monteiro Lobato</Text>
+                            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.button}>
+                                <Text style={styles.buttonText}>Desafiliar-se da Empresa</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.rectangle}>
+                        <View style={styles.circle}>
+                            <Image source={require('../../../img/logo_juss.png')} style={styles.img} />
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.companyName}>Empresa: Juss Farma</Text>
+                            <Text style={styles.companyName}>Endereço: Rua São Miguel</Text>
                             <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.button}>
                                 <Text style={styles.buttonText}>Desafiliar-se da Empresa</Text>
                             </TouchableOpacity>
@@ -147,6 +172,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         elevation: 2,
+        marginTop: 15,
     },
     circle: {
         borderRadius: 50,

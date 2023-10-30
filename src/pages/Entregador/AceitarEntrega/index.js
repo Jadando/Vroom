@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function AceitarEntrega() {
     const [modalVisible, setModalVisible] = useState(false);
-    const [order, setOrder] = useState("1 X-salada\n1 Coca cola");
+    const [order, setOrder] = useState("1kg Gelo");
     const [value, setValue] = useState("R$ 19,99");
     const [payment, setPayment] = useState("Dinheiro");
     const navigation = useNavigation();
@@ -33,18 +33,20 @@ export default function AceitarEntrega() {
                 <View style={styles.card}>
                     <View style={styles.recentsContent}>
                         <View style={styles.recentsImages}>
+                        <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img}/>
                         </View>
                         <Text>
-                            Luzia Hamburgers {'\n'}
-                            Cd pedido: 01
+                            SF Refrigeração {'\n'}
+                            Cd pedido: 04
                         </Text>
                     </View>
                     <View style={styles.recentsContent}>
                         <View style={styles.recentsImages}>
+                        <Image source={require('../../../img/logo_luisa.jpg')} style={styles.img}/>
                         </View>
                         <Text>
                             Nome do cliente {'\n'}
-                            João Alvero Santos Lula
+                            Luísa Oliveira
                         </Text>
                     </View>
                     <View style={styles.comanda}>
@@ -157,7 +159,12 @@ const styles = StyleSheet.create({
         width: 70,
         height: 70,
         marginRight: 10,
+        overflow: 'hidden'
     },
+    img: {
+        width: 70,
+        height: 70
+      },
     comanda: {
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         elevation: 2,

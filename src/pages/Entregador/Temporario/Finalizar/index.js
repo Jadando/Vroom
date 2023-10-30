@@ -68,10 +68,11 @@ export default function FinalizarEntrega() {
                 <View style={styles.card}>
                     <View style={styles.recentsContent}>
                         <View style={styles.recentsImages}>
+                            <Image source={require('../../../../img/logo_sf.jpeg')} style={styles.img} />
                         </View>
                         <Text>
-                            Luzia Hamburgers {'\n'}
-                            Cd pedido: 01
+                            SF Refrigeração {'\n'}
+                            Cd pedido: 04
                         </Text>
                     </View>
                     <View style={styles.locTitle}>
@@ -105,18 +106,18 @@ export default function FinalizarEntrega() {
                     </View>
                     <View style={styles.recentsContent}>
                         <View style={styles.recentsImages}>
+                        <Image source={require('../../../../img/logo_luisa.jpg')} style={styles.img} />
                         </View>
                         <Text>
                             Nome do cliente {'\n'}
-                            Pedro
+                            Luísa Oliveira
                         </Text>
                     </View>
                     <View style={styles.comanda}>
                         <Text style={styles.comandaTitle}>Comanda do pedido:</Text>
                         <View style={styles.comandaDescription}>
                             <Text style={styles.comandaDescription}>
-                                1 X-salada {'\n1'}
-                                1 Coca cola 2L
+                                1kg Gelo
                             </Text>
                         </View>
                         <Text style={styles.comandaTitle}>Forma de pagamento:</Text>
@@ -127,7 +128,7 @@ export default function FinalizarEntrega() {
                         </View>
                         <Text style={styles.comandaTitle}>Valor do pedido:</Text>
                         <View style={styles.comandaPaymentValue}>
-                            <Text>R$ 15,99</Text>
+                            <Text>R$ 19,99</Text>
                         </View>
                     </View>
                 </View>
@@ -208,7 +209,12 @@ const styles = StyleSheet.create({
         width: 70,
         height: 70,
         marginRight: 10,
+        overflow: 'hidden'
     },
+    img: {
+        width: 70,
+        height: 70
+      },
     comanda: {
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         elevation: 2,
