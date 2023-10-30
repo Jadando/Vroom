@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
+import react from 'react';
 
 export default function Restaurante({ route }) {
     const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
@@ -111,7 +112,7 @@ const getstyles = (tema) => StyleSheet.create({
     },
     Text: {
         color: tema.Tema.color,
-      },
+    },
     header: {
         flexDirection: 'row',
         width: '100%',
@@ -168,7 +169,7 @@ const getstyles = (tema) => StyleSheet.create({
     },
     recentsContent: {
         flexDirection: 'row',
-        backgroundColor: tema.Tema.content, 
+        backgroundColor: tema.Tema.content,
         padding: 20,
         width: 320,
         height: 80,
@@ -187,9 +188,9 @@ const getstyles = (tema) => StyleSheet.create({
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center',
-      },
-      img: {
+    },
+    img: {
         width: 100,
         height: 100
-      }
+    }
 })
