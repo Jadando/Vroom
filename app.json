@@ -12,7 +12,11 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff",
       "developer": {
-        "errorRecovery": "silent" 
+        "errorRecovery": "silent"
+      },
+      "updates": {
+        "enabled": true,
+        "fallbackToCacheTimeout": 0
       }
     },
     "assetBundlePatterns": [
