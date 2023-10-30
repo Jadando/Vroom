@@ -6,7 +6,8 @@ import { useTema } from './src/theme';
 import { ThemeProvider } from 'styled-components';
 import { Tabs,TabsEmpresa, TabsEntregador } from './src/components/BottomTab';
 import * as Location from 'expo-location';
-import * as ImagePicker from 'expo-image-picker';   
+import * as ImagePicker from 'expo-image-picker'; 
+import { LogBox } from 'react-native';  
 //
 //
 //
@@ -72,7 +73,7 @@ import Cadastro from './src/pages/Cadastros/Cadastro';
 
 
 const Stack = createStackNavigator();
-
+LogBox.ignoreAllLogs();
 
 export default function App() {
   const Tema = useTema()
@@ -95,7 +96,6 @@ export default function App() {
         
     })();
 }, []);
-
   return (
     <ThemeProvider theme={Tema}>
     <NavigationContainer>
