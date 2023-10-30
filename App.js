@@ -96,9 +96,6 @@ export default function App() {
     })();
 }, []);
 
-
-
-alert("estive aqui")
   return (
     <ThemeProvider theme={Tema}>
     <NavigationContainer>
