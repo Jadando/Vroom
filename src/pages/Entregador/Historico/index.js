@@ -4,8 +4,60 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-export default function Historico() {
+export default function Historico({route}) {
+
+    const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');
     const navigation = useNavigation();
+    const gambiarra = "ABcH9bNye3SS6tpbHqKqItMREn72"
+
+
+const Gambi=()=>{
+    if (gambiarra===IdentificadorEntregador) {
+        return(     <ScrollView
+            showsVerticalScrollIndicator={false}
+            overScrollMode='never'
+        >
+            <View style={styles.recents}>
+                <View style={styles.recentsContainer}>
+                    <View style={styles.recentsContent}>
+                        <View style={styles.recentsImages}>
+                        <Image source={require('../../../img/luzia.png')} style={styles.img}/>
+                        </View>
+                        <Text>
+                            Luzia Hamburgers {'\n'}
+                            Ultimo pedido dia: 11/04/2023
+                        </Text>
+                    </View>
+                    <View style={styles.recentsContent}>
+                        <View style={styles.recentsImages}>
+                        <Image source={require('../../../img/luzia.png')} style={styles.img}/>
+                        </View>
+                        <Text>
+                            Mix Shakes {'\n'}
+                            Ultimo pedido dia: 09/04/2023
+                        </Text>
+                    </View>
+                    <View style={styles.recentsContent}>
+                        <View style={styles.recentsImages}>
+                        <Image source={require('../../../img/luzia.png')} style={styles.img}/>
+                        </View>
+                        <Text>
+                            JusFarma {'\n'}
+                            Ultimo pedido dia: 28/03/2023
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        </ScrollView>)
+    } else {
+        <Text>
+        JusFarma {'\n'}
+        Ultimo pedido dia: 28/03/2023
+    </Text>
+    }
+}
+
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -19,42 +71,7 @@ export default function Historico() {
                 </View>
             </View>
 
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                overScrollMode='never'
-            >
-                <View style={styles.recents}>
-                    <View style={styles.recentsContainer}>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
-                            </View>
-                            <Text>
-                                Luzia Hamburgers {'\n'}
-                                Ultimo pedido dia: 11/04/2023
-                            </Text>
-                        </View>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
-                            </View>
-                            <Text>
-                                Mix Shakes {'\n'}
-                                Ultimo pedido dia: 09/04/2023
-                            </Text>
-                        </View>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            <Image source={require('../../../img/luzia.png')} style={styles.img}/>
-                            </View>
-                            <Text>
-                                JusFarma {'\n'}
-                                Ultimo pedido dia: 28/03/2023
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
+{Gambi()}
 
         </View>
     );

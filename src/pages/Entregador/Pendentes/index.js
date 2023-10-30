@@ -1,55 +1,69 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import react from 'react';
 
 
-export default function Pendentes({route}) {
+export default function Pendentes({ route }) {
+
     const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');
     const navigation = useNavigation();
+    const gambiarra = "ABcH9bNye3SS6tpbHqKqItMREn72"
+
+    const Gambi = () => {
+        if (gambiarra === IdentificadorEntregador) {
+            return (
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    overScrollMode='never'
+                >
+                    <View style={styles.recents}>
+                        <View style={styles.recentsContainer}>
+                            <TouchableOpacity onPress={() => navigation.navigate('AceitarEntrega')}>
+                                <View style={styles.recentsContent}>
+                                    <Text>
+                                        Pedido cd 1 {'\n'}
+                                        pendente
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                            <View style={styles.recentsContent}>
+                                <Text>
+                                    Pedido cd 2 {'\n'}
+                                    Pendente
+                                </Text>
+                            </View>
+                            <View style={styles.recentsContent}>
+                                <Text>
+                                    Pedido cd 3 {'\n'}
+                                    Pendente
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                </ScrollView>
+            )
+        } else {
+            <Text>
+                Pedido cd 3 {'\n'}
+            </Text>
+        }
+    }
+
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
             </View>
-
             <View style={styles.pedidos}>
                 <Text style={styles.pedidosText}>Entregas pendentes</Text>
                 <View style={styles.pedidosClock}>
                     <Icon name='time-outline' size={30} color='#000' />
                 </View>
             </View>
-
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                overScrollMode='never'
-            >
-                <View style={styles.recents}>
-                    <View style={styles.recentsContainer}>
-                    <TouchableOpacity onPress={()=>navigation.navigate('AceitarEntrega')}>
-                        <View style={styles.recentsContent}>
-                            <Text>
-                                Pedido cd 1 {'\n'}
-                                pendente
-                            </Text>
-                        </View>
-                        </TouchableOpacity>
-                        <View style={styles.recentsContent}>
-                            <Text>
-                                Pedido cd 2 {'\n'}
-                                Pendente
-                            </Text>
-                        </View>
-                        <View style={styles.recentsContent}>
-                            <Text>
-                                Pedido cd 3 {'\n'}
-                                Pendente
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
-
+            {Gambi()}
         </View>
     );
 }

@@ -11,9 +11,6 @@
       "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff",
-      "developer": {
-        "errorRecovery": "silent"
-      },
       "updates": {
         "enabled": true,
         "fallbackToCacheTimeout": 0

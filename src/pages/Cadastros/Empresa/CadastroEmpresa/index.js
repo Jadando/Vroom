@@ -11,8 +11,8 @@ export default function CadastroEmpresa({ route }) {
   const [open, setOpen] = useState(false);
   const styles = getstyles(tema);
   const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
-  const [cnpj, setCnpj] = useState('35.123.000/0001-00');
-  const [nomeEmpresa, setNomeEmpresa] = useState('Luizia hamburgueria');
+  const [cnpj, setCnpj] = useState('');
+  const [nomeEmpresa, setNomeEmpresa] = useState('');
   const [categoria, setCategoria] = useState('');
   const [items, setItems] = useState([
     { label: 'Restaurante', value: 'restaurante' },
@@ -22,14 +22,14 @@ export default function CadastroEmpresa({ route }) {
     { label: 'Jardinagem', value: 'jardinagem' },
     { label: 'Outros', value: 'outros' }
   ]);
-  const [celular, setCelular] = useState('1999819006');
-  const [telefone, setTelefone] = useState('1999819006');
-  const [cep, setCep] = useState('11730000');
-  const [estado, setEstado] = useState('RJ');
-  const [cidade, setCidade] = useState('Rio de Janeiro');
-  const [bairro, setBairro] = useState('Cristo Redentor');
-  const [endereco, setEndereco] = useState('Rua vicente casemiro');
-  const [numero, setNumero] = useState('90');
+  const [celular, setCelular] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [cep, setCep] = useState('');
+  const [estado, setEstado] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [numero, setNumero] = useState('');
 
   function verificaInput() {
     if (

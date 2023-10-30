@@ -9,14 +9,14 @@ export default function CadastroCliente({route}) {
   const tema = useTheme();
   const styles = getstyles(tema);
   const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
-  const [nome, setNome] = useState('João Adriano');
-  const [telefone, setTelefone] = useState('1898180400');
-  const [cep, setCep] = useState('11730000');
-  const [estado, setEstado] = useState('sp');
-  const [cidade, setCidade] = useState('sao paulo');
-  const [bairro, setBairro] = useState('Agenor de Campos');
-  const [endereco, setEndereco] = useState('Av. Monteiro Lobato');
-  const [numero, setNumero] = useState('779');
+  const [nome, setNome] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [cep, setCep] = useState('');
+  const [estado, setEstado] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [numero, setNumero] = useState('');
 
   function verificaInput() {
     if (

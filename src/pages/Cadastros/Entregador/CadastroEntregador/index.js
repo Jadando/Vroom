@@ -9,16 +9,16 @@ export default function CadastroEntregador({route}) {
   const tema = useTheme();
   const styles = getstyles(tema);
   const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
-  const [cpf, setCpf] = useState('11111111111');
-  const [nome, setNome] = useState('Agostinho Carrara');
-  const [dtNasc, setDtNasc] = useState('23/09/1990');
-  const [telefone, setTelefone] = useState('1344809900');
-  const [cep, setCep] = useState('11111111');
-  const [estado, setEstado] = useState('SP');
-  const [cidade, setCidade] = useState('Mongaguá');
-  const [bairro, setBairro] = useState('Agenor de Campos');
-  const [endereco, setEndereco] = useState('Rua Aimorés');
-  const [numero, setNumero] = useState('11111111111');
+  const [cpf, setCpf] = useState('');
+  const [nome, setNome] = useState('');
+  const [dtNasc, setDtNasc] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [cep, setCep] = useState('');
+  const [estado, setEstado] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [numero, setNumero] = useState('');
 
   function verificaInput() {
     if (

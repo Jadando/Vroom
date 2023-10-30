@@ -57,7 +57,7 @@ export default function EmpresasAfiliadas() {
                         </View>
                         <View style={styles.textContainer}>
                             <Text style={styles.companyName}>Empresa: Luzia Hamburgers</Text>
-                            <Text style={styles.companyName}>Endereço: rua teste</Text>
+                            <Text style={styles.companyName}>Endereço: Rua vicente casemiro</Text>
                             <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.button}>
                                 <Text style={styles.buttonText}>Desafiliar-se da Empresa</Text>
                             </TouchableOpacity>
