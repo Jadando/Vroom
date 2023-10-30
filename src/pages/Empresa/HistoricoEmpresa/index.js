@@ -4,7 +4,44 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-export default function HistoricoEmpresa() {
+export default function HistoricoEmpresa({ route }) {
+    const [IdentificadorEmpresa, setIdentificadorEmpresa] = useState(route.params?.IdentificadorEmpresa || '')
+
+    const gambiarra = "brnHfH4Y9tMoTub8mB8dbzUyao83"
+
+    const Gambi = () => {
+        if (gambiarra === IdentificadorEmpresa) {
+            return (
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    overScrollMode='never'
+                >
+                    <View style={styles.recents}>
+                        <View style={styles.recentsContainer}>
+                            <View style={styles.recentsContent}>
+                                <View style={styles.recentsImages}>
+                                    <Image source={require('../../../img/entregador.jpg')} style={styles.img} />
+                                </View>
+                                <Text>
+                                    Rua Água Marinha {'\n'}
+                                    Ultimo pedido dia: 28/10/2023
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                </ScrollView>
+            )
+        } else {
+            return (
+                <Text>
+                   Não existe nenhuma entrega {'\n'}
+                </Text>
+            )
+        }
+    }
+
+
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -17,26 +54,7 @@ export default function HistoricoEmpresa() {
                     <Icon name='time-outline' size={30} color='#000' />
                 </View>
             </View>
-
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                overScrollMode='never'
-            >
-                <View style={styles.recents}>
-                    <View style={styles.recentsContainer}>
-                        <View style={styles.recentsContent}>
-                            <View style={styles.recentsImages}>
-                            <Image source={require('../../../img/entregador.jpg')} style={styles.img}/>
-                            </View>
-                            <Text>
-                                Rua Água Marinha {'\n'}
-                                Ultimo pedido dia: 28/10/2023
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
-
+            {Gambi()}
         </View>
     );
 }
@@ -123,5 +141,5 @@ const styles = StyleSheet.create({
     img: {
         width: 70,
         height: 70
-      },
+    },
 })

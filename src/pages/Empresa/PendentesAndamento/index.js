@@ -1,11 +1,63 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-export default function PendentesAndamento() {
+export default function PendentesAndamento({ route }) {
+    const [IdentificadorEmpresa, setIdentificadorEmpresa] = useState(route.params?.IdentificadorEmpresa || '')
+    const gambiarra = "brnHfH4Y9tMoTub8mB8dbzUyao83"
     const navigation = useNavigation();
+
+
+
+    const Gambi = () => {
+        if (gambiarra === IdentificadorEmpresa) {
+            return (
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    overScrollMode='never'
+                >
+                    <View style={styles.recents}>
+                        <View style={styles.recentsContainer}>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('RastrearEmpresa')}>
+                                <View style={styles.recentsContent}>
+                                    <Text>
+                                        Pedido cd 4 {'\n'}
+                                        Em andamento
+                                    </Text>
+                                    <View style={styles.recentsImages}>
+                                        <View style={styles.ongoing}>
+                                            <Icon name='bicycle-outline' size={40} color='#000' style={{ transform: [{ rotate: '-30deg' }] }} />
+                                        </View>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </ScrollView>
+            )
+        } else {
+            return (
+                <Text>
+                    Nenhum Pedido em andamento {'\n'}
+                </Text>
+            )
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -19,29 +71,7 @@ export default function PendentesAndamento() {
                 </View>
             </View>
 
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                overScrollMode='never'
-            >
-                <View style={styles.recents}>
-                    <View style={styles.recentsContainer}>
-                        <TouchableOpacity
-                        onPress={()=> navigation.navigate('RastrearEmpresa')}>
-                        <View style={styles.recentsContent}>
-                            <Text>
-                                Pedido cd 4 {'\n'}
-                                Em andamento
-                            </Text> 
-                            <View style={styles.recentsImages}>
-                                <View style={styles.ongoing}>
-                                    <Icon name='bicycle-outline' size={40} color='#000' style={{  transform: [{rotate: '-30deg'}]}}/>
-                                </View>
-                            </View>
-                        </View>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </ScrollView>
+            {Gambi()}
 
         </View>
     );
