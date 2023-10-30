@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
@@ -219,6 +219,8 @@ export default function Login() {
                         todos direitos reservados
                     </Text>
                 </View>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        </View>
                 <LoadingModal visible={isLoading} />
             </ScrollView>
         </View>

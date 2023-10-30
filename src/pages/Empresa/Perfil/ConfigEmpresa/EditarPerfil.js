@@ -53,41 +53,40 @@ export default function EditarPerfil({ route }) {
 
     async function DonwloadImages() {
         try {
-            const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}`);
+            const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_company`);
             const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
-
+    
             const [logoUrl, bannerUrl] = await Promise.all([
-                getDownloadURL(logoRef),
-                getDownloadURL(bannerRef),
+                getDownloadURL(logoRef).catch(() => null),
+                getDownloadURL(bannerRef).catch(() => null),
             ]);
-
-            const [logoResponse, bannerResponse] = await Promise.all([
-                fetch(logoUrl),
-                fetch(bannerUrl),
-            ]);
-
-            const [logoData, bannerData] = await Promise.all([
-                logoResponse.text(),
-                bannerResponse.text(),
-            ]);
-
-            const [logoNumericArray, bannerNumericArray] = await Promise.all([
-                logoData.split(","),
-                bannerData.split(","),
-            ]);
-
-            const [logoAsciiString, bannerAsciiString] = await Promise.all([
-                logoNumericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join(""),
-                bannerNumericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join(""),
-            ]);
-
-            setlogoImageUrl('data:image/jpeg;base64,' + logoAsciiString);
-            setbannerImageUrl('data:image/jpeg;base64,' + bannerAsciiString);
+    
+            if (logoUrl) {
+                const logoResponse = await fetch(logoUrl);
+                const logoData = await logoResponse.text();
+                const logoNumericArray = logoData.split(",");
+                const logoAsciiString = logoNumericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join("");
+                setlogoImageUrl('data:image/jpeg;base64,' + logoAsciiString);
+            } else {
+                setlogoImageUrl("https://i.imgur.com/ithUisk.png");
+            }
+    
+            if (bannerUrl) {
+                const bannerResponse = await fetch(bannerUrl);
+                const bannerData = await bannerResponse.text();
+                const bannerNumericArray = bannerData.split(",");
+                const bannerAsciiString = bannerNumericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join("");
+                setbannerImageUrl('data:image/jpeg;base64,' + bannerAsciiString);
+            } else {
+                setbannerImageUrl("https://i.imgur.com/lFgBJGQ.png");
+            }
         } catch (error) {
             console.error('Erro ao recuperar as URLs das imagens:', error);
             setlogoImageUrl("https://i.imgur.com/ithUisk.png");
+            setbannerImageUrl("https://i.imgur.com/lFgBJGQ.png");
         }
     }
+    
 
     const chooseImageFromGallery = async (imageType) => {
         try {
@@ -107,7 +106,7 @@ export default function EditarPerfil({ route }) {
                 });
                 if (imageType === 'logo') {
                     // Usar referência da logo
-                    const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}`);
+                    const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_company`);
                     uploadImageToFirebase(logoRef, imageFile);
                     console.log("logo")
                 } else if (imageType === 'banner') {
@@ -168,7 +167,7 @@ export default function EditarPerfil({ route }) {
                     <TouchableOpacity
                         style={styles.Chevron}
                         onPress={() => navigation.pop(1)}>
-                        <Icon name='chevron-back' size={30} color='#000' />
+                        <Icon name='chevron-back' size={30} color='#000' style={{marginLeft: 30}}/>
                     </TouchableOpacity>
                     <TouchableOpacity>
                         <Icon name='notifications' size={30} color='#ffc000' />

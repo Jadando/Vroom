@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import LogoutModal from '../../../components/logoutModal';
-
+import { getFirestore, onSnapshot, doc } from "firebase/firestore";
+import { getStorage, ref, uploadString, getDownloadURL } from "firebase/storage";
 
 export default function PerfilEmpresa({route}) {
     const [modalVisible, setModalVisible] = useState(false);
@@ -12,6 +13,59 @@ export default function PerfilEmpresa({route}) {
     const tema = useTheme();
     const styles = getstyles(tema);
     const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
+    const [logoImageUrl, setlogoImageUrl] = useState(null);
+
+    const [nome, setNome] = useState(null);
+    const [telefone, setTelefone] = useState(null);
+    const [cep, setCep] = useState(null);
+    const [estado, setEstado] = useState(null);
+    const [cidade, setCidade] = useState(null);
+    const [bairro, setBairro] = useState(null);
+    const [endereco, setEndereco] = useState("teste");
+    const [numero, setNumero] = useState(null);
+
+    const storage = getStorage();
+    const db = getFirestore();
+
+    useEffect(() => {
+        const docRef = doc(db, "usuario", "tabela", "empresa", IdentificadorEmpresa);
+
+        const unsubscribe = onSnapshot(docRef, (doc) => {
+            if (doc.exists()) {
+                const userData = doc.data();
+                setNome(userData.nome);
+                setTelefone(userData.telefone);
+                setEndereco(userData.endereco);
+                setNumero(userData.numero);
+            } else {
+                console.log("Empresa não existe.");
+            }
+        });
+
+        DonwloadImages();
+    }, [IdentificadorEmpresa]);
+
+    async function DonwloadImages() {
+        try {
+            const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_company`);
+            const logoUrl = await getDownloadURL(logoRef);
+    
+            if (logoUrl) {
+                const logoResponse = await fetch(logoUrl);
+                const logoData = await logoResponse.text();
+                const logoNumericArray = logoData.split(",");
+                const logoAsciiString = logoNumericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join("");
+                setlogoImageUrl('data:image/jpeg;base64,' + logoAsciiString);
+            } else {
+                setlogoImageUrl("https://i.imgur.com/ithUisk.png");
+            }
+        } catch (error) {
+            console.error('Erro ao recuperar a URL da imagem:', error);
+            setlogoImageUrl("https://i.imgur.com/ithUisk.png");
+        }
+    }
+    
+
     return (
 
         <ScrollView
@@ -28,10 +82,10 @@ export default function PerfilEmpresa({route}) {
             <View style={styles.user}>
                 <View style={styles.userImg}>
                     <Image
-                        style={{ width: '100%', height: '150%', top: -25 }}
-                        source={require('../../../img/luzia.png')} />
+                        style={{ width: '100%', height: '100%'}}
+                        source={{ uri: logoImageUrl }} />
                 </View>
-                <Text style={styles.userInfo}>Luzia Hamburgers</Text>
+                <Text style={styles.userInfo}>{nome}</Text>
             </View>
 
             <View style={styles.btnArea}>
@@ -107,13 +161,14 @@ const getstyles = (tema) => StyleSheet.create({
     userImg: {
         backgroundColor: '#d1d3d4ff',
         marginRight: 20,
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+        width: 120,
+        height: 120,
+        borderRadius: 100,
         alignContent: 'center',
         alignItems: 'center',
-        paddingTop: 10,
         overflow: 'hidden',
+        borderWidth: 3,
+        borderColor: '#ffc000'
     },
     userInfo: {
         fontSize: 20,

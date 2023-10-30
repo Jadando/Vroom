@@ -4,43 +4,17 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 
-export default function Restaurante() {
+export default function Restaurante({ route }) {
+    const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
-    return (
-
-        <View style={styles.container}>
-            <View style={styles.header}>
-            <TouchableOpacity
-                    // style={{marginLeft: 10}}
-                    onPress={() => navigation.pop(1)}>
-                    <Icon name='chevron-back' size={30} color='#000' style={{marginLeft: 30}}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.headerContent}>
-                    <Text style={styles.title}>
-                        Seu endereço
-                    </Text>
-                    <Icon name='chevron-down' size={30} color ={tema.Tema.color}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
-            </View>
-
-            <Text style={styles.recentsTitle}>
-                        Restaurantes
-                    </Text>
-            <View style={styles.search}>
-                <View style={styles.searchLupe}>
-                    <Icon name='search' size={25} color={tema.Tema.color} />
-                </View>
-                <TextInput
-                placeholder="Buscar em resturantes" 
-                style={{fontSize: 18, color: tema.Tema.color }}
-                placeholderTextColor={tema.Tema.color}
-                />
-            </View>
-
-            <ScrollView
+    const gambiarra = 'pwt2SG3vpOM9Jcat45dGDgNb9oE3'
+    console.log('identificador do cliente ',IdentificadorCliente);
+    const Gambiarra = () => {
+        if(gambiarra === IdentificadorCliente) {
+            return (
+                <ScrollView
                 showsVerticalScrollIndicator={false}
                 overScrollMode='never'
             >
@@ -78,7 +52,51 @@ export default function Restaurante() {
                     </View>
                 </View>
             </ScrollView>
+            )
+        } else {
+            return (
+                <>
+                    <View style={{height: 1000, backgroundColor: '#fff'}}>
+                        <Text style={{fontSize: 18, textAlign: 'center'}}>
+                            nenhum estabelecimento registrado na categoria Restaurantes
+                        </Text>
+                    </View>
+                </>
+            )
+        }
+    }
 
+    return (
+        <View style={styles.container}>
+            <View style={styles.header}>
+            <TouchableOpacity
+                    // style={{marginLeft: 10}}
+                    onPress={() => navigation.pop(1)}>
+                    <Icon name='chevron-back' size={30} color='#000' style={{marginLeft: 30}}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.headerContent}>
+                    <Text style={styles.title}>
+                        Seu endereço
+                    </Text>
+                    <Icon name='chevron-down' size={30} color ={tema.Tema.color}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
+            </View>
+
+            <Text style={styles.recentsTitle}>
+                        Restaurantes
+                    </Text>
+            <View style={styles.search}>
+                <View style={styles.searchLupe}>
+                    <Icon name='search' size={25} color={tema.Tema.color} />
+                </View>
+                <TextInput
+                placeholder="Buscar em resturantes" 
+                style={{fontSize: 18, color: tema.Tema.color }}
+                placeholderTextColor={tema.Tema.color}
+                />
+            </View>
+            {Gambiarra()}
         </View>
     );
 }

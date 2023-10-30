@@ -8,7 +8,7 @@ export default function Home({ route }) {
   const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
   const [endereco, setEndereco] = useState("Seu Endereço")
   console.log(IdentificadorCliente)
-  const gambiarra = "gkIyZ0DV78eAMEooMsqxMnKFQdg1";
+  const gambiarra = "pwt2SG3vpOM9Jcat45dGDgNb9oE3";
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
@@ -100,7 +100,9 @@ export default function Home({ route }) {
       >
         <View style={styles.categorias}>
           <View style={styles.categoriasContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('Restaurante')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Restaurante', {
+              IdentificadorCliente
+            } )}>
               <View style={styles.categoriasContent}>
                 <Text style={{ ...styles.categoriaText, marginBottom: -15 }}>
                   Restaurantes
@@ -241,6 +243,8 @@ const getstyles = (tema) => StyleSheet.create({
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 3,
+    borderColor: '#ffc000'
   },
   img: {
     width: 100,

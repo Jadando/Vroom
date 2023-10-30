@@ -19,7 +19,7 @@ export default function EmpresasAfiliadas() {
                         <TouchableOpacity
                             style={styles.Chevron}
                             onPress={() => navigation.pop(1)}>
-                            <Icon name='chevron-back' size={30} color='#000' />
+                            <Icon name='chevron-back' size={30} color='#000' style={{ marginLeft: 30 }} />
                         </TouchableOpacity>
                         <TouchableOpacity>
                             <Icon name='notifications' size={30} color='#ffc000' />
@@ -52,9 +52,12 @@ export default function EmpresasAfiliadas() {
                         <Icon name='business' size={30} color='#00' />
                     </View>
                     <View style={styles.rectangle}>
-                        <View style={styles.circle} />
+                        <View style={styles.circle}>
+                            <Image source={require('../../../img/luzia.png')} style={styles.img} />
+                        </View>
                         <View style={styles.textContainer}>
                             <Text style={styles.companyName}>Empresa: Luzia Hamburgers</Text>
+                            <Text style={styles.companyName}>Endereço: rua teste</Text>
                             <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.button}>
                                 <Text style={styles.buttonText}>Desafiliar-se da Empresa</Text>
                             </TouchableOpacity>
@@ -146,11 +149,19 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     circle: {
-        backgroundColor: 'white',
-        width: 80,
-        height: 80,
-        borderRadius: 40,
-        marginRight: 20,
+        borderRadius: 50,
+        marginTop: -50,
+        backgroundColor: '#fff',
+        width: 100,
+        height: 100,
+        marginRight: 10,
+        overflow: 'hidden',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    img: {
+        width: 105,
+        height: 105
     },
     textContainer: {
         flexDirection: 'column',

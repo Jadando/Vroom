@@ -7,7 +7,7 @@ import * as Location from 'expo-location';
 
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
-export default function LocalCliente({route}) {
+export default function LocalCliente({ route }) {
     const navigation = useNavigation();
     const [iconRotation, setIconRotation] = useState(0);
     const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
@@ -47,7 +47,34 @@ export default function LocalCliente({route}) {
     const handleMapPress = () => {
         setIsMapExpanded(!isMapExpanded);
     };
-    const gambiarra = "gkIyZ0DV78eAMEooMsqxMnKFQdg1"
+
+    const [seconds, setSeconds] = useState(300);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+          if (seconds > 0) {
+            setSeconds((prevSeconds) => prevSeconds + 1);
+          }
+        }, 1000);
+    
+        return () => {
+          clearInterval(interval);
+        };
+      }, [seconds]);
+    
+      const formatTime = (totalSeconds) => {
+        const hours = Math.floor(totalSeconds / 3600);
+        const remainingMinutes = Math.floor((totalSeconds % 3600) / 60);
+        const remainingSeconds = totalSeconds % 60;
+      
+        if (hours > 0) {
+          return `${hours}:${remainingMinutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        } else {
+          return `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+      };      
+
+    const gambiarra = "pwt2SG3vpOM9Jcat45dGDgNb9oE3"
 
     const Gambiarra = () => {
         if (gambiarra === IdentificadorCliente) {
@@ -71,14 +98,15 @@ export default function LocalCliente({route}) {
 
 
                         <View style={styles.pedidos}>
-                            <Text style={styles.pedidosText}>Entregas pendentes</Text>
+                            <Text style={styles.pedidosText}>Entregas a caminho</Text>
                             <View style={styles.pedidosClock}>
-                                <Icon name='time-outline' size={30} color='#000' />
+                                <Icon name='bicycle' size={30} color='#000' />
                             </View>
                         </View>
                         <View style={styles.card}>
                             <View style={styles.recentsContent}>
                                 <View style={styles.recentsImages}>
+                                    <Image source={require('../../../img/luzia.png')} style={styles.img} />
                                 </View>
                                 <Text>
                                     Luzia Hamburgers {'\n'}
@@ -116,11 +144,12 @@ export default function LocalCliente({route}) {
                             </View>
                             <View style={styles.deliveryTime}>
                                 <Text>
-                                    Iniciou a entrega: 5min
+                                Iniciou a entrega à: {formatTime(seconds)}
                                 </Text>
                             </View>
                             <View style={styles.recentsContent}>
                                 <View style={styles.recentsImages}>
+                                <Image source={require('../../../img/luzia.png')} style={styles.img} />
                                 </View>
                                 <Text>
                                     Nome do entregador {'\n'}
@@ -211,9 +240,9 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     alertIcon: {
-  position: 'absolute',
-    top: -3,
-      left: 13,
+        position: 'absolute',
+        top: -3,
+        left: 13,
     },
     container: {
         flex: 1,
@@ -287,10 +316,18 @@ const styles = StyleSheet.create({
     },
     recentsImages: {
         borderRadius: 50,
-        backgroundColor: '#e5e5e5',
+        padding: 10,
+        backgroundColor: '#fff',
         width: 70,
         height: 70,
         marginRight: 10,
+        overflow: 'hidden',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    img: {
+        width: 100,
+        height: 100
     },
     deliveryTime: {
         backgroundColor: 'rgba(255, 255, 255, 0.6)',
