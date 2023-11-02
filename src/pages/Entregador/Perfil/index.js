@@ -23,7 +23,6 @@ export default function PerfilEntregador({ route }) {
     const db = getFirestore();
     const storage = getStorage();
 
-
     useEffect(() => {
         const docRef = doc(db, "users", IdentificadorEntregador);
 
@@ -35,13 +34,14 @@ export default function PerfilEntregador({ route }) {
                 console.log("O documento não existe.");
             }
         });
+
         DonwloadImage()
 
     }, [IdentificadorEntregador]);
 
     async function DonwloadImage() {
         try {
-            const imageRef = ref(storage, `images/users/entregador/${IdentificadorEntregador}/profile picture`);
+            const imageRef = ref(storage, `images/users/entregador/${IdentificadorEntregador}/profile_picture`);
             const url = await getDownloadURL(imageRef);
             const response = await fetch(url);
             const data = await response.text();
@@ -74,7 +74,7 @@ export default function PerfilEntregador({ route }) {
                     encoding: FileSystem.EncodingType.Base64,
                 });
                 //Armazena a string base64 na variável de estado imageUrl
-                const storageRef = ref(storage, `usuario/imagem/entregador/${IdentificadorEntregador}/logo_deliveryman`);
+                const storageRef = ref(storage, `images/users/entregador/${IdentificadorEntregador}/profile_picture`);
                 uploadImageToFirebase(storageRef, imageFile);
             }
         } catch (error) {

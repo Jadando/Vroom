@@ -47,7 +47,7 @@ export default function PerfilEmpresa({route}) {
 
     async function DonwloadImages() {
         try {
-            const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_company`);
+            const logoRef = ref(storage, `images/users/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_profile_picture`);
             const logoUrl = await getDownloadURL(logoRef);
     
             if (logoUrl) {

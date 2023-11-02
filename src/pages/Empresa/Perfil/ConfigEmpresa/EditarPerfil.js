@@ -53,8 +53,8 @@ export default function EditarPerfil({ route }) {
 
     async function DonwloadImages() {
         try {
-            const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_company`);
-            const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
+            const logoRef = ref(storage, `images/users/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_profile_picture`);
+            const bannerRef = ref(storage, `images/users/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_banner`);
 
             const [logoUrl, bannerUrl] = await Promise.all([
                 getDownloadURL(logoRef).catch(() => null),
@@ -106,12 +106,12 @@ export default function EditarPerfil({ route }) {
                 });
                 if (imageType === 'logo') {
                     // Usar referência da logo
-                    const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_company`);
+                    const logoRef =  ref(storage, `images/users/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_profile_picture`);
                     uploadImageToFirebase(logoRef, imageFile);
                     console.log("logo")
                 } else if (imageType === 'banner') {
                     // Usar referência do banner
-                    const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
+                    const bannerRef = ref(storage, `images/users/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_banner`);
                     uploadImageToFirebase(bannerRef, imageFile);
                     console.log("banner")
                 }
