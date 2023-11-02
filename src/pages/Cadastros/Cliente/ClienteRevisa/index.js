@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, setDoc, doc } from "firebase/firestore";
 import { useTheme } from 'styled-components';
 
 export default function ClienteRevisa({ route }) {
@@ -32,12 +32,12 @@ export default function ClienteRevisa({ route }) {
             numero !== ''
         ) {
             try {
-                 // Substitua com o UID desejado
+                // Substitua com o UID desejado
                 const db = getFirestore();
-
-                const docRef = doc(db, "usuario/tabela/cliente", Identificador); // Crie uma referência ao documento com o UID específico
-
-                const dados = {
+                const usersRef = doc(db, 'users', Identificador);
+                await setDoc(usersRef, {
+                    id: Identificador,
+                    tipo: 'cliente',
                     nome: nome,
                     telefone: telefone,
                     cep: cep,
@@ -46,14 +46,17 @@ export default function ClienteRevisa({ route }) {
                     bairro: bairro,
                     endereco: endereco,
                     numero: numero,
-                };
+                }).then(() => {
 
-                await setDoc(docRef, dados);
-                 navigation.navigate('Home',{
-                    IdentificadorCliente:Identificador
-                 }) 
+                    const usersRefs = collection(db, 'users', Identificador, 'Pedidos');
+                    const data = {}
+                    addDoc(usersRefs, data).then(
+                        navigation.navigate('Home', {
+                            IdentificadorCliente: Identificador
+                        })
+                    )
 
-                console.log('Documento criado com sucesso'); // Redirecione ou faça o que desejar após criar o documento
+                })
             } catch (e) {
                 console.error("Error adding document: ", e);
             }

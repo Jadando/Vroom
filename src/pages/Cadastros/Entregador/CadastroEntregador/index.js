@@ -3,13 +3,14 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { useTheme } from 'styled-components';
-
-export default function CadastroEntregador({route}) {
+import { validarCPF } from '../../../../components/Validar/ValidarCpf'
+export default function CadastroEntregador({ route }) {
   const navigation = useNavigation();
   const tema = useTheme();
   const styles = getstyles(tema);
   const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
   const [cpf, setCpf] = useState('');
+  const [cpfValido, setCpfValido] = useState(true);
   const [nome, setNome] = useState('');
   const [dtNasc, setDtNasc] = useState('');
   const [telefone, setTelefone] = useState('');
@@ -19,6 +20,16 @@ export default function CadastroEntregador({route}) {
   const [bairro, setBairro] = useState('');
   const [endereco, setEndereco] = useState('');
   const [numero, setNumero] = useState('');
+
+  const handleChangeCPF = (text) => {
+    if (text.length === 14) {
+      setCpf(text); // Atualize o valor do CPF à medida que o usuário digita
+      const isValid = validarCPF(text); // Valide o CPF
+      setCpfValido(isValid); // Atualize o estado do CPF válido
+    }else{
+      setCpfValido(true);
+    }
+  };
 
   function verificaInput() {
     if (
@@ -33,6 +44,7 @@ export default function CadastroEntregador({route}) {
       endereco !== '' &&
       numero !== ''
     ) {
+      validarCPF(cpf)
       navigation.navigate('EntregadorRevisa', {
         Identificador,
         cpf,
@@ -91,10 +103,11 @@ export default function CadastroEntregador({route}) {
             style={styles.input}
             type={'cpf'}
             value={cpf}
-            onChangeText={setCpf}
+            onChangeText={handleChangeCPF}
             maxLength={14}
-            placeholder='CPF'
+            placeholder='Digite seu CPF'
           />
+          {cpf && !cpfValido && <Text style={{ color: 'red' }}>CPF inválido</Text>}
           <TextInput
             style={styles.input}
             value={nome}

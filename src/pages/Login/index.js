@@ -64,7 +64,7 @@ export default function Login() {
     async function validarLogin() {
         //  setIsLoading(true);
         if (email !== '' && senha !== '') {
-          //   setIsLoading(true);
+            //   setIsLoading(true);
             if (validarEmail(email)) {
                 const auth = getAuth();
                 const db = getFirestore();
@@ -73,60 +73,50 @@ export default function Login() {
                         setIsLoading(true);
                         const user = userCredential.user;
                         const uide = user.uid
-                        console.log(uide)
-
-                        const processarConsulta = (snapshot, dataArray) => {
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                dataArray.push({ id: doc.id, ...data });
-                            });
-                        };
+                        //console.log(uide)
                         try {
-                            const [clienteSnapshot, empresaSnapshot, entregadorSnapshot] = await Promise.all([
-                                getDocs(collection(db, "usuario/tabela/cliente"), where('id', '==', uide)),
-                                getDocs(collection(db, "usuario/tabela/empresa"), where('id', '==', uide)),
-                                getDocs(collection(db, "usuario/tabela/entregador"), where('id', '==', uide)),
-                            ]);
 
-                            const dataArrayCliente = [];
-                            const dataArrayEmpresa = [];
-                            const dataArrayEntregador = [];
+                            // Suponha que 'db' seja a instância do Firestore
+                            const tipos = ['cliente', 'empresa', 'entregador'];
 
+                            // Construa a consulta
+                            const q = query(collection(db, 'users'), where('id', '==', uide), where('tipo', 'in', tipos));
 
-                            // Processar os resultados de cada consulta
+                            // Execute a consulta
+                            getDocs(q)
+                                .then((querySnapshot) => {
+                                    querySnapshot.forEach((doc) => {
+                                        const tipo = doc.data().tipo;
+                                        // console.log(`Documento ID: ${doc.id} e tipo: ${tipo}`);
+                                        switch (tipo) {
+                                            case 'cliente':
+                                                setIsLoading(false);
+                                                navigation.navigate('Home', {
+                                                    IdentificadorCliente: uide
+                                                });
+                                                break;
+                                            case 'empresa':
+                                                navigation.navigate('IniciarEntrega', {
+                                                    IdentificadorEmpresa: uide
+                                                });
+                                                break;
+                                            case 'entregador':
+                                                navigation.navigate('Pendentes', {
+                                                    IdentificadorEntregador: uide
+                                                });
+                                                break;
+                                            default:
+                                                // alert("Não exite conta com esse email")
+                                                break;
+                                        }
 
-                            processarConsulta(clienteSnapshot, dataArrayCliente);
-                            processarConsulta(empresaSnapshot, dataArrayEmpresa);
-                            processarConsulta(entregadorSnapshot, dataArrayEntregador);
-
-                            if (dataArrayCliente[0].id === uide) {
-                                setIsLoading(false);
-                                navigation.navigate('Home', {
-                                    IdentificadorCliente: uide
+                                    });
+                                })
+                                .catch((error) => {
+                                    console.error("Erro ao executar a consulta:", error);
                                 });
-                                setIsLoading(false);
-                                console.log("Os campos correspondem a um cliente:", dataArrayCliente[0].id);
 
-                                // Faça algo específico para clientes
-                            } else if (dataArrayEmpresa[0].id === uide) {
-                                setIsLoading(false);
-                                console.log("Os campos correspondem a uma empresa:", dataArrayEmpresa[0].id);
-                                navigation.navigate('IniciarEntrega', {
-                                    IdentificadorEmpresa: uide
-                                });
-                                // Faça algo específico para empresas
-                            } else if (dataArrayEntregador[0].id === uide) {
-                                setIsLoading(false);
-                                console.log("Os campos correspondem a um entregador:", dataArrayEntregador[0].id);
-                                navigation.navigate('Pendentes', {
-                                    IdentificadorEntregador: uide
-                                });
-                                // Faça algo específico para entregadores
-                            } else {
-                                setIsLoading(false);
-                                // Alert('Erro');
-                                console.log("Nenhum campo correspondente encontrado.");
-                            }
+                            setIsLoading(false);
 
                         } catch (error) {
                             setIsLoading(false);
@@ -139,6 +129,9 @@ export default function Login() {
                         const errorMessage = error.message;
                         console.log(errorCode)
                         console.log(errorMessage)
+                        // if (errorCode === 'auth/invalid-login-credentials') {
+                        //     alert("teste")
+                        // }
                     });
             }
             else {
@@ -220,7 +213,7 @@ export default function Login() {
                     </Text>
                 </View>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        </View>
+                </View>
                 <LoadingModal visible={isLoading} />
             </ScrollView>
         </View>

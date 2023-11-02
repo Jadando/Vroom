@@ -19,7 +19,7 @@ export default function Search() {
     const db = getFirestore();
 
     const Consultar = async (pesquisa) => {
-        const empresaRef = collection(db, 'usuario/tabela/empresa');
+        const empresaRef = collection(db, 'users');
 
         const q = query(empresaRef, where('nome', '==', pesquisa));
 

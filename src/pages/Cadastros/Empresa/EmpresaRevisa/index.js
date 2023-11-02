@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc,collection,addDoc } from "firebase/firestore";
 import { useTheme } from 'styled-components';
 import LoadingModal from '../../../../components/loadingModal';
 
@@ -37,13 +37,11 @@ export default function EmpresaRevisa({ route }) {
     ) {
       try {
         setIsLoading(true);
-        console.log(isLoading)
-        // Substitua com o UID desejado
         const db = getFirestore();
-
-        const docRef = doc(db, "usuario/tabela/empresa", Identificador); // Crie uma referência ao documento com o UID específico
-
-        const dados = {
+        const usersRef = doc(db, 'users', Identificador);
+        await setDoc(usersRef, {
+          id: Identificador,
+          tipo: 'empresa',
           cnpj: cnpj,
           nome: nomeEmpresa,
           telefone: telefone,
@@ -54,15 +52,16 @@ export default function EmpresaRevisa({ route }) {
           endereco: endereco,
           numero: numero,
           categoria: categoria
-        };
-
-        await setDoc(docRef, dados); // Use setDoc para criar o documento com os dados
-        navigation.navigate('IniciarEntrega',{
-          IdentificadorEmpresa:Identificador
+        }).then(() => {
+          setIsLoading(false);
+          const usersRefs = collection(db, 'users', Identificador, 'Pedidos');
+          const data = {}
+          addDoc(usersRefs, data).then(
+            navigation.navigate('IniciarEntrega', {
+              IdentificadorEmpresa: Identificador
+            })
+          )
         })
-        setIsLoading(false);
-        console.log('Documento criado com sucesso');
-        setIsLoading(false);
       } catch (e) {
         console.error("Error adding document: ", e);
       }

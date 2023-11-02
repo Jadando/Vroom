@@ -26,7 +26,7 @@ export default function DadosEmpresa({route}) {
 
     useEffect(() => {
         const db = getFirestore();
-        const docRef = doc(db, "usuario", "tabela", "empresa", IdentificadorEmpresa);
+        const docRef = doc(db, "users", IdentificadorEmpresa);
       
         const unsubscribe = onSnapshot(docRef, (doc) => {
           if (doc.exists()) {

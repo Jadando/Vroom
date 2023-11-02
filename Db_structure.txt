@@ -1,0 +1,30 @@
+users (collection)
+  |
+  |-- UID_1 (document)
+  |    |-- tipo: "cliente"
+  |    |-- nome: "Nome do Cliente"
+  |    |-- email: "cliente@email.com"
+  |    |-- pedidos (subcollection)
+  |        |
+  |        |-- Order_1 (document)
+  |        |    |-- data: "2023-01-01"
+  |        |    |-- status: "pendente"
+  |        |
+  |        |-- Order_2 (document)
+  |            |-- data: "2023-01-02"
+  |            |-- status: "concluído"
+  |
+  |-- UID_2 (document)
+  |    |-- tipo: "empresa"
+  |    |-- nome: "Nome da Empresa"
+  |    |-- email: "empresa@email.com"
+  |    |-- pedidos (subcollection)
+  |        |
+  |        |-- Order_3 (document)
+  |            |-- data: "2023-01-03"
+  |            |-- status: "em andamento"
+  |
+  |-- UID_3 (document)
+       |-- tipo: "entregador"
+       |-- nome: "Nome do Entregador"
+       |-- email: "entregador@email.com"

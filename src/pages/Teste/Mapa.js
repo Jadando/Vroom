@@ -15,8 +15,7 @@ export default function EditarPerfil({ route }) {
     const styles = getstyles(tema);
     const [what, setWha] = useState(null);
     const [whatsapp, setWhatsapp] = useState('18998191748');
-    
-
+      
 
     if(what===null){
         return (

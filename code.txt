@@ -346,3 +346,56 @@
 //     top: -3,
 //       left: 13,
 //     },
+
+                      const processarConsulta = (snapshot, dataArray) => {
+                            snapshot.forEach((doc) => {
+                                const data = doc.data();
+                                dataArray.push({ id: doc.id, ...data });
+                            });
+                        };
+                        try {
+                            const [clienteSnapshot, empresaSnapshot, entregadorSnapshot] = await Promise.all([
+                                getDocs(collection(db, "usuario/tabela/cliente"), where('id', '==', uide)),
+                                getDocs(collection(db, "usuario/tabela/empresa"), where('id', '==', uide)),
+                                getDocs(collection(db, "usuario/tabela/entregador"), where('id', '==', uide)),
+                            ]);
+
+                            const dataArrayCliente = [];
+                            const dataArrayEmpresa = [];
+                            const dataArrayEntregador = [];
+
+
+                            // Processar os resultados de cada consulta
+
+                            processarConsulta(clienteSnapshot, dataArrayCliente);
+                            processarConsulta(empresaSnapshot, dataArrayEmpresa);
+                            processarConsulta(entregadorSnapshot, dataArrayEntregador);
+
+                            if (dataArrayCliente[0].id === uide) {
+                                setIsLoading(false);
+                                navigation.navigate('Home', {
+                                    IdentificadorCliente: uide
+                                });
+                                setIsLoading(false);
+                                console.log("Os campos correspondem a um cliente:", dataArrayCliente[0].id);
+
+                                // Faça algo específico para clientes
+                            } else if (dataArrayEmpresa[0].id === uide) {
+                                setIsLoading(false);
+                                console.log("Os campos correspondem a uma empresa:", dataArrayEmpresa[0].id);
+                                navigation.navigate('IniciarEntrega', {
+                                    IdentificadorEmpresa: uide
+                                });
+                                // Faça algo específico para empresas
+                            } else if (dataArrayEntregador[0].id === uide) {
+                                setIsLoading(false);
+                                console.log("Os campos correspondem a um entregador:", dataArrayEntregador[0].id);
+                                navigation.navigate('Pendentes', {
+                                    IdentificadorEntregador: uide
+                                });
+                                // Faça algo específico para entregadores
+                            } else {
+                                setIsLoading(false);
+                                // Alert('Erro');
+                                console.log("Nenhum campo correspondente encontrado.");
+                            }

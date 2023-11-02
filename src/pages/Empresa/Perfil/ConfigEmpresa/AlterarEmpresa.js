@@ -35,7 +35,7 @@ export default function AlterarEntregador({route}) {
             // Substitua com o UID desejado
            const db = getFirestore();
 
-           const docRef = doc(db, "usuario/tabela/empresa", IdentificadorEmpresa); // Crie uma referência ao documento com o UID específico
+           const docRef = doc(db, "users", IdentificadorEmpresa); // Crie uma referência ao documento com o UID específico
 
            const dados = {
                telefone: telefone,

@@ -25,9 +25,9 @@ export default function PerfilEntregador({ route }) {
 
 
     useEffect(() => {
-        const docRef = doc(db, "usuario", "tabela", "entregador", IdentificadorEntregador);
+        const docRef = doc(db, "users", IdentificadorEntregador);
 
-        const unsubscribe = onSnapshot(docRef, (doc) => {
+        onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
                 const userData = doc.data();
                 setNameUser(userData.nome);
@@ -36,15 +36,12 @@ export default function PerfilEntregador({ route }) {
             }
         });
         DonwloadImage()
-        return () => {
-            // Ao desmontar o componente, pare de ouvir as atualizações
-            unsubscribe();
-        };
+
     }, [IdentificadorEntregador]);
 
     async function DonwloadImage() {
         try {
-            const imageRef = ref(storage, `usuario/imagem/entregador/${IdentificadorEntregador}/logo_deliveryman`);
+            const imageRef = ref(storage, `images/users/entregador/${IdentificadorEntregador}/profile picture`);
             const url = await getDownloadURL(imageRef);
             const response = await fetch(url);
             const data = await response.text();
@@ -90,7 +87,7 @@ export default function PerfilEntregador({ route }) {
             uploadString(storageRef, imageUrl).then((snapshot) => {
                 console.log('Imagem upada com sucesso');
             },
-                 DonwloadImage()
+                DonwloadImage()
             );
         } catch (error) {
             console.error('Erro ao enviar o arquivo:', error);
@@ -112,7 +109,7 @@ export default function PerfilEntregador({ route }) {
                 <View style={styles.user}>
                     <TouchableOpacity onPress={chooseImageFromGallery}>
                         <View style={styles.userImg}>
-                            <Image source={{ uri: imageUrl }} style={{ width: 110, height: 110 }}/>
+                            <Image source={{ uri: imageUrl }} style={{ width: 110, height: 110 }} />
                         </View>
                     </TouchableOpacity>
 
@@ -129,7 +126,7 @@ export default function PerfilEntregador({ route }) {
                         <Icon name='information' size={30} color='#000' />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => navigation.navigate('EmpresasAfiliadas', {IdentificadorEntregador})}>
+                        onPress={() => navigation.navigate('EmpresasAfiliadas', { IdentificadorEntregador })}>
                         <Text style={styles.btnText}>Sua afiliação</Text>
                         <Icon name='business-outline' size={30} color='#000' />
                     </TouchableOpacity>

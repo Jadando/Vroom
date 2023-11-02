@@ -4,10 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
-import { getFirestore,doc,updateDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
 
 
-export default function AlterarCliente({route}) {
+export default function AlterarCliente({ route }) {
     const [viewlVisible, setViewVisible] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const navigation = useNavigation();
@@ -35,43 +35,40 @@ export default function AlterarCliente({route}) {
     async function atualizarcliente() {
 
         try {
-              // Validation checks
-              if (!nome || !telefone || !cep || !estado || !cidade || !bairro || !endereco || !numero) {
+            // Validation checks
+            if (!telefone || !cep || !estado || !cidade || !bairro || !endereco || !numero) {
                 console.error("Incomplete data. All fields must be filled.");
                 return;
-              }
-            // Substitua com o UID desejado
-           const db = getFirestore();
+            }
+            const db = getFirestore();
 
-           const docRef = doc(db, "usuario/tabela/cliente", IdentificadorCliente); // Crie uma referência ao documento com o UID específico
+            const docRef = doc(db, "users", IdentificadorCliente); // Crie uma referência ao documento com o UID específico
+            const dados = {
+                telefone: telefone,
+                cep: cep,
+                estado: estado,
+                cidade: cidade,
+                bairro: bairro,
+                endereco: endereco,
+                numero: numero,
+                cep2: cep2,
+                estado2: estado2,
+                cidade2: cidade2,
+                bairro2: bairro2,
+                endereco2: endereco2,
+                numero2: numero2,
+            };
 
-           const dados = {
-               nome: nome,
-               telefone: telefone,
-               cep: cep,
-               estado: estado,
-               cidade: cidade,
-               bairro: bairro,
-               endereco: endereco,
-               numero: numero,
-               cep2: cep2,
-               estado2: estado2,
-               cidade2: cidade2,
-               bairro2: bairro2,
-               endereco2: endereco2,
-               numero2: numero2,
-           };
-
-           await updateDoc(docRef, dados);
+            await updateDoc(docRef, dados);
             await navigation.pop(1)
 
-           console.log('Documento alterado com sucesso'); // Redirecione ou faça o que desejar após criar o documento
-       } catch (e) {
-           console.error("Error adding document: ", e);
-       }
+            console.log('Documento alterado com sucesso'); // Redirecione ou faça o que desejar após criar o documento
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
 
-      }
-      
+    }
+
 
     return (
         <View style={styles.container}>
@@ -209,47 +206,43 @@ export default function AlterarCliente({route}) {
                     </View>
                 </View>
                 <Modal
-                visible={modalVisible}
-                transparent={true}
-                animationType='slide'
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalHeader}>
-                        <Text style={styles.modalHeaderTitle}>Aviso</Text>
-                        <TouchableOpacity
-                            style={styles.modalHeaderClose}
-                            onPress={() => setModalVisible(!modalVisible)} >
-                            <Image source={require('../../../img/close.png')} style={{ width: 30, height: 30 }} />
-                        </TouchableOpacity>
-                    </View>
-
-                    <View>
-                        <Text style={styles.modalContentTitle}>
-                            Tem certeza que deseja alterar seus dados?
-                        </Text>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                    visible={modalVisible}
+                    transparent={true}
+                    animationType='slide'
+                >
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalHeader}>
+                            <Text style={styles.modalHeaderTitle}>Aviso</Text>
                             <TouchableOpacity
-                                onPress={() => setModalVisible(!modalVisible)}
-                                style={styles.modalBtn}>
-                                <Text style={styles.modalContent}>
-                                    Não
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    atualizarcliente()
-                                }
-                                }
-                                style={styles.modalBtn}
-                            >
-                                <Text style={styles.modalContent}>
-                                    Sim
-                                </Text>
+                                style={styles.modalHeaderClose}
+                                onPress={() => setModalVisible(!modalVisible)} >
+                                <Image source={require('../../../img/close.png')} style={{ width: 30, height: 30 }} />
                             </TouchableOpacity>
                         </View>
+
+                        <View>
+                            <Text style={styles.modalContentTitle}>
+                                Tem certeza que deseja alterar seus dados?
+                            </Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                                <TouchableOpacity
+                                    onPress={() => setModalVisible(!modalVisible)}
+                                    style={styles.modalBtn}>
+                                    <Text style={styles.modalContent}>
+                                        Não
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={atualizarcliente}
+                                    style={styles.modalBtn}>
+                                    <Text style={styles.modalContent}>
+                                        Sim
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
-                </View>
-            </Modal>
+                </Modal>
             </ScrollView>
         </View>
 

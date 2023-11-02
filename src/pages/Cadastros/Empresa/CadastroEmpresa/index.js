@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { useTheme } from 'styled-components';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { validarCNPJ } from '../../../../components/Validar/ValidarCnpj'
 
 export default function CadastroEmpresa({ route }) {
   const navigation = useNavigation();
@@ -11,9 +12,10 @@ export default function CadastroEmpresa({ route }) {
   const [open, setOpen] = useState(false);
   const styles = getstyles(tema);
   const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
-  const [cnpj, setCnpj] = useState('');
-  const [nomeEmpresa, setNomeEmpresa] = useState('');
-  const [categoria, setCategoria] = useState('');
+  const [cnpj, setCnpj] = useState('95.250.873/0001-69');
+  const [cnpjValido, setCnpjValido] = useState(true);
+  const [nomeEmpresa, setNomeEmpresa] = useState('a');
+  const [categoria, setCategoria] = useState('a');
   const [items, setItems] = useState([
     { label: 'Restaurante', value: 'restaurante' },
     { label: 'Fármacia', value: 'farmacia' },
@@ -22,14 +24,26 @@ export default function CadastroEmpresa({ route }) {
     { label: 'Jardinagem', value: 'jardinagem' },
     { label: 'Outros', value: 'outros' }
   ]);
-  const [celular, setCelular] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [cep, setCep] = useState('');
-  const [estado, setEstado] = useState('');
-  const [cidade, setCidade] = useState('');
-  const [bairro, setBairro] = useState('');
-  const [endereco, setEndereco] = useState('');
-  const [numero, setNumero] = useState('');
+  const [celular, setCelular] = useState('12345522222');
+  const [telefone, setTelefone] = useState('1212121212');
+  const [cep, setCep] = useState('11730000');
+  const [estado, setEstado] = useState('sp');
+  const [cidade, setCidade] = useState('ppp');
+  const [bairro, setBairro] = useState('ppp');
+  const [endereco, setEndereco] = useState('ppp');
+  const [numero, setNumero] = useState('pppp');
+
+  const handleChangeCNPJ = (text) => {
+    if (text.length === 18) {
+      setCnpj(text);
+      const isValid = validarCNPJ(text);
+      setCnpjValido(isValid);
+    }
+    else{
+      setCnpjValido(true);
+    }
+  };
+
 
   function verificaInput() {
     if (
@@ -44,7 +58,7 @@ export default function CadastroEmpresa({ route }) {
       endereco !== '' &&
       numero !== ''
     ) {
-      console.log(categoria);
+
       navigation.navigate('Afiliado', {
         Identificador,
         cnpj,
@@ -112,9 +126,10 @@ export default function CadastroEmpresa({ route }) {
             style={styles.input}
             type={'cnpj'}
             value={cnpj}
-            onChangeText={setCnpj}
+            onChangeText={handleChangeCNPJ}
             placeholder='CNPJ'
           />
+          {cnpj && !cnpjValido && <Text style={{ color: 'red' }}>CNPJ inválido</Text>}
           <TextInput
             style={styles.input}
             value={nomeEmpresa}
@@ -181,7 +196,7 @@ export default function CadastroEmpresa({ route }) {
             style={[
               styles.input,
               {
-               borderColor: 'transparent',
+                borderColor: 'transparent',
                 fontSize: 20,
                 borderBottomWidth: 1,
               }
@@ -192,11 +207,11 @@ export default function CadastroEmpresa({ route }) {
                 borderColor: 'transparent',
               }
             ]}
-            textStyle={{ 
-              fontSize: 18, 
+            textStyle={{
+              fontSize: 18,
               opacity: 0.8,
-           //   borderBottomWidth: 1,
-            //  borderBottomColor: '#000'
+              //   borderBottomWidth: 1,
+              //  borderBottomColor: '#000'
             }}
             scrollViewProps={{
               onTouchStart: () => {

@@ -34,12 +34,11 @@ export default function EntregadorRevisa({ route }) {
       numero !== ''
     ) {
       try {
-        // Substitua com o UID desejado
         const db = getFirestore();
-
-        const docRef = doc(db, "usuario/tabela/entregador", Identificador); // Crie uma referência ao documento com o UID específico
-
-        const dados = {
+        const usersRef = doc(db, 'users', Identificador);
+        await setDoc(usersRef, {
+          id: Identificador,
+          tipo: 'entregador',
           nome: nome,
           telefone: telefone,
           cep: cep,
@@ -50,14 +49,17 @@ export default function EntregadorRevisa({ route }) {
           endereco: endereco,
           numero: numero,
           dtNasc: dtNasc,
-        };
+        }).then(() => {
 
-        await setDoc(docRef, dados); // Use setDoc para criar o documento com os dados
-        navigation.navigate('Pendentes',{
-          IdentificadorEntregador:Identificador
+          const usersRefs = collection(db, 'users', Identificador, 'Pedidos');
+          const data = {}
+          addDoc(usersRefs, data).then(
+            navigation.navigate('Pendentes', {
+              IdentificadorEntregador: Identificador
+            })
+          )
+
         })
-        console.log('Documento criado com sucesso');
-         // Redirecione ou faça o que desejar após criar o documento
       } catch (e) {
         console.error("Error adding document: ", e);
       }

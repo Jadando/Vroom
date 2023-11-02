@@ -33,9 +33,9 @@ export default function EditarPerfil({ route }) {
     const db = getFirestore();
 
     useEffect(() => {
-        const docRef = doc(db, "usuario", "tabela", "empresa", IdentificadorEmpresa);
+        const docRef = doc(db, "users", IdentificadorEmpresa);
 
-        const unsubscribe = onSnapshot(docRef, (doc) => {
+        onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
                 const userData = doc.data();
                 setNome(userData.nome);
@@ -55,12 +55,12 @@ export default function EditarPerfil({ route }) {
         try {
             const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_company`);
             const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
-    
+
             const [logoUrl, bannerUrl] = await Promise.all([
                 getDownloadURL(logoRef).catch(() => null),
                 getDownloadURL(bannerRef).catch(() => null),
             ]);
-    
+
             if (logoUrl) {
                 const logoResponse = await fetch(logoUrl);
                 const logoData = await logoResponse.text();
@@ -70,7 +70,7 @@ export default function EditarPerfil({ route }) {
             } else {
                 setlogoImageUrl("https://i.imgur.com/ithUisk.png");
             }
-    
+
             if (bannerUrl) {
                 const bannerResponse = await fetch(bannerUrl);
                 const bannerData = await bannerResponse.text();
@@ -86,7 +86,7 @@ export default function EditarPerfil({ route }) {
             setbannerImageUrl("https://i.imgur.com/lFgBJGQ.png");
         }
     }
-    
+
 
     const chooseImageFromGallery = async (imageType) => {
         try {
@@ -167,7 +167,7 @@ export default function EditarPerfil({ route }) {
                     <TouchableOpacity
                         style={styles.Chevron}
                         onPress={() => navigation.pop(1)}>
-                        <Icon name='chevron-back' size={30} color='#000' style={{marginLeft: 30}}/>
+                        <Icon name='chevron-back' size={30} color='#000' style={{ marginLeft: 30 }} />
                     </TouchableOpacity>
                     <TouchableOpacity>
                         <Icon name='notifications' size={30} color='#ffc000' />

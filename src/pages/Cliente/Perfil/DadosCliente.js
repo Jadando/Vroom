@@ -24,7 +24,7 @@ export default function DadosCliente({route}) {
 
   useEffect(() => {
     const db = getFirestore();
-    const docRef = doc(db, "usuario", "tabela", "cliente", IdentificadorCliente);
+    const docRef = doc(db, "users", IdentificadorCliente);
   
     const unsubscribe = onSnapshot(docRef, (doc) => {
       if (doc.exists()) {

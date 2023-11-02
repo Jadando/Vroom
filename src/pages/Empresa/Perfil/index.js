@@ -28,7 +28,7 @@ export default function PerfilEmpresa({route}) {
     const db = getFirestore();
 
     useEffect(() => {
-        const docRef = doc(db, "usuario", "tabela", "empresa", IdentificadorEmpresa);
+        const docRef = doc(db, "users", IdentificadorEmpresa);
 
         const unsubscribe = onSnapshot(docRef, (doc) => {
             if (doc.exists()) {

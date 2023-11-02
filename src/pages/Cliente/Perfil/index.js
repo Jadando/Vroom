@@ -25,7 +25,7 @@ export default function Perfil({ route }) {
 
         console.log("Iniciando pesquisa");
 
-        const docRef = doc(db, "usuario", "tabela", "cliente", IdentificadorCliente);
+        const docRef = doc(db, "users", IdentificadorCliente);
         const unsubscribe = onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
                 const userData = doc.data();
@@ -45,7 +45,7 @@ export default function Perfil({ route }) {
 
     async function DonwloadImage() {
         try {
-            const imageRef = ref(storage, `usuario/imagem/cliente/${IdentificadorCliente}/logo_client`);
+            const imageRef = ref(storage, `images/users/cliente/${IdentificadorCliente}/profile_picture`);
             const url = await getDownloadURL(imageRef);
             const response = await fetch(url);
             const data = await response.text();
@@ -59,7 +59,7 @@ export default function Perfil({ route }) {
         }
     }
 
-    
+
     const chooseImageFromGallery = async () => {
         try {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -78,7 +78,7 @@ export default function Perfil({ route }) {
                     encoding: FileSystem.EncodingType.Base64,
                 });
                 //Armazena a string base64 na variável de estado imageUrl
-                const storageRef = ref(storage, `usuario/imagem/cliente/${IdentificadorCliente}/logo_client`);
+                const storageRef = ref(storage, `images/users/cliente/${IdentificadorCliente}/profile_picture`);
                 uploadImageToFirebase(storageRef, imageFile);
             }
         } catch (error) {
@@ -88,12 +88,7 @@ export default function Perfil({ route }) {
 
     const uploadImageToFirebase = async (storageRef, imageUrl) => {
         try {
-            uploadString(storageRef, imageUrl).then((snapshot) => {
-                console.log('Imagem upada com sucesso');
-                DonwloadImage()
-            }
-           // DonwloadImage()
-            );
+            uploadString(storageRef, imageUrl).then(DonwloadImage());
         } catch (error) {
             console.error('Erro ao enviar o arquivo:', error);
         }
@@ -114,7 +109,7 @@ export default function Perfil({ route }) {
                 <TouchableOpacity onPress={() => chooseImageFromGallery()}>
                     <View style={styles.userImg}>
 
-                        <Image source={{uri:imageUrl}} style={{ width: 110, height: 110 }}/>
+                        <Image source={{ uri: imageUrl }} style={{ width: 110, height: 110 }} />
 
                     </View>
                 </TouchableOpacity>

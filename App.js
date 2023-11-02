@@ -7,7 +7,6 @@ import { ThemeProvider } from 'styled-components';
 import { Tabs,TabsEmpresa, TabsEntregador } from './src/components/BottomTab';
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker'; 
-import { LogBox } from 'react-native';  
 //
 //
 //
@@ -33,7 +32,6 @@ import PerfilCliente from './src/pages/Cliente/Perfil/index';
 import VisualizarEmpresa from './src/pages/Cliente/VisualizarEmpresa';
 import LocalCliente from './src/pages/Cliente/Pedidos'; 
 import Pedidos from './src/pages/Cliente/Pedidos';
-import Restaurante from './src/pages/Cliente/Search/Restaurante';
 
 // Imports relacionados à Empresa
 import PerfilEmpresa from './src/pages/Empresa/Perfil';
@@ -73,7 +71,6 @@ import Cadastro from './src/pages/Cadastros/Cadastro';
 
 
 const Stack = createStackNavigator();
-LogBox.ignoreAllLogs();
 
 export default function App() {
   const Tema = useTema()
@@ -111,7 +108,6 @@ export default function App() {
           <Stack.Group title="Cliente" >
               <Stack.Screen name="Home" component={Tabs}/>
               <Stack.Screen name="Search" component={Search} />
-              <Stack.Screen name="Restaurante" component={Restaurante} />
               <Stack.Screen name="DadosCliente" component={DadosCliente} />
               <Stack.Screen name="AlterarCliente" component={AlterarCliente} />
               <Stack.Screen name="Config" component={Config} />
