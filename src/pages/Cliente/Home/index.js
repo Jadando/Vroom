@@ -1,33 +1,53 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView,TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
-
+import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
 export default function Home({ route }) {
   const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
   const [endereco, setEndereco] = useState("Seu Endereço")
-  console.log(IdentificadorCliente)
+ // console.log(IdentificadorCliente)
   const gambiarra = "pwt2SG3vpOM9Jcat45dGDgNb9oE3";
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
+  const [cep, setCep] = useState()
+  const db = getFirestore();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const q = query(collection(db, "users"), where("id", "==", IdentificadorCliente));
+      const querySnapshot = await getDocs(q); // Await the promise
+  
+      const documentosEncontrados = [];
+  
+      querySnapshot.forEach((doc) => {
+        const documentoComID = { data: doc.data() };
+        setCep(documentoComID.data.cep);
+       // console.log(cep) // Print the data from the document
+      });
+    };
+  
+    fetchData(); // Call the async function
+  }, [IdentificadorCliente]);
+
 
   const Gambiarra = () => {
     if (gambiarra === IdentificadorCliente) {
       return (
         <ScrollView>
           <View style={styles.recents}>
-            <View style={{flexDirection: 'row'}}>
-            <Text style={styles.recentsTitle}>
-              Pedido Recentemente
-            </Text>
-            <Icon name='time-outline' color='#000' size={30} />
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.recentsTitle}>
+                Pedido Recentemente
+              </Text>
+              <Icon name='time-outline' color='#000' size={30} />
             </View>
             <View style={styles.recentsContainer}>
               <View style={styles.recentsContent}>
                 <View style={styles.recentsImages}>
-                  <Image source={require('../../../img/luzia.png')} style={styles.img}/>
+                  <Image source={require('../../../img/luzia.png')} style={styles.img} />
                 </View>
                 <Text style={styles.categoriaText}>
                   Luzia Hamburgers {'\n'}
@@ -36,7 +56,7 @@ export default function Home({ route }) {
               </View>
               <View style={styles.recentsContent}>
                 <View style={styles.recentsImages}>
-                <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img}/>
+                  <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img} />
                 </View>
                 <Text style={styles.categoriaText}>
                   SF Refrigerações {'\n'}
@@ -45,7 +65,7 @@ export default function Home({ route }) {
               </View>
               <View style={styles.recentsContent}>
                 <View style={styles.recentsImages}>
-                <Image source={require('../../../img/logo_juss.png')} style={styles.img}/>
+                  <Image source={require('../../../img/logo_juss.png')} style={styles.img} />
                 </View>
                 <Text style={styles.categoriaText}>
                   JussFarma {'\n'}
@@ -59,23 +79,23 @@ export default function Home({ route }) {
     } else {
       return (
         <>
-        <View style={styles.recents}>
-          <View style={{flexDirection: 'row'}}>
-          <Text style={styles.recentsTitle}>
-            Pedido Recentemente
-          </Text>
-          <Icon name='time-outline' color='#000' size={30} />
+          <View style={styles.recents}>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.recentsTitle}>
+                Pedido Recentemente
+              </Text>
+              <Icon name='time-outline' color='#000' size={30} />
+            </View>
+            <Text>
+              Você ainda não fez nenhum pedido
+            </Text>
           </View>
-          <Text>
-            Você ainda não fez nenhum pedido
-          </Text>
-        </View>
-        <View
-        style={{
-          backgroundColor: '#fff',
-          height: 150,
-        }}
-        />
+          <View
+            style={{
+              backgroundColor: '#fff',
+              height: 150,
+            }}
+          />
         </>
       )
 
@@ -102,7 +122,7 @@ export default function Home({ route }) {
           <View style={styles.categoriasContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('Restaurante', {
               IdentificadorCliente
-            } )}>
+            })}>
               <View style={styles.categoriasContent}>
                 <Text style={{ ...styles.categoriaText, marginBottom: -15 }}>
                   Restaurantes

@@ -34,7 +34,7 @@ export default function VisualizarPerfil({ route }) {
     const db = getFirestore();
 
     useEffect(() => {
-        const docRef = doc(db, "usuario", "tabela", "empresa", IdentificadorEmpresa);
+        const docRef = doc(db, "users",IdentificadorEmpresa);
 
         const unsubscribe = onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
@@ -54,8 +54,8 @@ export default function VisualizarPerfil({ route }) {
 
     async function DonwloadImages() {
         try {
-            const logoRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_company`);
-            const bannerRef = ref(storage, `usuario/imagem/empresa/${IdentificadorEmpresa}/banner_company`);
+            const logoRef = ref(storage, `images/users/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_profile_picture`);
+            const bannerRef =  ref(storage, `images/users/empresa/${IdentificadorEmpresa}/${IdentificadorEmpresa}_banner`);
     
             const [logoUrl, bannerUrl] = await Promise.all([
                 getDownloadURL(logoRef).catch(() => null),

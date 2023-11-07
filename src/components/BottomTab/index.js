@@ -54,7 +54,7 @@ export function Tabs({ route }) {
     
     const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
 
-    console.log(IdentificadorCliente + " UIDE DO CLIENTE")
+  //  console.log(IdentificadorCliente + " UIDE DO CLIENTE")
 
     const tema = useTheme();
 
@@ -102,7 +102,7 @@ export function Tabs({ route }) {
 export function TabsEntregador({ route }) {
 
     const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');
-    console.log(IdentificadorEntregador+ " UIDE ENTREGADOR")
+ //   console.log(IdentificadorEntregador+ " UIDE ENTREGADOR")
     const tema = useTheme();
     return (
         <Tab.Navigator
@@ -148,7 +148,7 @@ export function TabsEntregador({ route }) {
 }
 export function TabsEmpresa({ route }) {
     const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
-    console.log(IdentificadorEmpresa + " UIDE DA EMPRESA")
+ //   console.log(IdentificadorEmpresa + " UIDE DA EMPRESA")
     const tema = useTheme();
     return (
         <Tab.Navigator

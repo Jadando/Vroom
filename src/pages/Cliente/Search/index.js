@@ -7,10 +7,12 @@ import { getDocs, collection, query, where, getFirestore } from 'firebase/firest
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import LoadingModal from '../../../components/loadingModal'
 
-export default function Search() {
+export default function Search({ route }) {
     const tema = useTheme();
     const styles = getstyles(tema);
     const navigation = useNavigation();
+    const [cep, setCep] = useState()
+    const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
     const [isLoading, setIsLoading] = useState(false);
     const [pesquisa, setPesquisa] = useState(null);
     const [resultados, setResultados] = useState([]);
@@ -19,9 +21,13 @@ export default function Search() {
     const db = getFirestore();
 
     const Consultar = async (pesquisa) => {
+        setIsLoading(true);
+
+        console.log(IdentificadorCliente)
         const empresaRef = collection(db, 'users');
 
-        const q = query(empresaRef, where('nome', '==', pesquisa));
+        // const q = query(collection(db, 'users'), where('id', '==', uide), where('tipo', 'in', tipos));
+        const q = query(empresaRef, where('nome', '==', pesquisa), where('cep', '==', cep));
 
         try {
             const querySnapshot = await getDocs(q);
@@ -41,7 +47,7 @@ export default function Search() {
     async function DonwloadImg(documento) {
         try {
             const storage = getStorage();
-            const imageRef = ref(storage, `usuario/imagem/empresa/${documento.id}/${documento.id}_company`);
+            const imageRef = ref(storage, `images/users/empresa/${documento.id}/${documento.id}_profile_picture`);
             const url = await getDownloadURL(imageRef);
             const response = await fetch(url);
             const data = await response.text();
@@ -60,15 +66,14 @@ export default function Search() {
 
     const handlePesquisar = async () => {
         try {
-            setIsLoading(true);
             const resultadoDaConsulta = await Consultar(pesquisa);
             setImageUrls([]);
             resultadoDaConsulta.forEach((documento) => {
                 DonwloadImg(documento);
             });
             setResultados(resultadoDaConsulta);
-            setMostrarResultados(true);
             setIsLoading(false);
+            setMostrarResultados(true);
         } catch (error) {
             setIsLoading(false);
             console.error('Erro ao consultar o Firestore:', error);
@@ -86,17 +91,19 @@ export default function Search() {
                                 const imageUrl = imageUrls.find((img) => img.id === documento.id);
                                 if (imageUrl && imageUrl.url) {
                                     return (
-                                        <TouchableOpacity onPress={() => navigation.navigate('VisualizarEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
-                                            <View style={styles.recentsContent}>
-                                                <View style={styles.recentsImages}>
-                                                    <Image source={{ uri: imageUrl.url }} key={documento.id} style={styles.image} />
+                                        <>
+                                            <TouchableOpacity onPress={() => navigation.navigate('VisualizarEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
+                                                <View style={styles.recentsContent}>
+                                                    <View style={styles.recentsImages}>
+                                                        <Image source={{ uri: imageUrl.url }} key={documento.id} style={styles.image} />
+                                                    </View>
+                                                    <Text style={styles.Text}>
+                                                        {documento.data.nome} {'\n'}
+                                                        A 5.75km de você
+                                                    </Text>
                                                 </View>
-                                                <Text style={styles.Text}>
-                                                    {documento.data.nome} {'\n'}
-                                                    A 5.75km de você
-                                                </Text>
-                                            </View>
-                                        </TouchableOpacity>
+                                            </TouchableOpacity>
+                                        </>
                                     );
                                 } else {
                                     return null;

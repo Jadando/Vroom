@@ -26,7 +26,7 @@ export default function DadosEntregador({ route }) {
  
     useEffect(() => {
         const db = getFirestore();
-        const docRef = doc(db, "usuario", "tabela", "entregador", IdentificadorEntregador);
+        const docRef = doc(db, "users", IdentificadorEntregador);
 
         const unsubscribe = onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
