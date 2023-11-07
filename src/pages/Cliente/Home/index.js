@@ -4,33 +4,38 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
+
+
 export default function Home({ route }) {
   const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
+  const [cep, setCep] = useState(route.params?.cep || '');
   const [endereco, setEndereco] = useState("Seu Endereço")
- // console.log(IdentificadorCliente)
+  // console.log(IdentificadorCliente)
   const gambiarra = "pwt2SG3vpOM9Jcat45dGDgNb9oE3";
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
-  const [cep, setCep] = useState()
-  const db = getFirestore();
+  console.log(cep + "CEP DO CLIENTE")
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const q = query(collection(db, "users"), where("id", "==", IdentificadorCliente));
-      const querySnapshot = await getDocs(q); // Await the promise
-  
-      const documentosEncontrados = [];
-  
-      querySnapshot.forEach((doc) => {
-        const documentoComID = { data: doc.data() };
-        setCep(documentoComID.data.cep);
-       // console.log(cep) // Print the data from the document
-      });
-    };
-  
-    fetchData(); // Call the async function
-  }, [IdentificadorCliente]);
+
+  // const db = getFirestore();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const q = query(collection(db, "users"), where("id", "==", IdentificadorCliente));
+  //     const querySnapshot = await getDocs(q); // Await the promise
+
+  //     const documentosEncontrados = [];
+
+  //     querySnapshot.forEach((doc) => {
+  //       const documentoComID = { data: doc.data() };
+  //       setCep(documentoComID.data.cep);
+  //        console.log(documentoComID.data.cep) // Print the data from the document
+  //     });
+  //   };
+
+  //   fetchData(); // Call the async function
+  // }, [IdentificadorCliente]);
 
 
   const Gambiarra = () => {

@@ -4,9 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useTema } from './src/theme';
 import { ThemeProvider } from 'styled-components';
-import { Tabs,TabsEmpresa, TabsEntregador } from './src/components/BottomTab';
+import { Tabs, TabsEmpresa, TabsEntregador } from './src/components/BottomTab';
 import * as Location from 'expo-location';
-import * as ImagePicker from 'expo-image-picker'; 
+import * as ImagePicker from 'expo-image-picker';
 //
 //
 //
@@ -30,7 +30,7 @@ import CadastroCliente from './src/pages/Cadastros/Cliente/CadastroCliente';
 import ClienteRevisa from './src/pages/Cadastros/Cliente/ClienteRevisa';
 import PerfilCliente from './src/pages/Cliente/Perfil/index';
 import VisualizarEmpresa from './src/pages/Cliente/VisualizarEmpresa';
-import LocalCliente from './src/pages/Cliente/Pedidos'; 
+import LocalCliente from './src/pages/Cliente/Pedidos';
 import Pedidos from './src/pages/Cliente/Pedidos';
 
 // Imports relacionados à Empresa
@@ -76,79 +76,79 @@ export default function App() {
   const Tema = useTema()
   useEffect(() => {
     (async () => {
-        const locationPermission = await Location.requestForegroundPermissionsAsync();
-        if (locationPermission.status !== 'granted') {
-            console.error('A permissão para acessar o local foi negada');
-            alert("A permissão para acessar o local foi negada")
-            return;
-        }
+      const locationPermission = await Location.requestForegroundPermissionsAsync();
+      if (locationPermission.status !== 'granted') {
+        console.error('A permissão para acessar o local foi negada');
+        alert("A permissão para acessar o local foi negada")
+        return;
+      }
 
 
-        const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (galleryPermission.status !== 'granted') {
-            console.error('A permissão para acessar a galeria foi negada');
-            alert("A permissão para acessar a galeria foi negada")
-            return;
-        }
-        
+      const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (galleryPermission.status !== 'granted') {
+        console.error('A permissão para acessar a galeria foi negada');
+        alert("A permissão para acessar a galeria foi negada")
+        return;
+      }
+
     })();
-}, []);
+  }, []);
   return (
     <ThemeProvider theme={Tema}>
-    <NavigationContainer>
+      <NavigationContainer>
 
-      <Stack.Navigator 
-              initialRouteName='Login'
-              screenOptions={{
-                headerShown: false
-              }}
-            >
+        <Stack.Navigator
+          initialRouteName='Login'
+          screenOptions={{
+            headerShown: false
+          }}
+        >
           {/* Telas do Cliente */}
-          
-          <Stack.Group title="Cliente" >
-              <Stack.Screen name="Home" component={Tabs}/>
-              <Stack.Screen name="Search" component={Search} />
-              <Stack.Screen name="DadosCliente" component={DadosCliente} />
-              <Stack.Screen name="AlterarCliente" component={AlterarCliente} />
-              <Stack.Screen name="Config" component={Config} />
-              <Stack.Screen name="CadastroCliente" component={CadastroCliente} />
-              <Stack.Screen name="ClienteRevisa" component={ClienteRevisa} />
-              <Stack.Screen name="PerfilCliente" component={PerfilCliente} />
-              <Stack.Screen name="VisualizarEmpresa" component={VisualizarEmpresa} />
-              <Stack.Screen name='Pedidos' component={Pedidos} />
+
+          <Stack.Group title="Cliente">
+            <Stack.Screen name="Home" component={Tabs} />
+            <Stack.Screen name="Search" component={Search} />
+            <Stack.Screen name="DadosCliente" component={DadosCliente} />
+            <Stack.Screen name="AlterarCliente" component={AlterarCliente} />
+            <Stack.Screen name="Config" component={Config} />
+            <Stack.Screen name="CadastroCliente" component={CadastroCliente} />
+            <Stack.Screen name="ClienteRevisa" component={ClienteRevisa} />
+            <Stack.Screen name="PerfilCliente" component={PerfilCliente} />
+            <Stack.Screen name="VisualizarEmpresa" component={VisualizarEmpresa} />
+            <Stack.Screen name='Pedidos' component={Pedidos} />
           </Stack.Group>
 
 
           {/* Telas relacionadas à Empresa */}
           <Stack.Group title="Empresa">
-              <Stack.Screen name="PerfilEmpresa" component={PerfilEmpresa} />
-              <Stack.Screen name="IniciarEntrega" component={TabsEmpresa} />
-              <Stack.Screen name="PendentesAndamento" component={PendentesAndamento} />
-              <Stack.Screen name="RastrearEmpresa" component={RastrearEmpresa} />
-              <Stack.Screen name="ConfigEmpresa" component={ConfigEmpresa} />
-              <Stack.Screen name="CadastroEmpresa" component={CadastroEmpresa} />
-              <Stack.Screen name="EmpresaRevisa" component={EmpresaRevisa} />
-              <Stack.Screen name="Afiliado" component={Afiliado} />
-              <Stack.Screen name="DadosEmpresa" component={DadosEmpresa} />
-              <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
-              <Stack.Screen name='AlterarEmpresa' component={AlterarEmpresa} />
-              <Stack.Screen name='Entregadores' component={Entregadores} />
+            <Stack.Screen name="PerfilEmpresa" component={PerfilEmpresa} />
+            <Stack.Screen name="IniciarEntrega" component={TabsEmpresa} />
+            <Stack.Screen name="PendentesAndamento" component={PendentesAndamento} />
+            <Stack.Screen name="RastrearEmpresa" component={RastrearEmpresa} />
+            <Stack.Screen name="ConfigEmpresa" component={ConfigEmpresa} />
+            <Stack.Screen name="CadastroEmpresa" component={CadastroEmpresa} />
+            <Stack.Screen name="EmpresaRevisa" component={EmpresaRevisa} />
+            <Stack.Screen name="Afiliado" component={Afiliado} />
+            <Stack.Screen name="DadosEmpresa" component={DadosEmpresa} />
+            <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
+            <Stack.Screen name='AlterarEmpresa' component={AlterarEmpresa} />
+            <Stack.Screen name='Entregadores' component={Entregadores} />
           </Stack.Group>
 
           {/* Telas relacionadas ao Entregador */}
           <Stack.Group title="Entregador">
-              <Stack.Screen name="Historico" component={Historico} />
-              <Stack.Screen name="AceitarEntrega" component={AceitarEntrega} />
-              <Stack.Screen name="FinalizarEntrega" component={FinalizarEntrega} />
-              <Stack.Screen name="PerfilEntregador" component={PerfilEntregador} />
-              <Stack.Screen name="ConfigEntregador" component={ConfigEntregador} />
-              <Stack.Screen name="CadastroEntregador" component={CadastroEntregador} />
-              <Stack.Screen name="EntregadorRevisa" component={EntregadorRevisa} />
-              <Stack.Screen name="EmpresasAfiliadas" component={EmpresasAfiliadas} />
-              <Stack.Screen name="SemAfiliacao" component={SemAfiliacao} />
-              <Stack.Screen name="DadosEntregador" component={DadosEntregador} />
-              <Stack.Screen name="AlterarEntregador" component={AlterarEntregador} />
-              <Stack.Screen name="Pendentes" component={TabsEntregador} />
+            <Stack.Screen name="Historico" component={Historico} />
+            <Stack.Screen name="AceitarEntrega" component={AceitarEntrega} />
+            <Stack.Screen name="FinalizarEntrega" component={FinalizarEntrega} />
+            <Stack.Screen name="PerfilEntregador" component={PerfilEntregador} />
+            <Stack.Screen name="ConfigEntregador" component={ConfigEntregador} />
+            <Stack.Screen name="CadastroEntregador" component={CadastroEntregador} />
+            <Stack.Screen name="EntregadorRevisa" component={EntregadorRevisa} />
+            <Stack.Screen name="EmpresasAfiliadas" component={EmpresasAfiliadas} />
+            <Stack.Screen name="SemAfiliacao" component={SemAfiliacao} />
+            <Stack.Screen name="DadosEntregador" component={DadosEntregador} />
+            <Stack.Screen name="AlterarEntregador" component={AlterarEntregador} />
+            <Stack.Screen name="Pendentes" component={TabsEntregador} />
           </Stack.Group>
 
           {/* Telas gerais */}
@@ -156,8 +156,8 @@ export default function App() {
           <Stack.Screen name="Mapa" component={Mapa} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Cadastro" component={Cadastro} />
-      </Stack.Navigator>
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
     </ThemeProvider>
   );
 }

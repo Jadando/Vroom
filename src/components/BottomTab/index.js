@@ -3,6 +3,7 @@ import { useTheme } from 'styled-components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
 
 import Home from '../../pages/Cliente/Home';
 import Search from '../../pages/Cliente/Search';
@@ -51,11 +52,33 @@ const icons = {
 }
 
 export function Tabs({ route }) {
-    
+
     const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
+    const db = getFirestore();
+    const [cep, setCep] = useState()
 
-  //  console.log(IdentificadorCliente + " UIDE DO CLIENTE")
 
+    useEffect(() => {
+        if (cep === null) {
+            fetchData();
+        } else {
+            console.log("Teste !!ppp")
+        } 
+
+        const fetchData = async () => {
+            const q = query(collection(db, "users"), where("id", "==", IdentificadorCliente));
+            const querySnapshot = await getDocs(q); // Await the promise
+
+            const documentosEncontrados = [];
+
+            querySnapshot.forEach((doc) => {
+                const documentoComID = { data: doc.data() };
+                setCep(documentoComID.data.cep);
+                //console.log(documentoComID.data.cep) // Print the data from the document
+            });
+        };
+// Call the async function
+    }, [IdentificadorCliente]);
     const tema = useTheme();
 
     return (
@@ -92,17 +115,17 @@ export function Tabs({ route }) {
                 },
             })}
         >
-            <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente }} />
+            <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente, cep: cep }} />
             <Tab.Screen name="Buscar" component={Search} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente }} />
             <Tab.Screen name="Pedidos" component={LocalCliente} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente }} />
-            <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente  }} />
+            <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente }} />
         </Tab.Navigator>
     )
 }
 export function TabsEntregador({ route }) {
 
     const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');
- //   console.log(IdentificadorEntregador+ " UIDE ENTREGADOR")
+    //   console.log(IdentificadorEntregador+ " UIDE ENTREGADOR")
     const tema = useTheme();
     return (
         <Tab.Navigator
@@ -148,7 +171,7 @@ export function TabsEntregador({ route }) {
 }
 export function TabsEmpresa({ route }) {
     const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
- //   console.log(IdentificadorEmpresa + " UIDE DA EMPRESA")
+    //   console.log(IdentificadorEmpresa + " UIDE DA EMPRESA")
     const tema = useTheme();
     return (
         <Tab.Navigator
