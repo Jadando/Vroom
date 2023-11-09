@@ -21,8 +21,8 @@ import * as ImagePicker from 'expo-image-picker';
 //atualização de usuario na fase de teste 
 // ps nao lemnro o que eu tava fazendo
 // Imports relacionados ao Cliente
-import Home from './src/pages/Cliente/Home';
 import Search from './src/pages/Cliente/Search';
+import Filter from './src/pages/Cliente/Search/filter';
 import DadosCliente from './src/pages/Cliente/Perfil/DadosCliente';
 import AlterarCliente from './src/pages/Cliente/Perfil/AlterarCliente';
 import Config from './src/pages/Cliente/Perfil/Config1';
@@ -108,6 +108,7 @@ export default function App() {
           <Stack.Group title="Cliente">
             <Stack.Screen name="Home" component={Tabs} />
             <Stack.Screen name="Search" component={Search} />
+            <Stack.Screen name="Filter" component={Filter} />
             <Stack.Screen name="DadosCliente" component={DadosCliente} />
             <Stack.Screen name="AlterarCliente" component={AlterarCliente} />
             <Stack.Screen name="Config" component={Config} />

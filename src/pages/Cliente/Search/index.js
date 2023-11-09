@@ -11,8 +11,8 @@ export default function Search({ route }) {
     const tema = useTheme();
     const styles = getstyles(tema);
     const navigation = useNavigation();
-    const [cep, setCep] = useState()
     const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
+    const [cep, setCep] = useState(route.params?.cep);
     const [isLoading, setIsLoading] = useState(false);
     const [pesquisa, setPesquisa] = useState(null);
     const [resultados, setResultados] = useState([]);

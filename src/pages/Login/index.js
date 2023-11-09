@@ -17,8 +17,8 @@ export default function Login() {
     const tema = useTheme();
     const styles = getstyles(tema);
     const [isLoading, setIsLoading] = useState(false);
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
+    const [email, setEmail] = useState('penis@gmail.com');
+    const [senha, setSenha] = useState('123456');
     const [UserGoogle, SetUserGoogle] = React.useState(null);
     // const [request, response, promptAsync] = Google.useAuthRequest({
     //     androidClientId: '550744668475-82l8k7cubo8tt1jqfn3clneu0hjrhdmj.apps.googleusercontent.com',

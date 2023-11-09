@@ -51,35 +51,30 @@ const icons = {
     },
 }
 
+
 export function Tabs({ route }) {
-
     const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
-    const db = getFirestore();
-    const [cep, setCep] = useState()
-
+    const [documentoComID, setDocumentoComID] = useState(null);
+    const tema = useTheme();
 
     useEffect(() => {
-        if (cep === null) {
-            fetchData();
-        } else {
-            console.log("Teste !!ppp")
-        } 
-
         const fetchData = async () => {
+            const db = getFirestore();
             const q = query(collection(db, "users"), where("id", "==", IdentificadorCliente));
-            const querySnapshot = await getDocs(q); // Await the promise
-
-            const documentosEncontrados = [];
+            const querySnapshot = await getDocs(q);
 
             querySnapshot.forEach((doc) => {
-                const documentoComID = { data: doc.data() };
-                setCep(documentoComID.data.cep);
-                //console.log(documentoComID.data.cep) // Print the data from the document
+                setDocumentoComID({ data: doc.data() });
             });
         };
-// Call the async function
+
+        fetchData();
     }, [IdentificadorCliente]);
-    const tema = useTheme();
+
+    if (!documentoComID) {
+        // Se os dados ainda não foram carregados, você pode renderizar algo de carregamento ou null
+        return null;
+    }
 
     return (
         <Tab.Navigator
@@ -115,13 +110,15 @@ export function Tabs({ route }) {
                 },
             })}
         >
-            <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente, cep: cep }} />
-            <Tab.Screen name="Buscar" component={Search} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente }} />
+            <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente,cep: documentoComID.data.cep  }} />
+            <Tab.Screen name="Buscar" component={Search} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente, cep: documentoComID.data.cep }} />
             <Tab.Screen name="Pedidos" component={LocalCliente} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente }} />
             <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente }} />
         </Tab.Navigator>
-    )
+    );
 }
+
+
 export function TabsEntregador({ route }) {
 
     const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');

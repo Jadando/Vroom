@@ -3,110 +3,127 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
 
 
 export default function Home({ route }) {
   const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
-  const [cep, setCep] = useState(route.params?.cep || '');
+  const [cep, setCep] = useState(route.params?.cep);
   const [endereco, setEndereco] = useState("Seu Endereço")
-  // console.log(IdentificadorCliente)
-  const gambiarra = "pwt2SG3vpOM9Jcat45dGDgNb9oE3";
+  const [isLoading, setIsLoading] = useState(false);
+  const [pesquisa, setPesquisa] = useState(null);
+  const [resultados, setResultados] = useState([]);
+  const [imageUrls, setImageUrls] = useState([]);
+  const [mostrarResultados, setMostrarResultados] = useState(false);
+  const db = getFirestore();
+  const gambiarra = null;
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
-  console.log(cep + "CEP DO CLIENTE")
 
-
-  // const db = getFirestore();
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const q = query(collection(db, "users"), where("id", "==", IdentificadorCliente));
-  //     const querySnapshot = await getDocs(q); // Await the promise
-
-  //     const documentosEncontrados = [];
-
-  //     querySnapshot.forEach((doc) => {
-  //       const documentoComID = { data: doc.data() };
-  //       setCep(documentoComID.data.cep);
-  //        console.log(documentoComID.data.cep) // Print the data from the document
-  //     });
-  //   };
-
-  //   fetchData(); // Call the async function
-  // }, [IdentificadorCliente]);
-
-
-  const Gambiarra = () => {
-    if (gambiarra === IdentificadorCliente) {
-      return (
-        <ScrollView>
-          <View style={styles.recents}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.recentsTitle}>
-                Pedido Recentemente
-              </Text>
-              <Icon name='time-outline' color='#000' size={30} />
-            </View>
-            <View style={styles.recentsContainer}>
-              <View style={styles.recentsContent}>
-                <View style={styles.recentsImages}>
-                  <Image source={require('../../../img/luzia.png')} style={styles.img} />
-                </View>
-                <Text style={styles.categoriaText}>
-                  Luzia Hamburgers {'\n'}
-                  Ultimo pedido dia: 29/10/2023
-                </Text>
-              </View>
-              <View style={styles.recentsContent}>
-                <View style={styles.recentsImages}>
-                  <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img} />
-                </View>
-                <Text style={styles.categoriaText}>
-                  SF Refrigerações {'\n'}
-                  Ultimo pedido dia: 28/10/2023
-                </Text>
-              </View>
-              <View style={styles.recentsContent}>
-                <View style={styles.recentsImages}>
-                  <Image source={require('../../../img/logo_juss.png')} style={styles.img} />
-                </View>
-                <Text style={styles.categoriaText}>
-                  JussFarma {'\n'}
-                  Ultimo pedido dia: 26/10/2023
-                </Text>
-              </View>
-            </View>
-          </View>
-        </ScrollView>
-      )
-    } else {
-      return (
-        <>
-          <View style={styles.recents}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.recentsTitle}>
-                Pedido Recentemente
-              </Text>
-              <Icon name='time-outline' color='#000' size={30} />
-            </View>
-            <Text>
-              Você ainda não fez nenhum pedido
-            </Text>
-          </View>
-          <View
-            style={{
-              backgroundColor: '#fff',
-              height: 150,
-            }}
-          />
-        </>
-      )
-
+  const CarregarHistorico = async () => {
+    setIsLoading(true);
+  
+    const HistoricoRef = collection(db, 'users', IdentificadorCliente, 'Pedidos');
+    
+    const q = query(HistoricoRef);
+  
+    try {
+      const querySnapshot = await getDocs(q);
+      const documentosEncontrados = [];
+  
+      querySnapshot.forEach((doc) => {
+        const documentoComID = { id: doc.id, data: doc.data() };
+        documentosEncontrados.push(documentoComID);
+        console.log(documentoComID)
+      });
+  
+      return documentosEncontrados;
+    } catch (error) {
+      console.error('Erro ao consultar o Firestore:', error);
+      throw error; // Adicione um throw para que o erro seja propagado para quem chamou a função
     }
   }
 
+  // async function DonwloadImg(documento) {
+  //   try {
+  //     const storage = getStorage();
+  //     const imageRef = ref(storage, `images/users/empresa/${documento.id}/${documento.id}_profile_picture`);
+  //     const url = await getDownloadURL(imageRef);
+  //     const response = await fetch(url);
+  //     const data = await response.text();
+  //     const numericArray = data.split(",");
+  //     const asciiString = numericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join("");
+  //     const imageUrl = {
+  //       id: documento.id,
+  //       url: 'data:image/jpeg;base64,' + asciiString
+  //     };
+
+  //     setImageUrls((prevImageUrls) => [...prevImageUrls, imageUrl]);
+  //   } catch (error) {
+  //     console.error('Erro ao recuperar a URL da imagem:', error);
+  //   }
+  // }
+
+  const PesquisarHistorico = async () => {
+    try {
+      const resultadoDaConsulta = await CarregarHistorico(pesquisa);
+      setImageUrls([]);
+      resultadoDaConsulta.forEach(async (documento) => {
+        // Vou adicionar uma função assíncrona aqui para baixar a imagem, se necessário
+        // await DonwloadImg(documento);
+        // Adicione a lógica necessária para baixar a imagem, se necessário
+      });
+      setResultados(resultadoDaConsulta);
+      setIsLoading(false);
+      setMostrarResultados(true);
+    } catch (error) {
+      setIsLoading(false);
+      console.error('Erro ao consultar o Firestore:', error);
+    }
+  };
+  const renderizarResultados = () => {
+    if (mostrarResultados) {
+      if (resultados.length > 0) {
+        return (
+          <View style={styles.recents}>
+            <Text style={styles.recentsTitle}>Historico de compra</Text>
+            <View style={styles.recentsContainer}>
+              {resultados.map((documento, index) => {
+               // const imageUrl = imageUrls.find((img) => img.id === documento.id);
+                  return (
+                    <>
+                      <TouchableOpacity onPress={() => navigation.navigate('VisualizarEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
+                        <View style={styles.recentsContent}>
+                          <View style={styles.recentsImages}>
+                            {/* <Image source={{ uri: imageUrl.url }} key={documento.id} style={styles.image} /> */}
+                          </View>
+                          <Text style={styles.Text}>
+                            {documento.data.tempos} {'\n'}
+                            {documento.data.tempos}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </>
+                  );
+              })}
+            </View>
+          </View>
+        );
+      } else {
+        return (
+          <View style={styles.container}>
+            <Text style={styles.Text}>Nenhum resultado encontrado</Text>
+          </View>
+        );
+      }
+    }
+  };
+  useEffect(() => {
+    // Chama PesquisarHistorico apenas quando o componente é montado
+    PesquisarHistorico();
+  }, [IdentificadorCliente]);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -125,8 +142,9 @@ export default function Home({ route }) {
       >
         <View style={styles.categorias}>
           <View style={styles.categoriasContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('Restaurante', {
-              IdentificadorCliente
+            <TouchableOpacity onPress={() => navigation.navigate('Filter', {
+              IdentificadorCliente,
+              cep
             })}>
               <View style={styles.categoriasContent}>
                 <Text style={{ ...styles.categoriaText, marginBottom: -15 }}>
@@ -171,7 +189,7 @@ export default function Home({ route }) {
             </TouchableOpacity>
           </View>
         </View>
-        {Gambiarra()}
+        {renderizarResultados()}
       </ScrollView>
 
     </View>
