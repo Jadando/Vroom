@@ -13,6 +13,7 @@ export default function Filter({ route }) {
     const navigation = useNavigation();
     const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
     const [cep, setCep] = useState(route.params?.cep);
+    const [categoria, setCategoria] = useState(route.params?.categoria || '')
     const [isLoading, setIsLoading] = useState(false);
     const [pesquisa, setPesquisa] = useState(null);
     const [resultados, setResultados] = useState([]);
@@ -20,14 +21,22 @@ export default function Filter({ route }) {
     const [mostrarResultados, setMostrarResultados] = useState(false);
     const db = getFirestore();
 
-    const Consultar = async (pesquisa) => {
+
+
+    const Consultar = async (categoria) => {
         setIsLoading(true);
 
-        console.log(IdentificadorCliente)
-        const empresaRef = collection(db, 'users');
+        const FilterRef = collection(db, 'users');
+        let q;
 
-        // const q = query(collection(db, 'users'), where('id', '==', uide), where('tipo', 'in', tipos));
-        const q = query(empresaRef, where('nome', '==', pesquisa), where('cep', '==', cep));
+        // Adicione sua lógica de condição aqui
+        if (pesquisa === null) {
+            q = query(FilterRef, where('categoria', '==', categoria), where('cep', '==', cep));
+        } else {
+            // Outra condição, se necessário
+            q = query(FilterRef, where('categoria', '==', categoria), where('cep', '==', cep), where('nome', '==', pesquisa));
+        }
+        //  const q = query(FilterRef, where('categoria', '==', categoria), where('cep', '==', cep));
 
         try {
             const querySnapshot = await getDocs(q);
@@ -64,9 +73,9 @@ export default function Filter({ route }) {
         }
     }
 
-    const handlePesquisar = async () => {
+    const handlePesquisar = async (categoria) => {
         try {
-            const resultadoDaConsulta = await Consultar(pesquisa);
+            const resultadoDaConsulta = await Consultar(categoria);
             setImageUrls([]);
             resultadoDaConsulta.forEach((documento) => {
                 DonwloadImg(documento);
@@ -80,6 +89,9 @@ export default function Filter({ route }) {
         }
     };
 
+    useEffect(() => {
+        handlePesquisar(categoria)
+    }, [])
     const renderizarResultados = () => {
         if (mostrarResultados) {
             if (resultados.length > 0) {

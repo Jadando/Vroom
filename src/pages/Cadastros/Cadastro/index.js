@@ -10,8 +10,8 @@ export default function Cadastro() {
   const tema = useTheme();
   const styles = getstyles(tema);
   const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState('empresa@gmail.com');
+  const [senha, setSenha] = useState('123456');
   const [senhaConfirma, setSenhaConfirma] = useState('');
   const [Identificador, setIdentificador] = useState();
 

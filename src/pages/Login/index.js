@@ -2,14 +2,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
-import { getFirestore, getDocs, collection, where, collectionGroup, query } from "firebase/firestore";
+import { getFirestore, getDocs, collection, where, query } from "firebase/firestore";
 import { useTheme } from 'styled-components';
 // import * as WebBrowser from 'expo-web-browser';
 // import * as Google from 'expo-auth-session/providers/google';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as App from "../../firebaseConnection";
 import LoadingModal from '../../components/loadingModal';
-
 //WebBrowser.maybeCompleteAuthSession()
 
 export default function Login() {
@@ -17,12 +16,10 @@ export default function Login() {
     const tema = useTheme();
     const styles = getstyles(tema);
     const [isLoading, setIsLoading] = useState(false);
-    const [email, setEmail] = useState('penis@gmail.com');
+    const [email, setEmail] = useState('joao.adriano20056@gmail.com');
     const [senha, setSenha] = useState('123456');
     const [UserGoogle, SetUserGoogle] = React.useState(null);
-    // const [request, response, promptAsync] = Google.useAuthRequest({
-    //     androidClientId: '550744668475-82l8k7cubo8tt1jqfn3clneu0hjrhdmj.apps.googleusercontent.com',
-    // });
+
 
     // useEffect(() => {
     //     handledSingInWithGoogle()

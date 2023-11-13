@@ -49,7 +49,9 @@ export default function ClienteRevisa({ route }) {
                 }).then(() => {
 
                     const usersRefs = collection(db, 'users', Identificador, 'Pedidos');
-                    const data = {}
+                    const data = {
+                        condition:'true'
+                    }
                     addDoc(usersRefs, data).then(
                         navigation.navigate('Home', {
                             IdentificadorCliente: Identificador

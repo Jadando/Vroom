@@ -1,25 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useTema } from './src/theme';
 import { ThemeProvider } from 'styled-components';
 import { Tabs, TabsEmpresa, TabsEntregador } from './src/components/BottomTab';
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
-//
-//
-//
-//
-//
-// coisa a fazer passar o uid para todas as telas e termina a sesson
-//
-//
-//
-//
-//
-//atualização de usuario na fase de teste 
-// ps nao lemnro o que eu tava fazendo
+import * as Linking from 'expo-linking';
+
+
+
 // Imports relacionados ao Cliente
 import Search from './src/pages/Cliente/Search';
 import Filter from './src/pages/Cliente/Search/filter';
@@ -30,8 +20,8 @@ import CadastroCliente from './src/pages/Cadastros/Cliente/CadastroCliente';
 import ClienteRevisa from './src/pages/Cadastros/Cliente/ClienteRevisa';
 import PerfilCliente from './src/pages/Cliente/Perfil/index';
 import VisualizarEmpresa from './src/pages/Cliente/VisualizarEmpresa';
-import LocalCliente from './src/pages/Cliente/Pedidos';
 import Pedidos from './src/pages/Cliente/Pedidos';
+import VisualizarPedido from './src/pages/Cliente/VisualizarPedido'
 
 // Imports relacionados à Empresa
 import PerfilEmpresa from './src/pages/Empresa/Perfil';
@@ -75,24 +65,47 @@ const Stack = createStackNavigator();
 export default function App() {
   const Tema = useTema()
   useEffect(() => {
-    (async () => {
-      const locationPermission = await Location.requestForegroundPermissionsAsync();
-      if (locationPermission.status !== 'granted') {
-        console.error('A permissão para acessar o local foi negada');
-        alert("A permissão para acessar o local foi negada")
-        return;
+    // Adiciona um manipulador para lidar com deep linking
+    const manipularDeepLinking = (evento) => {
+      // Extrai o parâmetro 'mensagem' do URL do deep link
+      const url = evento.url;
+      const mensagemParametro = url && url.includes('?mensagem=') ? url.split('?mensagem=')[1] : null;
+
+      // Exibe um alerta com a mensagem
+      if (mensagemParametro) {
+        const mensagemDecodificada = decodeURIComponent(mensagemParametro);
+        console.log("Mensagem decodificada:", mensagemDecodificada);
+        // Alert.alert('Mensagem Recebida', mensagemParametro);
       }
+    };
 
+    // Adiciona o manipulador ao evento de deep linking
+    const linkEvento = Linking.addEventListener('url', manipularDeepLinking);
 
-      const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (galleryPermission.status !== 'granted') {
-        console.error('A permissão para acessar a galeria foi negada');
-        alert("A permissão para acessar a galeria foi negada")
-        return;
-      }
-
-    })();
+    // Remove o manipulador quando o componente é desmontado
+    return () => {
+      linkEvento.remove();
+    };
   }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const locationPermission = await Location.requestForegroundPermissionsAsync();
+  //     if (locationPermission.status !== 'granted') {
+  //       console.error('A permissão para acessar o local foi negada');
+  //       alert("A permissão para acessar o local foi negada")
+  //       return;
+  //     }
+
+
+  //     const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //     if (galleryPermission.status !== 'granted') {
+  //       console.error('A permissão para acessar a galeria foi negada');
+  //       alert("A permissão para acessar a galeria foi negada")
+  //       return;
+  //     }
+
+  //   })();
+  // }, []);
   return (
     <ThemeProvider theme={Tema}>
       <NavigationContainer>
@@ -117,6 +130,7 @@ export default function App() {
             <Stack.Screen name="PerfilCliente" component={PerfilCliente} />
             <Stack.Screen name="VisualizarEmpresa" component={VisualizarEmpresa} />
             <Stack.Screen name='Pedidos' component={Pedidos} />
+            <Stack.Screen name='VisualizarPedido' component={VisualizarPedido} />
           </Stack.Group>
 
 
@@ -160,29 +174,7 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </ThemeProvider>
+
   );
 }
 
-// export default function App() {
-//   const Tema = useTema()
-//   const Tab = createBottomTabNavigator();
-//   return (
-//     <ThemeProvider theme={Tema}>
-//       <NavigationContainer>
-//         <Stack.Navigator
-//           initialRouteName='Login'
-//           screenOptions={{
-//             headerShown: false
-//           }}
-//         >
-//           <Stack.Screen name="Login" component={Login} />
-//           <Stack.Screen name="Cadastro" component={Cadastro} />
-//           <Tab.Screen name="Cliente" component={ClienteStack} />
-//           <Tab.Screen name="Empresa" component={EmpresaStack} />
-//           <Tab.Screen name="Entregador" component={EntregadorStack} />
-//         </Stack.Navigator>
-//       </NavigationContainer>
-//     </ThemeProvider>
-
-//   );
-// }

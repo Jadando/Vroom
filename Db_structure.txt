@@ -7,6 +7,10 @@ users (collection)
   |    |-- pedidos (subcollection)
   |        |
   |        |-- Order_1 (document)
+  |        |    |-- nomeEmpresa: "Pizarria morro do dende"
+  |        |    |-- comanda: "1x calabresa e 2x coca-cola"
+  |        |    |-- pagamento: "dinheiro"
+  |        |    |-- valor: "R$50,00"
   |        |    |-- data: "2023-01-01"
   |        |    |-- status: "pendente"
   |        |
@@ -21,10 +25,30 @@ users (collection)
   |    |-- pedidos (subcollection)
   |        |
   |        |-- Order_3 (document)
-  |            |-- data: "2023-01-03"
-  |            |-- status: "em andamento"
+  |        |    |-- endereço: "R Belém numero 154" 
+  |        |    |-- comanda: "1x calabresa e 2x coca-cola"
+  |        |    |-- pagamento: "dinheiro"
+  |        |    |-- valor: "R$50,00"
+  |        |    |-- data: "2023-01-01"
+  |        |    |-- status: "pendente"
   |
   |-- UID_3 (document)
-       |-- tipo: "entregador"
-       |-- nome: "Nome do Entregador"
-       |-- email: "entregador@email.com"
+  |   |-- tipo: "entregador"
+  |   |-- nome: "Nome do Entregador"
+  |   |-- email: "entregador@email.com"
+  |   |-- pedidos (subcollection)
+  |       |
+  |       |-- Order_3 (document)
+  |       |    |-- endereço: "R Belém numero 154" 
+  |       |    |-- comanda: "1x calabresa e 2x coca-cola"
+  |       |    |-- pagamento: "dinheiro"
+  |       |    |-- valor: "R$50,00"
+  |       |    |-- data: "2023-01-01"
+  |       |    |-- status: "pendente"
+  |
+
+
+Structure-LINK
+
+https://vroomde.com/documento.data.nomeEmpresa/endereço/comanda/pagamento/valor/status
+

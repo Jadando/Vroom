@@ -4,13 +4,16 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Mapbox from '@rnmapbox/maps';
 import * as Location from 'expo-location';
-
+import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
 export default function LocalCliente({ route }) {
+    const [mostrarResultados, setMostrarResultados] = useState(false);
+    const [resultados, setResultados] = useState([]);
     const navigation = useNavigation();
     const [iconRotation, setIconRotation] = useState(0);
     const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
+    const db = getFirestore();
     useEffect(() => {
         (async () => {
             const subscription = Location.watchPositionAsync({
@@ -52,186 +55,220 @@ export default function LocalCliente({ route }) {
 
     useEffect(() => {
         const interval = setInterval(() => {
-          if (seconds > 0) {
-            setSeconds((prevSeconds) => prevSeconds + 1);
-          }
+            if (seconds > 0) {
+                setSeconds((prevSeconds) => prevSeconds + 1);
+            }
         }, 1000);
-    
+
         return () => {
-          clearInterval(interval);
+            clearInterval(interval);
         };
-      }, [seconds]);
-    
-      const formatTime = (totalSeconds) => {
+    }, [seconds]);
+
+    const formatTime = (totalSeconds) => {
         const hours = Math.floor(totalSeconds / 3600);
         const remainingMinutes = Math.floor((totalSeconds % 3600) / 60);
         const remainingSeconds = totalSeconds % 60;
-      
+
         if (hours > 0) {
-          return `${hours}:${remainingMinutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            return `${hours}:${remainingMinutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
         } else {
-          return `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+            return `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}`;
         }
-      };      
-
-    const gambiarra = "pwt2SG3vpOM9Jcat45dGDgNb9oE3"
-
-    const Gambiarra = () => {
-        if (gambiarra === IdentificadorCliente) {
-            return (<ScrollView
-                contentContainerStyle={{ flexGrow: 1 }}
-                showsVerticalScrollIndicator={false}
-                overScrollMode='never'
-                scrollEnabled={!isMapExpanded}
-            >
-                <View style={styles.wrapper}>
-
-                    <View style={styles.container}>
-                        <View style={styles.header}>
-                            <TouchableOpacity
-                                onPress={() => setModalVisible(!modalVisible)}
-                                style={styles.headerBell}>
-                                <Icon name='notifications' size={30} color='#ffc000' />
-                                <Icon name='alert-circle' size={20} color='#cf2e2e' style={styles.alertIcon} />
-                            </TouchableOpacity>
-                        </View>
+    };
 
 
-                        <View style={styles.pedidos}>
-                            <Text style={styles.pedidosText}>Entregas a caminho</Text>
-                            <View style={styles.pedidosClock}>
-                                <Icon name='bicycle' size={30} color='#000' />
-                            </View>
-                        </View>
-                        <View style={styles.card}>
-                            <View style={styles.recentsContent}>
-                                <View style={styles.recentsImages}>
-                                    <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img} />
-                                </View>
-                                <Text>
-                                    SF Refrigeração {'\n'}
-                                    Cd pedido: 04
-                                </Text>
-                            </View>
-                            <View style={styles.locTitle}>
-                                <Text style={{ fontSize: 18 }}>Ver localização do entregador</Text>
-                                <Icon name='location-sharp' size={30} color='#000' />
-                            </View>
-                            <View style={[styles.map, isMapExpanded ? styles.expandedMap : {}]}>
-                                <Mapbox.MapView
-                                    styleURL="mapbox://styles/dataexplorers/cln3p09nw06mh01ma53j17ayq"
-                                    style={styles.mapMap}
-                                    scrollEnabled={isMapExpanded}
-                                    onPress={handleMapPress}
-                                >
-                                    <Mapbox.Camera
-                                        zoomLevel={14}
-                                        centerCoordinate={location ? [location.coords.longitude, location.coords.latitude] : [-46.678747, -24.122155]}
-                                        followUserMode="normal"
-                                    />
-                                    {location && (
-                                        <Mapbox.PointAnnotation
-                                            id="userLocation"
-                                            coordinate={[location.coords.longitude, location.coords.latitude]}
-                                        >
-                                            <View style={[styles.customMarker, { transform: [{ rotate: `${iconRotation}deg` }] }]}>
-                                                <Icon name="bicycle" size={30} color="#ffc000" />
+    const CarregarEntrega = async () => {
+        // setIsLoading(true);
+
+        const HistoricoRef = collection(db, 'users', IdentificadorCliente, 'Pedidos');
+
+        const q = query(HistoricoRef);
+
+        try {
+            const querySnapshot = await getDocs(q);
+            const documentosEncontrados = [];
+
+            querySnapshot.forEach((doc) => {
+                const documentoComID = { id: doc.id, data: doc.data() };
+                documentosEncontrados.push(documentoComID);
+            });
+
+            return documentosEncontrados;
+        } catch (error) {
+            console.error('Erro ao consultar o Firestore:', error);
+        }
+    };
+
+    const PesquisarEntrega = async () => {
+        try {
+            const resultadoDaConsulta = await CarregarEntrega();
+            setResultados(resultadoDaConsulta);
+            // setIsLoading(false);
+            setMostrarResultados(true);
+        } catch (error) {
+            //   setIsLoading(false);
+            console.error('Erro ao consultar o Firestore:', error);
+        }
+    };
+    useEffect(() => {
+        PesquisarEntrega()
+    }, [IdentificadorCliente])
+    const renderizarResultados = () => {
+        if (mostrarResultados) {
+            return (
+                <ScrollView
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    showsVerticalScrollIndicator={false}
+                    overScrollMode='never'
+                    scrollEnabled={!isMapExpanded}
+                >
+                    <View style={styles.wrapper}>
+
+                        {resultados.map((documento, index) => {
+                            if (documento.data.status === "andamento") {
+                                return (
+                                    <>
+                                        <View style={styles.container}>
+                                            <View style={styles.header}>
+                                                <TouchableOpacity
+                                                    onPress={() => setModalVisible(!modalVisible)}
+                                                    style={styles.headerBell}>
+                                                    <Icon name='notifications' size={30} color='#ffc000' />
+                                                    <Icon name='alert-circle' size={20} color='#cf2e2e' style={styles.alertIcon} />
+                                                </TouchableOpacity>
                                             </View>
-                                            <Mapbox.Callout title="Minha localização" />
-                                        </Mapbox.PointAnnotation>
-                                    )}
-                                </Mapbox.MapView>
-                            </View>
-                            <View style={styles.deliveryTime}>
-                                <Text>
-                                Iniciou a entrega à: {formatTime(seconds)}
-                                </Text>
-                            </View>
-                            <View style={styles.recentsContent}>
-                                <View style={styles.recentsImages}>
-                                <Image source={require('../../../img/entregador.jpg')} style={styles.img} />
-                                </View>
-                                <Text>
-                                    Nome do entregador {'\n'}
-                                    Daniel Oliveira da Silva
-                                </Text>
-                            </View>
-                        </View>
+                                            <View style={styles.pedidos} key={index}>
+                                                <Text style={styles.pedidosText}>Entregas a caminho</Text>
+                                                <View style={styles.pedidosClock}>
+                                                    <Icon name='bicycle' size={30} color='#000' />
+                                                </View>
+                                            </View>
+                                            <View style={styles.card}>
+                                                <View style={styles.recentsContent}>
+                                                    <View style={styles.recentsImages}>
+                                                        <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img} />
+                                                    </View>
+                                                    <Text>
+                                                        SF Refrigeração {'\n'}
+                                                        Cd pedido: 04
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.locTitle}>
+                                                    <Text style={{ fontSize: 18 }}>Ver localização do entregador</Text>
+                                                    <Icon name='location-sharp' size={30} color='#000' />
+                                                </View>
+                                                <View style={[styles.map, isMapExpanded ? styles.expandedMap : {}]}>
+                                                    <Mapbox.MapView
+                                                        styleURL="mapbox://styles/dataexplorers/cln3p09nw06mh01ma53j17ayq"
+                                                        style={styles.mapMap}
+                                                        scrollEnabled={isMapExpanded}
+                                                        onPress={handleMapPress}
+                                                    >
+                                                        <Mapbox.Camera
+                                                            zoomLevel={14}
+                                                            centerCoordinate={location ? [location.coords.longitude, location.coords.latitude] : [-46.678747, -24.122155]}
+                                                            followUserMode="normal"
+                                                        />
+                                                        {location && (
+                                                            <Mapbox.PointAnnotation
+                                                                id="userLocation"
+                                                                coordinate={[location.coords.longitude, location.coords.latitude]}
+                                                            >
+                                                                <View style={[styles.customMarker, { transform: [{ rotate: `${iconRotation}deg` }] }]}>
+                                                                    <Icon name="bicycle" size={30} color="#ffc000" />
+                                                                </View>
+                                                                <Mapbox.Callout title="Minha localização" />
+                                                            </Mapbox.PointAnnotation>
+                                                        )}
+                                                    </Mapbox.MapView>
+                                                </View>
+                                                <View style={styles.deliveryTime}>
+                                                    {/* <Text>
+                                                            Iniciou a entrega à: {formatTime(seconds)}
+                                                        </Text> */}
+                                                </View>
+                                                <View style={styles.recentsContent}>
+                                                    <View style={styles.recentsImages}>
+                                                        <Image source={require('../../../img/entregador.jpg')} style={styles.img} />
+                                                    </View>
+                                                    <Text>
+                                                        Nome do entregador {'\n'}
+                                                        Daniel Oliveira da Silva
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        </View>
+                                        <Modal
+                                            visible={modalVisible}
+                                            transparent={true}
+                                            animationType='slide'
+                                            onRequestClose={closeModal}
+                                        >
+                                            <View style={styles.modalContainer}>
+                                                <View style={styles.modalHeader}>
+                                                    <Text style={styles.modalHeaderTitle}>Aviso</Text>
+                                                    <TouchableOpacity
+                                                        style={styles.modalHeaderClose}
+                                                        onPress={() => setModalVisible(!modalVisible)} >
+                                                        <Image source={require('../../../img/close.png')} style={{ width: 30, height: 30 }} />
+                                                    </TouchableOpacity>
+                                                </View>
+
+                                                <View>
+                                                    <Text style={styles.modalContentTitle}>
+                                                        Você confirma que recebeu sua entrega?
+                                                    </Text>
+                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                                                        <TouchableOpacity
+                                                            onPress={() => setModalVisible(!modalVisible)}
+                                                            style={styles.modalBtn}>
+                                                            <Text style={styles.modalContent}>
+                                                                Não
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity
+                                                            onPress={() => navigation.navigate('Pedidos')}
+                                                            style={styles.modalBtn}>
+                                                            <Text style={styles.modalContent}>
+                                                                Sim
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        </Modal>
+                                    </>
+                                );
+                            } else if(documento.data.status === "concluido"){
+                                return (
+                                    <View style={styles.container}>
+                                        <View style={styles.header}>
+                                            <TouchableOpacity
+                                                onPress={() => setModalVisible(!modalVisible)}
+                                                style={styles.headerBell}>
+                                                <Icon name='notifications' size={30} color='#ffc000' />
+                                                <Icon name='alert-circle' size={20} color='#cf2e2e' style={styles.alertIcon} />
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={styles.pedidos}>
+                                            <Text style={styles.pedidosText}>Nenhum Pedido a Caminho</Text>
+                                            <View style={styles.pedidosClock}>
+                                            </View>
+                                        </View>
+                                    </View>
+                                );
+                            }
+                        })}
                     </View>
-                    <Modal
-                        visible={modalVisible}
-                        transparent={true}
-                        animationType='slide'
-                        onRequestClose={closeModal}
-                    >
-                        <View style={styles.modalContainer}>
-                            <View style={styles.modalHeader}>
-                                <Text style={styles.modalHeaderTitle}>Aviso</Text>
-                                <TouchableOpacity
-                                    style={styles.modalHeaderClose}
-                                    onPress={() => setModalVisible(!modalVisible)} >
-                                    <Image source={require('../../../img/close.png')} style={{ width: 30, height: 30 }} />
-                                </TouchableOpacity>
-                            </View>
-
-                            <View>
-                                <Text style={styles.modalContentTitle}>
-                                    Você confirma que recebeu sua entrega?
-                                </Text>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                                    <TouchableOpacity
-                                        onPress={() => setModalVisible(!modalVisible)}
-                                        style={styles.modalBtn}>
-                                        <Text style={styles.modalContent}>
-                                            Não
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => navigation.navigate('Pedidos')}
-                                        style={styles.modalBtn}>
-                                        <Text style={styles.modalContent}>
-                                            Sim
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
-            </ScrollView>);
-        } else {
-            return (<ScrollView
-                contentContainerStyle={{ flexGrow: 1 }}
-                showsVerticalScrollIndicator={false}
-                overScrollMode='never'
-                scrollEnabled={!isMapExpanded}
-            >
-                <View style={styles.wrapper}>
-
-                    <View style={styles.container}>
-                        <View style={styles.header}>
-                            <TouchableOpacity
-                                onPress={() => setModalVisible(!modalVisible)}
-                                style={styles.headerBell}>
-                                <Icon name='notifications' size={30} color='#ffc000' />
-                            </TouchableOpacity>
-                        </View>
-
-
-                        <View style={styles.pedidos}>
-                            <Text style={styles.pedidosText}>Nenhum Pedido a Caminho</Text>
-                            <View style={styles.pedidosClock}>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>)
+                </ScrollView >
+            );
         }
-    }
+    };
 
 
     return (
-        Gambiarra()
+        renderizarResultados()
     );
 }
 

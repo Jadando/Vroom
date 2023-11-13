@@ -17,28 +17,26 @@ export default function Home({ route }) {
   const [imageUrls, setImageUrls] = useState([]);
   const [mostrarResultados, setMostrarResultados] = useState(false);
   const db = getFirestore();
-  const gambiarra = null;
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
 
   const CarregarHistorico = async () => {
     setIsLoading(true);
-  
+
     const HistoricoRef = collection(db, 'users', IdentificadorCliente, 'Pedidos');
-    
-    const q = query(HistoricoRef);
-  
+
+    const q = query(HistoricoRef,where('status','==','concluido'));
+
     try {
       const querySnapshot = await getDocs(q);
       const documentosEncontrados = [];
-  
+
       querySnapshot.forEach((doc) => {
         const documentoComID = { id: doc.id, data: doc.data() };
         documentosEncontrados.push(documentoComID);
-        console.log(documentoComID)
       });
-  
+
       return documentosEncontrados;
     } catch (error) {
       console.error('Erro ao consultar o Firestore:', error);
@@ -68,7 +66,7 @@ export default function Home({ route }) {
 
   const PesquisarHistorico = async () => {
     try {
-      const resultadoDaConsulta = await CarregarHistorico(pesquisa);
+      const resultadoDaConsulta = await CarregarHistorico();
       setImageUrls([]);
       resultadoDaConsulta.forEach(async (documento) => {
         // Vou adicionar uma função assíncrona aqui para baixar a imagem, se necessário
@@ -91,30 +89,32 @@ export default function Home({ route }) {
             <Text style={styles.recentsTitle}>Historico de compra</Text>
             <View style={styles.recentsContainer}>
               {resultados.map((documento, index) => {
-               // const imageUrl = imageUrls.find((img) => img.id === documento.id);
-                  return (
-                    <>
-                      <TouchableOpacity onPress={() => navigation.navigate('VisualizarEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
-                        <View style={styles.recentsContent}>
-                          <View style={styles.recentsImages}>
-                            {/* <Image source={{ uri: imageUrl.url }} key={documento.id} style={styles.image} /> */}
-                          </View>
-                          <Text style={styles.Text}>
-                            {documento.data.tempos} {'\n'}
-                            {documento.data.tempos}
-                          </Text>
+                // const imageUrl = imageUrls.find((img) => img.id === documento.id);
+                return (
+                  <>
+                    <TouchableOpacity onPress={() => navigation.navigate('VisualizarPedido', { IdentificadorCliente, Documento: documento })} key={index}>
+                      <View style={styles.recentsContent}>
+                        <View style={styles.recentsImages}>
+                          {/* <Image source={{ uri: imageUrl.url }} key={documento.id} style={styles.image} /> */}
                         </View>
-                      </TouchableOpacity>
-                    </>
-                  );
+                        <Text style={styles.Text}>
+                          {documento.data.status} {'\n'}
+                          {documento.data.data}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                );
               })}
             </View>
           </View>
         );
       } else {
         return (
-          <View style={styles.container}>
-            <Text style={styles.Text}>Nenhum resultado encontrado</Text>
+          <View style={styles.recents}>
+            <View style={styles.container}>
+              <Text style={styles.recentsTitle}>Nenhum pedido foi feito</Text>
+            </View>
           </View>
         );
       }
@@ -144,7 +144,8 @@ export default function Home({ route }) {
           <View style={styles.categoriasContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('Filter', {
               IdentificadorCliente,
-              cep
+              cep,
+              categoria: 'restaurante'
             })}>
               <View style={styles.categoriasContent}>
                 <Text style={{ ...styles.categoriaText, marginBottom: -15 }}>
@@ -153,7 +154,11 @@ export default function Home({ route }) {
                 <Image source={require('../../../img/restaurante.png')} />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Filter', {
+              IdentificadorCliente,
+              cep,
+              categoria: 'farmacia'
+            })}>
               <View style={styles.categoriasContent}>
                 <Text style={styles.categoriaText}>Fármacias</Text>
                 <Image source={require('../../../img/farm.png')} />
@@ -161,13 +166,21 @@ export default function Home({ route }) {
             </TouchableOpacity>
           </View>
           <View style={styles.categoriasContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Filter', {
+              IdentificadorCliente,
+              cep,
+              categoria: 'bebida'
+            })}>
               <View style={styles.categoriasContent}>
                 <Text style={styles.categoriaText}>Bebidas</Text>
                 <Image source={require('../../../img/bebida.png')} />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Filter', {
+              IdentificadorCliente,
+              cep,
+              categoria: 'mercado'
+            })}>
               <View style={styles.categoriasContent}>
                 <Text style={{ ...styles.categoriaText, marginBottom: -5 }}>Mercados</Text>
                 <Image source={require('../../../img/merc.png')} />
@@ -175,7 +188,11 @@ export default function Home({ route }) {
             </TouchableOpacity>
           </View>
           <View style={styles.categoriasContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Filter', {
+              IdentificadorCliente,
+              cep,
+              categoria: 'jardinagem'
+            })}>
               <View style={styles.categoriasContent}>
                 <Text style={styles.categoriaText}>Jardinagem</Text>
                 <Image source={require('../../../img/jard.png')} />

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
-import { getFirestore, doc, setDoc,collection,addDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, collection, addDoc } from "firebase/firestore";
 import { useTheme } from 'styled-components';
 import LoadingModal from '../../../../components/loadingModal';
 
@@ -23,6 +23,9 @@ export default function EmpresaRevisa({ route }) {
   const [bairro, setBairro] = useState(route.params?.bairro || '');
   const [endereco, setEndereco] = useState(route.params?.endereco || '');
   const [numero, setNumero] = useState(route.params?.numero || '');
+  const [cpfEntregador, setCpfEntregador] = useState(route.params?.cpfEntregador || '');
+  const [nomeEntregador, setNomeEntregador] = useState(route.params?.nomeEntregador || '');
+  const [TelefoneEntregador, setTelefoneEntregador] = useState(route.params?.TelefoneEntregador || '');
   async function verificaInput() {
     if (
       cnpj !== '' &&
@@ -51,16 +54,25 @@ export default function EmpresaRevisa({ route }) {
           bairro: bairro,
           endereco: endereco,
           numero: numero,
-          categoria: categoria
+          categoria: categoria,
         }).then(() => {
           setIsLoading(false);
           const usersRefs = collection(db, 'users', Identificador, 'Pedidos');
+          const UsersRefs = collection(db, 'users', Identificador, 'Entregadores');
+
           const data = {}
+          const dataE = {
+            nomeEntregador: nomeEntregador,
+            cpfEntregador: cpfEntregador,
+            TelefoneEntregador: TelefoneEntregador,
+          }
+          addDoc(UsersRefs, dataE)
           addDoc(usersRefs, data).then(
             navigation.navigate('IniciarEntrega', {
               IdentificadorEmpresa: Identificador
             })
           )
+
         })
       } catch (e) {
         console.error("Error adding document: ", e);

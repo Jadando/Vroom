@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc,collection,addDoc } from "firebase/firestore";
 import { useTheme } from 'styled-components';
 
 export default function EntregadorRevisa({ route }) {

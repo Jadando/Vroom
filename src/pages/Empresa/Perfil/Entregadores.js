@@ -8,7 +8,7 @@ export default function Entregadores() {
     const navigation = useNavigation();
     const [telefone, setTelefone] = useState('1398754092')
     const [cpf, setCpf] = useState('50787757063');
-    const [nome, setNome] = useState('Daniel Oliveira da Silva');
+    const [nome, setNome] = useState('Daniel Oliveira da Silva fytfytfytfy');
     const [expandido, setExpandido] = useState(false);
 
     return (

@@ -23,11 +23,10 @@ export default function Search({ route }) {
     const Consultar = async (pesquisa) => {
         setIsLoading(true);
 
-        console.log(IdentificadorCliente)
+       //console.log(IdentificadorCliente)
         const empresaRef = collection(db, 'users');
 
-        // const q = query(collection(db, 'users'), where('id', '==', uide), where('tipo', 'in', tipos));
-        const q = query(empresaRef, where('nome', '==', pesquisa), where('cep', '==', cep));
+        const q = query(empresaRef, where('nome', '==', pesquisa), where('cep', '==', cep),where('tipo','==','empresa'));
 
         try {
             const querySnapshot = await getDocs(q);

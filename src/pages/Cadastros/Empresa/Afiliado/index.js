@@ -19,9 +19,9 @@ export default function Afiliado({ route }) {
     const [bairro, setBairro] = useState(route.params?.bairro);
     const [endereco, setEndereco] = useState(route.params?.endereco);
     const [numero, setNumero] = useState(route.params?.numero);
-    const [cpf, setCpf] = useState('');
+    const [cpfEntregador, setCpfEntregador] = useState('');
     const [nomeEntregador, setNomeEntregador] = useState('');
-
+    const [TelefoneEntregador, setTelefoneEntregador] = useState('');
     function passaTela() {
         navigation.navigate('EmpresaRevisa', {
             Identificador,
@@ -35,8 +35,9 @@ export default function Afiliado({ route }) {
             bairro,
             endereco,
             numero,
-            cpf,
-            nomeEntregador
+            nomeEntregador,
+            TelefoneEntregador,
+            cpfEntregador
         });
     }
 
@@ -87,12 +88,10 @@ export default function Afiliado({ route }) {
                     Vincular entregador
                 </Text>
                 <View style={styles.main}>
-                    <TextInputMask
+                    <TextInput
                         style={styles.input}
-                        value={cpf}
-                        onChangeText={setCpf}
-                        type={'cpf'}
-                        placeholder='CPF do entregador'
+                        onChangeText={setNomeEntregador}
+                        placeholder='Nome do entregador'
                         maxLength={14}
                     />
                     <View style={styles.mainEmpresa}>
@@ -101,17 +100,15 @@ export default function Afiliado({ route }) {
                         </Text>
                         <TextInputMask
                             style={styles.input}
-                            value={cpf}
-                            editable={false}
+                            onChangeText={setCpfEntregador}
                             type={'cpf'}
                             placeholder='CPF'
                             maxLength={14}
                         />
                         <TextInput
                             style={styles.input}
-                            value={nomeEntregador}
-                            editable={false}
-                            placeholder='Nome do entregador'
+                            onChangeText={setTelefoneEntregador}
+                            placeholder='Telefone'
                         />
                     </View>
                 </View>
