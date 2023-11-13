@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,sendEmailVerification } from "firebase/auth";
 import { useTheme } from 'styled-components';
 import LoadingModal from '../../../components/loadingModal';
 
@@ -32,24 +32,32 @@ export default function Cadastro() {
     if (senha === senhaConfirma && senha !== '' && senhaConfirma !== '' && email !== '') {
       if (validarEmail(email)) {
         const auth = getAuth();
-        createUserWithEmailAndPassword(auth, email, senha)
-          .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            const userUid = user.uid; 
-            setIdentificador(userUid)
-            setModalVisible(true);
-            setIsLoading(false)
-            // ...
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode)
-            console.log(errorMessage)
-            setIsLoading(false)
-            // ..
-          });
+        sendEmailVerification(auth.currentUser).then(
+          console.log("PENIS")
+        ).catch((error)=>{
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode)
+          console.log(errorMessage)
+        })
+        // createUserWithEmailAndPassword(auth, email, senha)
+        //   .then((userCredential) => {
+        //     // Signed in 
+        //     const user = userCredential.user;
+        //     const userUid = user.uid; 
+        //     setIdentificador(userUid)
+        //     setModalVisible(true);
+        //     setIsLoading(false)
+        //     // ...
+        //   })
+        //   .catch((error) => {
+        //     const errorCode = error.code;
+        //     const errorMessage = error.message;
+        //     console.log(errorCode)
+        //     console.log(errorMessage)
+        //     setIsLoading(false)
+        //     // ..
+        //   });
       } else {
         setIsLoading(false)
         alert('Formato de email inválido');

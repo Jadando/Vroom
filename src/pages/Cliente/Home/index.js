@@ -86,7 +86,7 @@ export default function Home({ route }) {
       if (resultados.length > 0) {
         return (
           <View style={styles.recents}>
-            <Text style={styles.recentsTitle}>Historico de compra</Text>
+            <Text style={styles.recentsTitle}>Pedidos recentemente</Text>
             <View style={styles.recentsContainer}>
               {resultados.map((documento, index) => {
                 // const imageUrl = imageUrls.find((img) => img.id === documento.id);

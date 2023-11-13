@@ -96,7 +96,7 @@ export default function Historico({ route }) {
                                                     </View>
                                                     <Text style={styles.Text}>
                                                         {documento.data.nome} {'\n'}
-                                                        {documento.data.pendentes}
+                                                        {documento.data.teste}
                                                     </Text>
                                                 </View>
                                             </TouchableOpacity>
