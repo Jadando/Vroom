@@ -7,6 +7,7 @@ import { Tabs, TabsEmpresa, TabsEntregador } from './src/components/BottomTab';
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
 import * as Linking from 'expo-linking';
+import { Alert } from 'react-native';
 
 
 
@@ -74,8 +75,7 @@ export default function App() {
       // Exibe um alerta com a mensagem
       if (mensagemParametro) {
         const mensagemDecodificada = decodeURIComponent(mensagemParametro);
-        alert("Mensagem:", mensagemDecodificada);
-        // Alert.alert('Mensagem Recebida', mensagemParametro);
+        Alert.alert("Achei facil:", mensagemDecodificada);
       }
     };
 
