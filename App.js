@@ -74,7 +74,7 @@ export default function App() {
       // Exibe um alerta com a mensagem
       if (mensagemParametro) {
         const mensagemDecodificada = decodeURIComponent(mensagemParametro);
-        console.log("Mensagem decodificada:", mensagemDecodificada);
+        alert("Mensagem:", mensagemDecodificada);
         // Alert.alert('Mensagem Recebida', mensagemParametro);
       }
     };
