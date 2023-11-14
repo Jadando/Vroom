@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Modal } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Modal,Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged} from "firebase/auth";
 import { useTheme } from 'styled-components';
 import LoadingModal from '../../../components/loadingModal';
 
@@ -20,15 +20,12 @@ export default function Cadastro() {
   const closeModal = () => {
     setModalVisible(false);
   }
-
   function validarEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     return regex.test(email);
   }
-function teste(user){
-console.log(user+" penis 7654321")
-}
+
   async function validarCadastro() {
     setIsLoading(true)
     if (senha === senhaConfirma && senha !== '' && senhaConfirma !== '' && email !== '') {
@@ -39,10 +36,7 @@ console.log(user+" penis 7654321")
             const user = userCredential.user;
             sendEmailVerification(user).then(() => {
               console.log("Verificação de e-mail enviada com sucesso!");
-              
-
-          
-              teste(user.emailVerified)
+              console.log(user.emailVerified)
               //setIdentificador(user.uid)
               //setModalVisible(true);
               setIsLoading(false)
@@ -58,6 +52,13 @@ console.log(user+" penis 7654321")
             console.log(errorMessage)
             setIsLoading(false)
           });
+
+          auth.onAuthStateChanged((user) => {
+            console.log("estive aqui")
+            if (user&&user.emailVerified) {
+             Alert.alert("teste")
+            }
+          });
       } else {
         setIsLoading(false)
         alert('Formato de email inválido');
@@ -71,7 +72,6 @@ console.log(user+" penis 7654321")
       }
     }
   }
-
   return (
     <View style={styles.container}>
       <View style={styles.logoTop}>
