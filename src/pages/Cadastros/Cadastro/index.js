@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getAuth, createUserWithEmailAndPassword,sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged } from "firebase/auth";
 import { useTheme } from 'styled-components';
 import LoadingModal from '../../../components/loadingModal';
 
@@ -10,11 +10,11 @@ export default function Cadastro() {
   const tema = useTheme();
   const styles = getstyles(tema);
   const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState('empresa@gmail.com');
+  const [email, setEmail] = useState('joao.hjh005@gmail.com');
   const [senha, setSenha] = useState('123456');
-  const [senhaConfirma, setSenhaConfirma] = useState('');
+  const [senhaConfirma, setSenhaConfirma] = useState('123456');
   const [Identificador, setIdentificador] = useState();
-
+  const auth = getAuth();
   const [modalVisible, setModalVisible] = useState(false);
 
   const closeModal = () => {
@@ -26,38 +26,38 @@ export default function Cadastro() {
 
     return regex.test(email);
   }
-
+function teste(user){
+console.log(user+" penis 7654321")
+}
   async function validarCadastro() {
     setIsLoading(true)
     if (senha === senhaConfirma && senha !== '' && senhaConfirma !== '' && email !== '') {
       if (validarEmail(email)) {
-        const auth = getAuth();
-        sendEmailVerification(auth.currentUser).then(
-          console.log("PENIS")
-        ).catch((error)=>{
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode)
-          console.log(errorMessage)
-        })
-        // createUserWithEmailAndPassword(auth, email, senha)
-        //   .then((userCredential) => {
-        //     // Signed in 
-        //     const user = userCredential.user;
-        //     const userUid = user.uid; 
-        //     setIdentificador(userUid)
-        //     setModalVisible(true);
-        //     setIsLoading(false)
-        //     // ...
-        //   })
-        //   .catch((error) => {
-        //     const errorCode = error.code;
-        //     const errorMessage = error.message;
-        //     console.log(errorCode)
-        //     console.log(errorMessage)
-        //     setIsLoading(false)
-        //     // ..
-        //   });
+        createUserWithEmailAndPassword(auth, email, senha)
+          .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            sendEmailVerification(user).then(() => {
+              console.log("Verificação de e-mail enviada com sucesso!");
+              
+
+          
+              teste(user.emailVerified)
+              //setIdentificador(user.uid)
+              //setModalVisible(true);
+              setIsLoading(false)
+            }).catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+            })
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode)
+            console.log(errorMessage)
+            setIsLoading(false)
+          });
       } else {
         setIsLoading(false)
         alert('Formato de email inválido');
@@ -156,7 +156,7 @@ export default function Cadastro() {
             <TouchableOpacity
               onPress={() => {
                 setModalVisible(!modalVisible);
-                navigation.navigate('CadastroEntregador',{
+                navigation.navigate('CadastroEntregador', {
                   Identificador
                 })
               }}
@@ -168,7 +168,7 @@ export default function Cadastro() {
             <TouchableOpacity
               onPress={() => {
                 setModalVisible(!modalVisible);
-                navigation.navigate('CadastroEmpresa',{
+                navigation.navigate('CadastroEmpresa', {
                   Identificador
                 })
               }}
@@ -180,7 +180,7 @@ export default function Cadastro() {
           </View>
         </View>
       </Modal>
-      <LoadingModal visible={isLoading}/>
+      <LoadingModal visible={isLoading} />
     </View>
   );
 }
