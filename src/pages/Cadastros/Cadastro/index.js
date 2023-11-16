@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Modal,Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Modal, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged} from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged } from "firebase/auth";
 import { useTheme } from 'styled-components';
 import LoadingModal from '../../../components/loadingModal';
 
@@ -22,10 +22,8 @@ export default function Cadastro() {
   }
   function validarEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     return regex.test(email);
   }
-
   async function validarCadastro() {
     setIsLoading(true)
     if (senha === senhaConfirma && senha !== '' && senhaConfirma !== '' && email !== '') {
@@ -36,10 +34,9 @@ export default function Cadastro() {
             const user = userCredential.user;
             sendEmailVerification(user).then(() => {
               console.log("Verificação de e-mail enviada com sucesso!");
-              console.log(user.emailVerified)
+              setIsLoading(false)
               //setIdentificador(user.uid)
               //setModalVisible(true);
-              setIsLoading(false)
             }).catch((error) => {
               const errorCode = error.code;
               const errorMessage = error.message;
@@ -51,13 +48,6 @@ export default function Cadastro() {
             console.log(errorCode)
             console.log(errorMessage)
             setIsLoading(false)
-          });
-
-          auth.onAuthStateChanged((user) => {
-            console.log("estive aqui")
-            if (user&&user.emailVerified) {
-             Alert.alert("teste")
-            }
           });
       } else {
         setIsLoading(false)
@@ -72,6 +62,18 @@ export default function Cadastro() {
       }
     }
   }
+  onAuthStateChanged(auth, (user) => {
+    if (user && user.emailVerified) {
+      console.log("Aprovado com sucesso", "seu email foi aprovado com sucesso");
+      console.log(user.emailVerified)
+      console.log(user.uid)
+      //setModalVisible(true);
+    } else {
+      console.log("Reprovado", "seu email foi reprovado");
+      console.log(user.emailVerified)
+      console.log(user.uid)
+    }
+  });
   return (
     <View style={styles.container}>
       <View style={styles.logoTop}>
