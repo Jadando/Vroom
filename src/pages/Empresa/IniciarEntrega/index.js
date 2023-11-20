@@ -3,9 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal,
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as Clipboard from 'expo-clipboard';
-import * as Linking from 'expo-linking';
-
-const API_URL = "https://vroom-401401.web.app/";
 
 export default function IniciarEntrega() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -15,6 +12,7 @@ export default function IniciarEntrega() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(0.0);
   const [inputValue, setInputValue] = useState('R$ 0,00');
+  const status = "pendente"
   const [items, setItems] = useState([
     { label: 'Dinheiro', value: 'dinheiro' },
     { label: 'Cartão débito ou crédito', value: 'cartao' },
@@ -24,59 +22,20 @@ export default function IniciarEntrega() {
     setModalVisible(false);
   }
   const formatToCurrency = (num) => {
-    return "R$ " + num.toFixed(2).replace('.', ',');
+    return "R$ " + num.toFixed(0).replace('.', ',');
   };
-  const [isExpanded, setIsExpanded] = useState(false);
-  const url = 'https://figma.com/file/c97hMDfgLoFFWEAcetzH9C/TCC?type=design&node-id=0-1&mode=design&t=nfWUP24yYaj2kbHm-0';
+  const url = `vroom-401401.firebaseapp.com/${nome}/${endereco}/${order}/${value}/${inputValue}/${status}`;
   const displayUrl = isExpanded ? url : url.substring(0, 35) + '...';
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  //   useEffect(() => {
-  //     // Adicionando ouvinte
-  //     Linking.addEventListener('url', handleOpenURL);
 
-  //     // Ao inicializar, verifica se o aplicativo foi aberto por um link
-  //     Linking.getInitialURL().then(url => {
-  //       if (url) handleOpenURL({ url });
-  //     });
-
-  //     // Não esqueça de remover o ouvinte ao desmontar
-  //     return () => {
-  //       Linking.removeEventListener('url', handleOpenURL);
-  //     };
-  //   }, []);
-
+  const linkGeneration = async () => {
+    await Clipboard.setStringAsync(`https://vroom-401401.firebaseapp.com/${encodeURIComponent(nome)}/${encodeURIComponent(endereco)}/${encodeURIComponent(order)}/${encodeURIComponent(value)}/${encodeURIComponent(inputValue)}/${encodeURIComponent(status)}`);
+  }
   function handleOpenURL(event) {
     console.log(event.url);
     // Aqui você pode navegar para uma determinada tela ou fazer outra ação conforme o URL
   }
-
-  const generateDynamicLink = async () => {
-    try {
-      const selectedPaymentOption = items.find(item => item.value === value);
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          value,
-          order,
-          paymentOption: selectedPaymentOption
-        }), // Aqui enviamos items
-      });
-
-      const responseData = await response.json();
-
-      if (response.ok) {
-        Alert.alert("Link gerado com sucesso!", responseData.link);
-        Clipboard.setString(responseData.link);
-      } else {
-        Alert.alert("Erro", "Houve um erro ao gerar o link.");
-      }
-    } catch (error) {
-      Alert.alert("Erro", "Houve um erro ao comunicar com o servidor.", error);
-    }
-  };
 
   return (
     <ScrollView
@@ -123,7 +82,7 @@ export default function IniciarEntrega() {
             <Text style={styles.comandaTitle}>Comanda do pedido:</Text>
             <View style={styles.comandaDescription}>
               <TextInput
-              placeholder='Descrição do pedido'
+                placeholder='Descrição do pedido'
                 multiline={true}
                 onChangeText={text => setOrder(text)}
                 numberOfLines={4}
@@ -200,7 +159,6 @@ export default function IniciarEntrega() {
             <TouchableOpacity
               style={styles.modalHeaderClose}
               onPress={() => setModalVisible(!modalVisible)} >
-
             </TouchableOpacity>
           </View>
 
@@ -221,14 +179,14 @@ export default function IniciarEntrega() {
             <View style={styles.linkButtonArea}>
               <View style={styles.linkButton}>
                 <TouchableOpacity
-                //função do link aqui
+                  onPress={linkGeneration}
                 >
                   <Text style={{ textDecorationLine: 'underline' }}>Copiar URL</Text>
                 </TouchableOpacity>
               </View>
             </View>
             <TouchableOpacity
-              onPress={() => { generateDynamicLink(); setModalVisible(!modalVisible) }}
+              onPress={() => {setModalVisible(!modalVisible) }}
               style={styles.modalButton}>
               <Text>Ok entendi</Text>
             </TouchableOpacity>

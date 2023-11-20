@@ -8,7 +8,7 @@ import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
 import * as Linking from 'expo-linking';
 import { Alert } from 'react-native';
-
+import queryString from 'query-string';
 
 
 // Imports relacionados ao Cliente
@@ -67,15 +67,24 @@ export default function App() {
   const Tema = useTema()
   useEffect(() => {
     // Adiciona um manipulador para lidar com deep linking
-    const manipularDeepLinking = (evento) => {
-      // Extrai o parâmetro 'mensagem' do URL do deep link
+    const manipularDeepLinking = async (evento) => {
+      // Extrai a query string da URL do deep link
       const url = evento.url;
-      const mensagemParametro = url && url.includes('?mensagem=') ? url.split('?mensagem=')[1] : null;
 
-      // Exibe um alerta com a mensagem
-      if (mensagemParametro) {
-        const mensagemDecodificada = decodeURIComponent(mensagemParametro);
-        Alert.alert("Achei facil:", mensagemDecodificada);
+      // Extrai os valores da query string
+      const params = url ? queryString.parse(url.replace('vroom://?', '')) : null;
+
+      const nomeEmpresa = params && params.empresa;
+      const endereco = params && params.endereco;
+      const comanda = params && params.comanda;
+      const pagamento = params && params.pagamento;
+      const valor = params && params.valor;
+      const status = params && params.status;
+
+      // Exibe um alerta com as informações
+      if (nomeEmpresa && endereco && comanda && pagamento && valor && status) {
+        const mensagem = `Nome da Empresa: ${nomeEmpresa}\nEndereço: ${endereco}\nComanda: ${comanda}\nPagamento: ${pagamento}\nValor: ${valor}\nStatus: ${status}`;
+        Alert.alert("Detalhes do Pedido", mensagem);
       }
     };
 

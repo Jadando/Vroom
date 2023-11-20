@@ -16,7 +16,7 @@ export default function Login() {
     const tema = useTheme();
     const styles = getstyles(tema);
     const [isLoading, setIsLoading] = useState(false);
-    const [email, setEmail] = useState('joao.adriano20056@gmail.com');
+    const [email, setEmail] = useState('empresa@gmail.com');
     const [senha, setSenha] = useState('123456');
     const [UserGoogle, SetUserGoogle] = React.useState(null);
 

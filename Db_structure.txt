@@ -50,5 +50,5 @@ users (collection)
 
 Structure-LINK
 
-https://vroomde.com/documento.data.nomeEmpresa/endereço/comanda/pagamento/valor/status
+https://vroomde.com/nomeEmpresa/endereço/comanda/pagamento/valor/status
 

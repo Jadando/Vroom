@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
+import axios from 'axios';
+import { Alert } from 'react-native';
 
 
 export default function Home({ route }) {
@@ -20,7 +22,29 @@ export default function Home({ route }) {
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
-
+//   // function enviarDadosParaAPI(valores) {
+//   //   axios.post('http://vroom-401401.web.app/api/enviarDados', valores)
+//   //     .then(response => {
+//   //       const { url } = response.data;
+//   //       console.log(url+ " teste")
+//   //       alert(`Valores enviados com sucesso! Abra o link: ${url}`);
+//   //     })
+//   //     .catch(error => {
+//   //       console.error('Erro ao enviar dados para a API', error);
+//   //     });
+//   // }
+  
+//   // Exemplo de uso
+//   const valores = {
+//     nomeEmpresa: 'penis',
+//     endereco: 'enderecoDaEmpresa',
+//     comanda: 'comanda123',
+//     pagamento: 'cartao',
+//     valor: '100.00',
+//     status: 'pendente'
+//   };
+//   console.log(valores.comanda)
+//  //enviarDadosParaAPI(valores);
   const CarregarHistorico = async () => {
     setIsLoading(true);
 
