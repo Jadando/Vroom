@@ -47,11 +47,10 @@ export default function PendentesAndamento({ route }) {
                         <View style={styles.recents}>
                             <View style={styles.recentsContainer}>
                                 {resultados.map((documento, index) => {
-                                    // const imageUrl = imageUrls.find((img) => img.id === documento.id);
                                     if (documento.data.status === "pendente") {
                                         return (
                                             <>
-                                                <TouchableOpacity onPress={() => navigation.navigate('RastrearEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
+                                                <TouchableOpacity onPress={() => navigation.navigate('RastrearEmpresa', {comanda:documento.data.comanda,tipoPagamento:documento.data.tipoPagamento,valor:documento.data.valor})} key={index}>
                                                     <View style={styles.recentsContent}>
                                                         <Text>
                                                             {documento.data.comanda} {'\n'}

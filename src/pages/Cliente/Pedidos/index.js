@@ -138,8 +138,8 @@ export default function LocalCliente({ route }) {
                                                         <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img} />
                                                     </View> */}
                                                     <Text>
-                                                        {documento.data.nomeEmpresa} {'\n'}
-                                                        Cd pedido: {documento.data.codPedido}
+                                                        Empresa:{'\n'}
+                                                        {documento.data.nomeEmpresa}
                                                     </Text>
                                                 </View>
                                                 <View style={styles.locTitle}>
