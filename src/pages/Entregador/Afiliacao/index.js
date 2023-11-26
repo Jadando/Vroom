@@ -13,7 +13,7 @@ export default function EmpresasAfiliadas({ route }) {
     const [Gambiarra, setGambiarra] = useState("ABcH9bNye3SS6tpbHqKqItMREn72")
     
     const Gambi = () => {
-        if (Gambiarra !== Gambiarra) {
+        if (Gambiarra !== null) {
             return (
                 <View style={styles.container}>
                     <View style={styles.header}>
@@ -30,8 +30,7 @@ export default function EmpresasAfiliadas({ route }) {
                         <Text style={styles.title}>Empresas Afiliadas</Text>
                         <Icon name='business' size={30} color='#00' />
                     </View>
-                    <Text style={styles.content}>Você não tem afiliação com {'\n'} nenhuma empresa</Text>
-                    <Icon name='sad-outline' size={50} color='#000' />
+                    <Text style={{fontSize: 20, textAlign: 'center'}}>Você não tem afiliação com {'\n'} nenhuma empresa</Text>
                 </View>
             )
         }

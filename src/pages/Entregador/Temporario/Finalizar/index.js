@@ -125,7 +125,7 @@ export default function FinalizarEntrega({ route }) {
                 </View>
                 <View style={styles.card}>
                     <View style={styles.recentsContent}>
-                        <Text>
+                        <Text style={{fontSize: 16}}>
                             Nome do cliente {'\n'}
                             {nomeCliente}
                         </Text>
@@ -168,8 +168,8 @@ export default function FinalizarEntrega({ route }) {
                         </Mapbox.MapView>
                     </View>
                     <View style={styles.recentsContent}>
-                        <Text>
-                            Endereço {'\n'}
+                        <Text style={{fontSize: 16}}>
+                            Destino da entrega {'\n'}
                             {endereco}
                         </Text>
                     </View>

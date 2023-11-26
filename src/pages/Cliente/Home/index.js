@@ -105,8 +105,8 @@ export default function Home({ route }) {
                     <TouchableOpacity onPress={() => navigation.navigate('VisualizarPedido', { nomeEmpresa: documento.data.nomeEmpresa, comanda: documento.data.comanda, pagamento: documento.data.tipoPagamento, valor: documento.data.valor })} key={index}>
                       <View style={styles.recentsContent}>
                         <Text style={styles.Text}>
-                          {documento.data.status} {'\n'}
-                          {documento.data.valor}
+                          {documento.data.nomeEmpresa} {'\n'}
+                          {documento.data.data}
                         </Text>
                       </View>
                     </TouchableOpacity>

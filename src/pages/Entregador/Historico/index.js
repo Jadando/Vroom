@@ -85,9 +85,6 @@ export default function Historico({ route }) {
 
             <View style={styles.pedidos}>
                 <Text style={styles.pedidosText}>Histórico de entregas</Text>
-                <View style={styles.pedidosClock}>
-                    <Icon name='time-outline' size={30} color='#000' />
-                </View>
             </View>
             {renderizarResultados()}
         </View>

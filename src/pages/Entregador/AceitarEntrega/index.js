@@ -38,8 +38,8 @@ export default function AceitarEntrega({ route }) {
                 <View style={styles.card}>
                     <View style={styles.recentsContent}>
                         <Text>
-                            Nome do cliente: {nomeCliente}{'\n'}
-                            Cd pedido: {codPedido}
+                            Nome do cliente {'\n'}
+                            {nomeCliente}
                         </Text>
                     </View>
                     <View style={styles.recentsContent}>
