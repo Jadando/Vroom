@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Mapbox from '@rnmapbox/maps';
 import * as Location from 'expo-location';
@@ -61,7 +62,7 @@ export default function FinalizarEntrega({ route }) {
     const [routeCoordinates, setRouteCoordinates] = useState([]);
     async function updateRouteCoordinates() {
         const apiKey = 'pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q';
-        const apiUrl = `https://api.mapbox.com/directions/v5/mapbox/driving/-46.687909%2C-24.123248%3B-46.678451%2C-24.12218?alternatives=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${apiKey}`;
+        const apiUrl = `https://api.mapbox.com/directions/v5/mapbox/driving/${location.coords.longitude},${location.coords.latitude}-46.687841%2C-24.123289?alternatives=true&annotations=duration%2Cdistance&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q`;
 
         try {
             const response = await fetch(apiUrl);
@@ -193,6 +194,7 @@ export default function FinalizarEntrega({ route }) {
                     </View>
                 </View>
                 <TouchableOpacity
+                    onPress={() => navigation.navigate('Pendentes')}
                     onPress={() => FinalizarPedido()}
                     style={styles.button}>
                     <Text>Finalizar Entrega</Text>
