@@ -7,11 +7,15 @@ import * as Location from 'expo-location';
 
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
-export default function RastrearEmpresa() {
+export default function RastrearEmpresa({ route }) {
     const navigation = useNavigation();
     const [heading, setHeading] = useState(0);
     const [iconRotation, setIconRotation] = useState(0);
     const [lastLocation, setLastLocation] = useState(null);
+    const [comanda, setComanda] = useState(route.params?.comanda || '');
+    const [tipoPagamento, setipoPagamento] = useState(route.params?.tipoPagamento || '');
+    const [valor, setValor] = useState(route.params?.valor || '');
+
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
@@ -24,23 +28,23 @@ export default function RastrearEmpresa() {
                 timeInterval: 5000,
                 distanceInterval: 1,
             },
-            (newLocation) => {
-                if (location) {
-                    const angle = calculateAngle(location.coords, newLocation.coords);
-                    setIconRotation(angle);
-                }
-                setLocation(newLocation);
-            });
+                (newLocation) => {
+                    if (location) {
+                        const angle = calculateAngle(location.coords, newLocation.coords);
+                        setIconRotation(angle);
+                    }
+                    setLocation(newLocation);
+                });
             return () => subscription.remove();
         })();
-    }, []);    
+    }, []);
 
     function calculateAngle(coord1, coord2) {
         const deltaY = coord2.latitude - coord1.latitude;
         const deltaX = coord2.longitude - coord1.longitude;
         const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
         return angle;
-    }    
+    }
     const [location, setLocation] = useState(null);
     const [isMapExpanded, setIsMapExpanded] = useState(false);
     const handleMapPress = () => {
@@ -54,14 +58,14 @@ export default function RastrearEmpresa() {
         >
             <View style={styles.container}>
                 <View style={styles.header}>
-                <TouchableOpacity
-                    style={styles.Chevron}
-                    onPress={() => navigation.pop(1)}>
-                    <Icon name='chevron-back' size={30} color='#000' />
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.Chevron}
+                        onPress={() => navigation.pop(1)}>
+                        <Icon name='chevron-back' size={30} color='#000' />
+                    </TouchableOpacity>
                     <TouchableOpacity>
                         <Icon name='notifications' size={30} color='#ffc000' />
-                        </TouchableOpacity>
+                    </TouchableOpacity>
                 </View>
 
 
@@ -102,38 +106,27 @@ export default function RastrearEmpresa() {
                         </Mapbox.MapView>
                     </View>
                     <View style={styles.recentsContent}>
-                        <View style={styles.recentsImages}>
-                        </View>
                         <Text>
-                            Nome do entregador{'\n'}
-                            Agostinho Carrara
-                        </Text>
-                    </View>
-                    <View style={styles.recentsContent}>
-                        <View style={styles.recentsImages}>
-                        </View>
-                        <Text>
-                            Nome do cliente {'\n'}
-                            Pedro
+                            Nome do entregador:{'\n'}
+                            Daniel Oliveira Martins
                         </Text>
                     </View>
                     <View style={styles.comanda}>
                         <Text style={styles.comandaTitle}>Comanda do pedido:</Text>
                         <View style={styles.comandaDescription}>
                             <Text style={styles.comandaDescription}>
-                                1 X-salada {'\n1'}
-                                1 Coca cola 2L
+                              {comanda}{'\n'}
                             </Text>
                         </View>
                         <Text style={styles.comandaTitle}>Forma de pagamento:</Text>
                         <View style={styles.comandaPaymentValue}>
                             <Text>
-                                Dinheiro
+                               {tipoPagamento}
                             </Text>
                         </View>
                         <Text style={styles.comandaTitle}>Valor do pedido:</Text>
                         <View style={styles.comandaPaymentValue}>
-                            <Text>R$ 15,99</Text>
+                            <Text>{valor}</Text>
                         </View>
                     </View>
                 </View>
@@ -237,7 +230,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginTop: 10,
     },
-    
+
     locTitle: {
         flexDirection: 'row',
         justifyContent: 'center',

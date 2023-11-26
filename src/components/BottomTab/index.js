@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Home from '../../pages/Cliente/Home';
 import Search from '../../pages/Cliente/Search';
 import Perfil from '../../pages/Cliente/Perfil';
-import Pedidos from '../../pages/Cliente/Pedidos';
+
 import IniciarEntrega from '../../pages/Empresa/IniciarEntrega';
 import Historico from '../../pages/Entregador/Historico';
 import Pendentes from '../../pages/Entregador/Pendentes';

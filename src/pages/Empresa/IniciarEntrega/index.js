@@ -30,11 +30,6 @@ export default function IniciarEntrega({ route }) {
   const url = `vroom-401401.firebaseapp.com/${nome}/${endereco}/${order}/${value}/${inputValue}/pendente`;
   const displayUrl = isExpanded ? url : url.substring(0, 35) + '...';
   const [isExpanded, setIsExpanded] = useState(false);
-
-
-  const linkGeneration = async () => {
-    await Clipboard.setStringAsync(`https://vroom-401401.firebaseapp.com/${encodeURIComponent(nome)}/${encodeURIComponent(nomeEmpresa)}/${encodeURIComponent(endereco)}/${encodeURIComponent(order)}/${encodeURIComponent(value)}/${encodeURIComponent(inputValue)}/${encodeURIComponent("pendente")}`);
-  }
   function gerarCodigoUnico() {
     // Obtém o timestamp atual em milissegundos
     const timestamp = new Date().getTime() % 1;
@@ -47,10 +42,13 @@ export default function IniciarEntrega({ route }) {
 
     return codigoUnico;
   }
+  const codigoGerado = gerarCodigoUnico();
 
+  const linkGeneration = async () => {
+    await Clipboard.setStringAsync(`https://vroom-401401.firebaseapp.com/${encodeURIComponent(nome)}/${encodeURIComponent(nomeEmpresa)}/${encodeURIComponent(endereco)}/${encodeURIComponent(order)}/${encodeURIComponent(value)}/${encodeURIComponent(inputValue)}/`);
+  }
   const IniciarPedido = () => {
     //console.log("estive aqui")
-    const codigoGerado = gerarCodigoUnico();
     const usersRefs = collection(db, 'users', IdentificadorEmpresa, 'Pedidos');
     const data = {
       nomeCliente: nome,

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
-import {collection, query, where, getFirestore, onSnapshot, addDoc } from 'firebase/firestore';
+import { collection, query, where, getFirestore, onSnapshot, addDoc } from 'firebase/firestore';
 import * as Linking from 'expo-linking';
 import { Alert } from 'react-native';
 import queryString from 'query-string';
@@ -38,12 +38,8 @@ export default function Home({ route }) {
       const comanda = params && params.comanda;
       const pagamento = params && params.pagamento;
       const valor = params && params.valor;
-      const status = params && params.status;
-
       // Exibe um alerta com as informações
-      if (nomeEmpresa && endereco && comanda && pagamento && valor && status) {
-        const mensagem = `Nome da Empresa: ${nomeEmpresa}\nEndereço: ${endereco}\nComanda: ${comanda}\nPagamento: ${pagamento}\nValor: ${valor}\nStatus: ${status}`;
-        Alert.alert("Detalhes do Pedido", mensagem);
+      if (nomeEmpresa && endereco && comanda && pagamento && valor) {
 
         const pedidosRef = collection(db, "users", IdentificadorCliente, "Pedidos");
 
@@ -54,10 +50,11 @@ export default function Home({ route }) {
             pagamento: pagamento,
             valor: valor,
             status: "pendente",
-            data:today.toLocaleDateString()
-          });
-
+            codPedido: codPedido,
+            data: today.toLocaleDateString(),
+          }).then(navigation.navigate("Pedidos"))
           console.log("Pedido adicionado com sucesso. ID do documento:", novoPedidoDoc.id);
+          console.log(codPedido + "penis")
         } catch (error) {
           console.error('Erro ao adicionar o pedido:', error);
         }
@@ -80,21 +77,21 @@ export default function Home({ route }) {
     const q = query(HistoricoRef, where('status', '==', 'concluido')); // Substitua 'campo' e 'valor' pelos seus critérios de filtro
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const documentosEncontrados = [];
+      const documentosEncontrados = [];
 
-        querySnapshot.forEach((doc) => {
-            const documentoComID = { id: doc.id, data: doc.data() };
-            documentosEncontrados.push(documentoComID);
-        });
+      querySnapshot.forEach((doc) => {
+        const documentoComID = { id: doc.id, data: doc.data() };
+        documentosEncontrados.push(documentoComID);
+      });
 
-        setResultados(documentosEncontrados);
-        setIsLoading(false);
-        setMostrarResultados(true);
+      setResultados(documentosEncontrados);
+      setIsLoading(false);
+      setMostrarResultados(true);
     });
 
     // Limpe a assinatura quando o componente for desmontado ou quando necessário
     return () => unsubscribe();
-}, []);
+  }, []);
   const renderizarResultados = () => {
     if (mostrarResultados) {
       if (resultados.length > 0) {
@@ -105,7 +102,7 @@ export default function Home({ route }) {
               {resultados.map((documento, index) => {
                 return (
                   <>
-                    <TouchableOpacity onPress={() => navigation.navigate('VisualizarPedido', {nomeEmpresa:documento.data.nomeEmpresa,comanda:documento.data.comanda,pagamento:documento.data.tipoPagamento,valor:documento.data.valor })} key={index}>
+                    <TouchableOpacity onPress={() => navigation.navigate('VisualizarPedido', { nomeEmpresa: documento.data.nomeEmpresa, comanda: documento.data.comanda, pagamento: documento.data.tipoPagamento, valor: documento.data.valor })} key={index}>
                       <View style={styles.recentsContent}>
                         <Text style={styles.Text}>
                           {documento.data.status} {'\n'}

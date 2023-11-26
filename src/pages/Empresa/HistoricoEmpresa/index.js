@@ -16,23 +16,23 @@ export default function HistoricoEmpresa({ route }) {
 
     useEffect(() => {
         const HistoricoRef = collection(db, 'users', IdentificadorEmpresa, 'Pedidos');
-    
+
         // Adicione seu filtro usando 'where'
         const q = query(HistoricoRef, where('status', '==', 'concluido')); // Substitua 'campo' e 'valor' pelos seus critérios de filtro
-    
+
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const documentosEncontrados = [];
-    
+
             querySnapshot.forEach((doc) => {
                 const documentoComID = { id: doc.id, data: doc.data() };
                 documentosEncontrados.push(documentoComID);
             });
-    
+
             setResultados(documentosEncontrados);
             setIsLoading(false);
             setMostrarResultados(true);
         });
-    
+
         // Limpe a assinatura quando o componente for desmontado ou quando necessário
         return () => unsubscribe();
     }, []);
@@ -48,21 +48,18 @@ export default function HistoricoEmpresa({ route }) {
                             <View style={styles.recentsContainer}>
                                 {resultados.map((documento, index) => {
                                     // const imageUrl = imageUrls.find((img) => img.id === documento.id);
-                                        return (
-                                            <>
-                                                <TouchableOpacity onPress={() => navigation.navigate('RastrearEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
-                                                    <View style={styles.recentsContent}>
-                                                        <View style={styles.recentsImages}>
-                                                            {/* <Image source={{ uri: imageUrl.url }} key={documento.id} style={styles.image} /> */}
-                                                        </View>
-                                                        <Text>
-                                                            {documento.data.comanda} {'\n'}
-                                                            {documento.data.status}
-                                                        </Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </>
-                                        );
+                                    return (
+                                        <>
+                                            <TouchableOpacity onPress={() => navigation.navigate('RastrearEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
+                                                <View style={styles.recentsContent}>
+                                                    <Text>
+                                                        {documento.data.comanda} {'\n'}
+                                                        {documento.data.status}
+                                                    </Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </>
+                                    );
                                 })}
                             </View>
                         </View>
