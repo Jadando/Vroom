@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Mapbox from '@rnmapbox/maps';
 import * as Location from 'expo-location';
