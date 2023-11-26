@@ -6,9 +6,6 @@ import { ThemeProvider } from 'styled-components';
 import { Tabs, TabsEmpresa, TabsEntregador } from './src/components/BottomTab';
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
-import * as Linking from 'expo-linking';
-import { Alert } from 'react-native';
-import queryString from 'query-string';
 
 
 // Imports relacionados ao Cliente
@@ -26,7 +23,6 @@ import VisualizarPedido from './src/pages/Cliente/VisualizarPedido'
 
 // Imports relacionados à Empresa
 import PerfilEmpresa from './src/pages/Empresa/Perfil';
-// import IniciarEntrega from './src/pages/Empresa/IniciarEntrega';
 import PendentesAndamento from './src/pages/Empresa/PendentesAndamento';
 import RastrearEmpresa from './src/pages/Empresa/RastrearEmpresa';
 import ConfigEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa';
@@ -50,6 +46,7 @@ import SemAfiliacao from './src/pages/Entregador/Afiliacao/SemAfiliacao';
 import DadosEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/DadosEntregador';
 import AlterarEntregador from './src/pages/Entregador/Perfil/ConfigEntregador/AlterarEntregador';
 import Historico from './src/pages/Entregador/Historico';
+import vishistorico from './src/pages/Entregador/Historico/vishistorico';
 //import Pendentes from './src/pages/Entregador/Pendentes';
 
 // Imports gerais
@@ -65,37 +62,6 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const Tema = useTema()
-  useEffect(() => {
-    // Adiciona um manipulador para lidar com deep linking
-    const manipularDeepLinking = async (evento) => {
-      // Extrai a query string da URL do deep link
-      const url = evento.url;
-
-      // Extrai os valores da query string
-      const params = url ? queryString.parse(url.replace('vroom://?', '')) : null;
-
-      const nomeEmpresa = params && params.empresa;
-      const endereco = params && params.endereco;
-      const comanda = params && params.comanda;
-      const pagamento = params && params.pagamento;
-      const valor = params && params.valor;
-      const status = params && params.status;
-
-      // Exibe um alerta com as informações
-      if (nomeEmpresa && endereco && comanda && pagamento && valor && status) {
-        const mensagem = `Nome da Empresa: ${nomeEmpresa}\nEndereço: ${endereco}\nComanda: ${comanda}\nPagamento: ${pagamento}\nValor: ${valor}\nStatus: ${status}`;
-        Alert.alert("Detalhes do Pedido", mensagem);
-      }
-    };
-
-    // Adiciona o manipulador ao evento de deep linking
-    const linkEvento = Linking.addEventListener('url', manipularDeepLinking);
-
-    // Remove o manipulador quando o componente é desmontado
-    return () => {
-      linkEvento.remove();
-    };
-  }, []);
   // useEffect(() => {
   //   (async () => {
   //     const locationPermission = await Location.requestForegroundPermissionsAsync();
@@ -104,8 +70,6 @@ export default function App() {
   //       alert("A permissão para acessar o local foi negada")
   //       return;
   //     }
-
-
   //     const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
   //     if (galleryPermission.status !== 'granted') {
   //       console.error('A permissão para acessar a galeria foi negada');
@@ -162,6 +126,7 @@ export default function App() {
           {/* Telas relacionadas ao Entregador */}
           <Stack.Group title="Entregador">
             <Stack.Screen name="Historico" component={Historico} />
+            <Stack.Screen name='vishistorico'component={vishistorico}/>
             <Stack.Screen name="AceitarEntrega" component={AceitarEntrega} />
             <Stack.Screen name="FinalizarEntrega" component={FinalizarEntrega} />
             <Stack.Screen name="PerfilEntregador" component={PerfilEntregador} />

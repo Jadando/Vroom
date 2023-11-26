@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, Modal, Alert } from 'react-native';
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Mapbox from '@rnmapbox/maps';
 import * as Location from 'expo-location';
+import { getFirestore,getDocs, query, where, updateDoc, collection } from "firebase/firestore";
 
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
-export default function FinalizarEntrega() {
+export default function FinalizarEntrega({ route }) {
     const navigation = useNavigation();
+    const [IdentificadorEmpresa, setIdentificadorEmpresa] = useState(route.params?.IdentificadorEmpresa || '')
+    const [nomeCliente, setNomeCliente] = useState(route.params?.nomeCliente)
+    const [codPedido, setcodPedido] = useState(route.params?.codPedido || '')
+    const [order, setOrder] = useState(route.params?.comanda || '');
+    const [value, setValue] = useState(route.params?.valor || '');
+    const [payment, setPayment] = useState(route.params?.tipoPagamento || '');
     const [iconRotation, setIconRotation] = useState(0);
+    const db = getFirestore();
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
@@ -43,6 +52,25 @@ export default function FinalizarEntrega() {
     const handleMapPress = () => {
         setIsMapExpanded(!isMapExpanded);
     };
+    const FinalizarPedido = async () => {
+        //console.log("estive aqui")
+        const collectionRef = collection(db, "users", IdentificadorEmpresa, "Pedidos");
+        const q = query(collectionRef, where('codPedido', '==', codPedido));
+        try {
+            const querySnapshot = await getDocs(q);
+        
+            querySnapshot.forEach(async (doc) => {
+              // Para cada documento que corresponde à condição where
+              await updateDoc(doc.ref, {
+                status: "concluido",
+              });
+              console.log(`Documento atualizado com sucesso: ${doc.id}`);
+            });
+            navigation.navigate('Pendentes')
+          } catch (error) {
+            console.error('Erro ao atualizar documentos:', error);
+          }
+    }
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
@@ -50,15 +78,15 @@ export default function FinalizarEntrega() {
             scrollEnabled={!isMapExpanded}
         >
             <View style={styles.container}>
-            <View style={styles.header}>
-            <TouchableOpacity
-                    onPress={() => navigation.pop(2)}>
-                    <Icon name='chevron-back' size={30} color='#000' />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Icon name='notifications' size={30} color='#ffc000' />
-                </TouchableOpacity>
-            </View>
+                <View style={styles.header}>
+                    <TouchableOpacity
+                        onPress={() => navigation.pop(2)}>
+                        <Icon name='chevron-back' size={30} color='#000' />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Icon name='notifications' size={30} color='#ffc000' />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.pedidos}>
                     <Text style={styles.pedidosText}>Entregas pendentes</Text>
                     <View style={styles.pedidosClock}>
@@ -67,12 +95,9 @@ export default function FinalizarEntrega() {
                 </View>
                 <View style={styles.card}>
                     <View style={styles.recentsContent}>
-                        <View style={styles.recentsImages}>
-                            <Image source={require('../../../../img/logo_sf.jpeg')} style={styles.img} />
-                        </View>
                         <Text>
-                            SF Refrigeração {'\n'}
-                            Cd pedido: 04
+                            Nome do cliente {'\n'}
+                            {nomeCliente}
                         </Text>
                     </View>
                     <View style={styles.locTitle}>
@@ -104,39 +129,30 @@ export default function FinalizarEntrega() {
                             )}
                         </Mapbox.MapView>
                     </View>
-                    <View style={styles.recentsContent}>
-                        <View style={styles.recentsImages}>
-                        <Image source={require('../../../../img/logo_luisa.jpg')} style={styles.img} />
-                        </View>
-                        <Text>
-                            Nome do cliente {'\n'}
-                            Luísa Oliveira
-                        </Text>
-                    </View>
                     <View style={styles.comanda}>
                         <Text style={styles.comandaTitle}>Comanda do pedido:</Text>
                         <View style={styles.comandaDescription}>
                             <Text style={styles.comandaDescription}>
-                                1kg Gelo
+                                {order}
                             </Text>
                         </View>
                         <Text style={styles.comandaTitle}>Forma de pagamento:</Text>
                         <View style={styles.comandaPaymentValue}>
                             <Text>
-                                Dinheiro
+                                {payment}
                             </Text>
                         </View>
                         <Text style={styles.comandaTitle}>Valor do pedido:</Text>
                         <View style={styles.comandaPaymentValue}>
-                            <Text>R$ 19,99</Text>
+                            <Text>{value}</Text>
                         </View>
                     </View>
                 </View>
                 <TouchableOpacity
-                onPress={()=>navigation.navigate('Pendentes')}
-                        style={styles.button}>
-                        <Text>Finalizar Entrega</Text>
-                    </TouchableOpacity>
+                    onPress={() => FinalizarPedido()}
+                    style={styles.button}>
+                    <Text>Finalizar Entrega</Text>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
@@ -214,7 +230,7 @@ const styles = StyleSheet.create({
     img: {
         width: 70,
         height: 70
-      },
+    },
     comanda: {
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         elevation: 2,

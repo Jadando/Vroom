@@ -4,9 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
-import axios from 'axios';
+import { getDocs, collection, query, where, getFirestore, doc, addDoc } from 'firebase/firestore';
+import * as Linking from 'expo-linking';
 import { Alert } from 'react-native';
+import queryString from 'query-string';
 
 
 export default function Home({ route }) {
@@ -22,35 +23,59 @@ export default function Home({ route }) {
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
-//   // function enviarDadosParaAPI(valores) {
-//   //   axios.post('http://vroom-401401.web.app/api/enviarDados', valores)
-//   //     .then(response => {
-//   //       const { url } = response.data;
-//   //       console.log(url+ " teste")
-//   //       alert(`Valores enviados com sucesso! Abra o link: ${url}`);
-//   //     })
-//   //     .catch(error => {
-//   //       console.error('Erro ao enviar dados para a API', error);
-//   //     });
-//   // }
-  
-//   // Exemplo de uso
-//   const valores = {
-//     nomeEmpresa: 'penis',
-//     endereco: 'enderecoDaEmpresa',
-//     comanda: 'comanda123',
-//     pagamento: 'cartao',
-//     valor: '100.00',
-//     status: 'pendente'
-//   };
-//   console.log(valores.comanda)
-//  //enviarDadosParaAPI(valores);
+  useEffect(() => {
+    // Adiciona um manipulador para lidar com deep linking
+    const manipularDeepLinking = async (evento) => {
+      // Extrai a query string da URL do deep link
+      const url = evento.url;
+
+      // Extrai os valores da query string
+      const params = url ? queryString.parse(url.replace('vroom://?', '')) : null;
+
+      const nomeEmpresa = params && params.empresa;
+      const endereco = params && params.endereco;
+      const comanda = params && params.comanda;
+      const pagamento = params && params.pagamento;
+      const valor = params && params.valor;
+      const status = params && params.status;
+
+      // Exibe um alerta com as informações
+      if (nomeEmpresa && endereco && comanda && pagamento && valor && status) {
+        const mensagem = `Nome da Empresa: ${nomeEmpresa}\nEndereço: ${endereco}\nComanda: ${comanda}\nPagamento: ${pagamento}\nValor: ${valor}\nStatus: ${status}`;
+        Alert.alert("Detalhes do Pedido", mensagem);
+        const pedidosRef = collection(db, "users", IdentificadorCliente, "Pedidos");
+
+        try {
+          const novoPedidoDoc = await addDoc(pedidosRef, {
+            nomeEmpresa: nomeEmpresa,
+            comanda: comanda,
+            pagamento: pagamento,
+            valor: valor,
+            status: status,
+          });
+
+          console.log("Pedido adicionado com sucesso. ID do documento:", novoPedidoDoc.id);
+        } catch (error) {
+          console.error('Erro ao adicionar o pedido:', error);
+        }
+
+      }
+    }
+
+    // Adiciona o manipulador ao evento de deep linking
+    const linkEvento = Linking.addEventListener('url', manipularDeepLinking);
+
+    // Remove o manipulador quando o componente é desmontado
+    return () => {
+      linkEvento.remove();
+    };
+  }, []);
   const CarregarHistorico = async () => {
     setIsLoading(true);
 
     const HistoricoRef = collection(db, 'users', IdentificadorCliente, 'Pedidos');
 
-    const q = query(HistoricoRef,where('status','==','concluido'));
+    const q = query(HistoricoRef, where('status', '==', 'concluido'));
 
     try {
       const querySnapshot = await getDocs(q);
@@ -118,9 +143,6 @@ export default function Home({ route }) {
                   <>
                     <TouchableOpacity onPress={() => navigation.navigate('VisualizarPedido', { IdentificadorCliente, Documento: documento })} key={index}>
                       <View style={styles.recentsContent}>
-                        <View style={styles.recentsImages}>
-                          {/* <Image source={{ uri: imageUrl.url }} key={documento.id} style={styles.image} /> */}
-                        </View>
                         <Text style={styles.Text}>
                           {documento.data.status} {'\n'}
                           {documento.data.data}

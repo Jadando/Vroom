@@ -6,9 +6,9 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Entregadores() {
     const navigation = useNavigation();
-    const [telefone, setTelefone] = useState('1398754092')
+    const [telefone, setTelefone] = useState('3448292929')
     const [cpf, setCpf] = useState('50787757063');
-    const [nome, setNome] = useState('Daniel Oliveira da Silva fytfytfytfy');
+    const [nome, setNome] = useState('Daniel Oliveira da Silva');
     const [expandido, setExpandido] = useState(false);
 
     return (
