@@ -134,9 +134,9 @@ export default function LocalCliente({ route }) {
                                             </View>
                                             <View style={styles.card}>
                                                 <View style={styles.recentsContent}>
-                                                    <View style={styles.recentsImages}>
+                                                    {/* <View style={styles.recentsImages}>
                                                         <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img} />
-                                                    </View>
+                                                    </View> */}
                                                     <Text>
                                                         {documento.data.nomeEmpresa} {'\n'}
                                                         Cd pedido: {documento.data.codPedido}

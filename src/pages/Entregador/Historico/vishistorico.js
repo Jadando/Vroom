@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 export default function VisualizarHistorico({ route }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [IdentificadorEmpresa, setIdentificadorEmpresa] = useState(route.params?.IdentificadorEmpresa || '')
-    const [nomeCliente, setNomeCliente] = useState(route.params?.nomeCliente||'')
+    const [nomeCliente, setNomeCliente] = useState(route.params?.nomeCliente || '')
     const [codPedido, setcodPedido] = useState(route.params?.codPedido || '')
     const [order, setOrder] = useState(route.params?.comanda || '');
     const [value, setValue] = useState(route.params?.valor || '');
@@ -37,14 +37,8 @@ export default function VisualizarHistorico({ route }) {
                 <View style={styles.card}>
                     <View style={styles.recentsContent}>
                         <Text>
-                             {'\n'}
+                            Nome do cliente: {nomeCliente}{'\n'}
                             Cd pedido: {codPedido}
-                        </Text>
-                    </View>
-                    <View style={styles.recentsContent}>
-                        <Text>
-                            Nome do cliente {'\n'}
-                            {nomeCliente}
                         </Text>
                     </View>
                     <View style={styles.comanda}>

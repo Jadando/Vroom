@@ -15,7 +15,6 @@ export default function IniciarEntrega({ route }) {
   const [value, setValue] = useState(0.0);
   const [inputValue, setInputValue] = useState('R$ 10,00');
   const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
-  const status = "pendente"
   const db = getFirestore();
   const [items, setItems] = useState([
     { label: 'Dinheiro', value: 'dinheiro' },
@@ -28,13 +27,13 @@ export default function IniciarEntrega({ route }) {
   const formatToCurrency = (num) => {
     return "R$ " + num.toFixed(0).replace('.', ',');
   };
-  const url = `vroom-401401.firebaseapp.com/${nome}/${endereco}/${order}/${value}/${inputValue}/${status}`;
+  const url = `vroom-401401.firebaseapp.com/${nome}/${endereco}/${order}/${value}/${inputValue}/pendente`;
   const displayUrl = isExpanded ? url : url.substring(0, 35) + '...';
   const [isExpanded, setIsExpanded] = useState(false);
 
 
   const linkGeneration = async () => {
-    await Clipboard.setStringAsync(`https://vroom-401401.firebaseapp.com/${encodeURIComponent(nome)}/${encodeURIComponent(nomeEmpresa)}/${encodeURIComponent(endereco)}/${encodeURIComponent(order)}/${encodeURIComponent(value)}/${encodeURIComponent(inputValue)}/${encodeURIComponent(status)}`);
+    await Clipboard.setStringAsync(`https://vroom-401401.firebaseapp.com/${encodeURIComponent(nome)}/${encodeURIComponent(nomeEmpresa)}/${encodeURIComponent(endereco)}/${encodeURIComponent(order)}/${encodeURIComponent(value)}/${encodeURIComponent(inputValue)}/${encodeURIComponent("pendente")}`);
   }
   function gerarCodigoUnico() {
     // Obtém o timestamp atual em milissegundos
@@ -55,11 +54,12 @@ export default function IniciarEntrega({ route }) {
     const usersRefs = collection(db, 'users', IdentificadorEmpresa, 'Pedidos');
     const data = {
       nomeCliente: nome,
+      nomeEmpresa:nomeEmpresa,
       endereco: endereco,
       comanda: order,
       tipoPagamento: value,
       valor: inputValue,
-      status: status,
+      status: "pendente",
       codPedido: codigoGerado
     }
     addDoc(usersRefs, data)

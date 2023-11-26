@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, Modal, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Mapbox from '@rnmapbox/maps';
 import * as Location from 'expo-location';
-import { getFirestore,getDocs, query, where, updateDoc, collection } from "firebase/firestore";
+import { getFirestore, getDocs, query, where, updateDoc, collection } from "firebase/firestore";
 
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
@@ -19,6 +17,7 @@ export default function FinalizarEntrega({ route }) {
     const [order, setOrder] = useState(route.params?.comanda || '');
     const [value, setValue] = useState(route.params?.valor || '');
     const [payment, setPayment] = useState(route.params?.tipoPagamento || '');
+    const [endereco, setEndereco] = useState(route.params?.endereco || "Seu Endereço")
     const [iconRotation, setIconRotation] = useState(0);
     const [location, setLocation] = useState(null);
     const [isMapExpanded, setIsMapExpanded] = useState(false);
@@ -31,7 +30,7 @@ export default function FinalizarEntrega({ route }) {
                 console.error('Permission to access location was denied');
                 return;
             }
-
+            //console.log("estive aqui")
             const subscription = Location.watchPositionAsync({
                 accuracy: Location.Accuracy.High,
                 timeInterval: 1000,
@@ -44,7 +43,7 @@ export default function FinalizarEntrega({ route }) {
                     }
                     setLocation(newLocation);
 
-                    console.log('entrou')
+                    //console.log('entrou')
                     updateRouteCoordinates();
                 });
 
@@ -67,11 +66,11 @@ export default function FinalizarEntrega({ route }) {
         try {
             const response = await fetch(apiUrl);
             const data = await response.json();
-            console.log(data)
+            //console.log(data)
 
             if (data.code === 'Ok' && data.routes.length > 0) {
                 const route = data.routes[0].geometry.coordinates;
-                console.log(route)
+                //console.log(route)
                 setRouteCoordinates(route);
             }
         } catch (error) {
@@ -89,18 +88,18 @@ export default function FinalizarEntrega({ route }) {
         const q = query(collectionRef, where('codPedido', '==', codPedido));
         try {
             const querySnapshot = await getDocs(q);
-        
+
             querySnapshot.forEach(async (doc) => {
-              // Para cada documento que corresponde à condição where
-              await updateDoc(doc.ref, {
-                status: "concluido",
-              });
-              console.log(`Documento atualizado com sucesso: ${doc.id}`);
+                // Para cada documento que corresponde à condição where
+                await updateDoc(doc.ref, {
+                    status: "concluido",
+                });
+                console.log(`Documento atualizado com sucesso: ${doc.id}`);
             });
             navigation.navigate('Pendentes')
-          } catch (error) {
+        } catch (error) {
             console.error('Erro ao atualizar documentos:', error);
-          }
+        }
     }
     return (
         <ScrollView
@@ -160,7 +159,7 @@ export default function FinalizarEntrega({ route }) {
                             )}
 
                             {routeCoordinates.length > 0 && (
-                                console.log(routeCoordinates),
+                                //console.log(routeCoordinates),
                                 <Mapbox.ShapeSource id="routeSource" shape={{ type: 'LineString', coordinates: routeCoordinates }}>
                                     <Mapbox.LineLayer id="routeFill" style={{ lineColor: 'yellow', lineWidth: 3 }} />
                                 </Mapbox.ShapeSource>
@@ -169,12 +168,9 @@ export default function FinalizarEntrega({ route }) {
                         </Mapbox.MapView>
                     </View>
                     <View style={styles.recentsContent}>
-                        <View style={styles.recentsImages}>
-                            <Image source={require('../../../../img/logo_luisa.jpg')} style={styles.img} />
-                        </View>
                         <Text>
-                            Nome do cliente {'\n'}
-                            Luísa Oliveira
+                            Endereço {'\n'}
+                            {endereco}
                         </Text>
                     </View>
                     <View style={styles.comanda}>
@@ -197,7 +193,6 @@ export default function FinalizarEntrega({ route }) {
                     </View>
                 </View>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Pendentes')}
                     onPress={() => FinalizarPedido()}
                     style={styles.button}>
                     <Text>Finalizar Entrega</Text>

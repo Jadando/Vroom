@@ -82,7 +82,7 @@ export default function AceitarEntrega({ route }) {
                     </View>
                 </View>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('FinalizarEntrega', { IdentificadorEmpresa: IdentificadorEmpresa, nomeCliente: nomeCliente, codPedido: codPedido, comanda: order, valor: value, tipoPagamento: payment })}
+                    onPress={() => navigation.navigate('FinalizarEntrega', { IdentificadorEmpresa: IdentificadorEmpresa, nomeCliente: nomeCliente, codPedido: codPedido, comanda: order, valor: value, tipoPagamento: payment,endereco:endereco })}
                     style={styles.button}>
                     <Text style={styles.buttonText}>Iniciar entrega</Text>
                 </TouchableOpacity>

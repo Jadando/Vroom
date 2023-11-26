@@ -53,7 +53,7 @@ export default function Home({ route }) {
             comanda: comanda,
             pagamento: pagamento,
             valor: valor,
-            status: status,
+            status: "pendente",
             data:today.toLocaleDateString()
           });
 
@@ -105,7 +105,7 @@ export default function Home({ route }) {
               {resultados.map((documento, index) => {
                 return (
                   <>
-                    <TouchableOpacity onPress={() => navigation.navigate('VisualizarPedido', { IdentificadorCliente, Documento: documento })} key={index}>
+                    <TouchableOpacity onPress={() => navigation.navigate('VisualizarPedido', {nomeEmpresa:documento.data.nomeEmpresa,comanda:documento.data.comanda,pagamento:documento.data.tipoPagamento,valor:documento.data.valor })} key={index}>
                       <View style={styles.recentsContent}>
                         <Text style={styles.Text}>
                           {documento.data.status} {'\n'}

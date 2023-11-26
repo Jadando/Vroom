@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
+import { onSnapshot, collection, query, where, getFirestore } from 'firebase/firestore';
 
 export default function PendentesAndamento({ route }) {
     const [IdentificadorEmpresa, setIdentificadorEmpresa] = useState(route.params?.IdentificadorEmpresa || '')
@@ -13,66 +13,29 @@ export default function PendentesAndamento({ route }) {
     const [mostrarResultados, setMostrarResultados] = useState(false);
     const db = getFirestore();
 
-    const CarregarHistorico = async () => {
-        setIsLoading(true);
-
+    useEffect(() => {
         const HistoricoRef = collection(db, 'users', IdentificadorEmpresa, 'Pedidos');
-
-        const q = query(HistoricoRef);
-
-        try {
-            const querySnapshot = await getDocs(q);
+    
+        // Adicione seu filtro usando 'where'
+        const q = query(HistoricoRef, where('status', '==', 'pendente')); // Substitua 'campo' e 'valor' pelos seus critérios de filtro
+    
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const documentosEncontrados = [];
-
+    
             querySnapshot.forEach((doc) => {
                 const documentoComID = { id: doc.id, data: doc.data() };
                 documentosEncontrados.push(documentoComID);
-                //console.log(documentoComID)
             });
-
-            return documentosEncontrados;
-        } catch (error) {
-            console.error('Erro ao consultar o Firestore:', error);
-            throw error; // Adicione um throw para que o erro seja propagado para quem chamou a função
-        }
-    }
-
-    // async function DonwloadImg(documento) {
-    //   try {
-    //     const storage = getStorage();
-    //     const imageRef = ref(storage, `images/users/empresa/${documento.id}/${documento.id}_profile_picture`);
-    //     const url = await getDownloadURL(imageRef);
-    //     const response = await fetch(url);
-    //     const data = await response.text();
-    //     const numericArray = data.split(",");
-    //     const asciiString = numericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join("");
-    //     const imageUrl = {
-    //       id: documento.id,
-    //       url: 'data:image/jpeg;base64,' + asciiString
-    //     };
-
-    //     setImageUrls((prevImageUrls) => [...prevImageUrls, imageUrl]);
-    //   } catch (error) {
-    //     console.error('Erro ao recuperar a URL da imagem:', error);
-    //   }
-    // }
-
-    const PesquisarHistorico = async () => {
-        try {
-            const resultadoDaConsulta = await CarregarHistorico();
-            resultadoDaConsulta.forEach(async (documento) => {
-                // Vou adicionar uma função assíncrona aqui para baixar a imagem, se necessário
-                // await DonwloadImg(documento);
-                // Adicione a lógica necessária para baixar a imagem, se necessário
-            });
-            setResultados(resultadoDaConsulta);
+    
+            setResultados(documentosEncontrados);
             setIsLoading(false);
             setMostrarResultados(true);
-        } catch (error) {
-            setIsLoading(false);
-            console.error('Erro ao consultar o Firestore:', error);
-        }
-    };
+        });
+    
+        // Limpe a assinatura quando o componente for desmontado ou quando necessário
+        return () => unsubscribe();
+    }, []);
+
     const renderizarResultados = () => {
         if (mostrarResultados) {
             if (resultados.length > 0) {
@@ -124,9 +87,6 @@ export default function PendentesAndamento({ route }) {
             }
         }
     };
-    useEffect(() => {
-        PesquisarHistorico();
-    }, []);
 
     return (
         <View style={styles.container}>

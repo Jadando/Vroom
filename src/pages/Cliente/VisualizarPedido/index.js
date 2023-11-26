@@ -4,42 +4,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { getFirestore, getDocs, where, collection, query } from "firebase/firestore";
 
 export default function VisualizarPedido({ route }) {
-    const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
-    const [documento, setDocumento] = useState(route.params?.Documento || '');
-    const [nome, setNome] = useState('Pizzaria do Morro');
-    const [endereco, setEndereco] = useState('');
-    const [order, setOrder] = useState("1x calabresa e 2x coca-cola");
+
+    const [nome, setNome] = useState(route.params?.nomeEmpresa || 'Pizzaria do Morro');
+    const [endereco, setEndereco] = useState(route.params?.nomeEmpresa || '');
+    const [order, setOrder] = useState(route.params?.comanda || "1x calabresa e 2x coca-cola");
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0.0);
-    const [inputValue, setInputValue] = useState();
-    const [items, setItems] = useState("dinheiro");
+    const [inputValue, setInputValue] = useState(route.params?.valor || "");
+    const [items, setItems] = useState(route.params?.pagamento || "dinheiro");
     const db = getFirestore();
 
-    const ConsultarPedidos = async (documento) => {
 
-        console.log("Iniciando pesquisa");
-        const DocRef = collection(db, 'users', IdentificadorCliente, 'Pedidos');
-        const q = query(DocRef, where('id', '==', documento.data.id));
-
-        try {
-            const querySnapshot = await getDocs(q);
-
-            querySnapshot.forEach((doc) => {
-                const documentoComID = { id: doc.id, data: doc.data() };
-                // console.log(documentoComID)
-                setNome(documentoComID.data.nomeEmpresa)
-                setOrder(documentoComID.data.comanda)
-                setItems(documentoComID.data.pagamento)
-                setInputValue(documentoComID.data.valor)
-            });
-        } catch (error) {
-            console.error('Erro ao consultar o Firestore:', error);
-            throw error; // Adicione um throw para que o erro seja propagado para quem chamou a função
-        }
-    }
-    useEffect(() => {
-        ConsultarPedidos(documento)
-    }, [IdentificadorCliente]);
+    
     const formatToCurrency = (num) => {
         return "R$ " + num.toFixed(2).replace('.', ',');
     };
