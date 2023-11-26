@@ -193,7 +193,6 @@ export default function FinalizarEntrega({ route }) {
                     </View>
                 </View>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Pendentes')}
                     onPress={() => FinalizarPedido()}
                     style={styles.button}>
                     <Text>Finalizar Entrega</Text>
