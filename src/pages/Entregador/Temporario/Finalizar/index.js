@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, Modal, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Mapbox from '@rnmapbox/maps';
 import * as Location from 'expo-location';
@@ -10,6 +10,9 @@ Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMn
 export default function FinalizarEntrega() {
     const navigation = useNavigation();
     const [iconRotation, setIconRotation] = useState(0);
+    const [location, setLocation] = useState(null);
+    const [isMapExpanded, setIsMapExpanded] = useState(false);
+
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
@@ -17,9 +20,10 @@ export default function FinalizarEntrega() {
                 console.error('Permission to access location was denied');
                 return;
             }
+
             const subscription = Location.watchPositionAsync({
                 accuracy: Location.Accuracy.High,
-                timeInterval: 5000,
+                timeInterval: 1000,
                 distanceInterval: 1,
             },
                 (newLocation) => {
@@ -28,21 +32,46 @@ export default function FinalizarEntrega() {
                         setIconRotation(angle);
                     }
                     setLocation(newLocation);
+
+                    console.log('entrou')
+                    updateRouteCoordinates();
                 });
+
             return () => subscription.remove();
         })();
     }, []);
+
     function calculateAngle(coord1, coord2) {
         const deltaY = coord2.latitude - coord1.latitude;
         const deltaX = coord2.longitude - coord1.longitude;
         const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
         return angle;
     }
-    const [location, setLocation] = useState(null);
-    const [isMapExpanded, setIsMapExpanded] = useState(false);
+
+    const [routeCoordinates, setRouteCoordinates] = useState([]);
+    async function updateRouteCoordinates() {
+        const apiKey = 'pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q';
+        const apiUrl = `https://api.mapbox.com/directions/v5/mapbox/driving/-46.687909%2C-24.123248%3B-46.678451%2C-24.12218?alternatives=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${apiKey}`;
+
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            console.log(data)
+
+            if (data.code === 'Ok' && data.routes.length > 0) {
+                const route = data.routes[0].geometry.coordinates;
+                console.log(route)
+                setRouteCoordinates(route);
+            }
+        } catch (error) {
+            console.error('Erro ao obter direções:', error);
+        }
+    }
+
     const handleMapPress = () => {
         setIsMapExpanded(!isMapExpanded);
     };
+
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
@@ -50,15 +79,15 @@ export default function FinalizarEntrega() {
             scrollEnabled={!isMapExpanded}
         >
             <View style={styles.container}>
-            <View style={styles.header}>
-            <TouchableOpacity
-                    onPress={() => navigation.pop(2)}>
-                    <Icon name='chevron-back' size={30} color='#000' />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Icon name='notifications' size={30} color='#ffc000' />
-                </TouchableOpacity>
-            </View>
+                <View style={styles.header}>
+                    <TouchableOpacity
+                        onPress={() => navigation.pop(2)}>
+                        <Icon name='chevron-back' size={30} color='#000' />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Icon name='notifications' size={30} color='#ffc000' />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.pedidos}>
                     <Text style={styles.pedidosText}>Entregas pendentes</Text>
                     <View style={styles.pedidosClock}>
@@ -102,11 +131,19 @@ export default function FinalizarEntrega() {
                                     <Mapbox.Callout title="Minha localização" />
                                 </Mapbox.PointAnnotation>
                             )}
+
+                            {routeCoordinates.length > 0 && (
+                                console.log(routeCoordinates),
+                                <Mapbox.ShapeSource id="routeSource" shape={{ type: 'LineString', coordinates: routeCoordinates }}>
+                                    <Mapbox.LineLayer id="routeFill" style={{ lineColor: 'yellow', lineWidth: 3 }} />
+                                </Mapbox.ShapeSource>
+                            )}
+
                         </Mapbox.MapView>
                     </View>
                     <View style={styles.recentsContent}>
                         <View style={styles.recentsImages}>
-                        <Image source={require('../../../../img/logo_luisa.jpg')} style={styles.img} />
+                            <Image source={require('../../../../img/logo_luisa.jpg')} style={styles.img} />
                         </View>
                         <Text>
                             Nome do cliente {'\n'}
@@ -133,10 +170,10 @@ export default function FinalizarEntrega() {
                     </View>
                 </View>
                 <TouchableOpacity
-                onPress={()=>navigation.navigate('Pendentes')}
-                        style={styles.button}>
-                        <Text>Finalizar Entrega</Text>
-                    </TouchableOpacity>
+                    onPress={() => navigation.navigate('Pendentes')}
+                    style={styles.button}>
+                    <Text>Finalizar Entrega</Text>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
@@ -214,7 +251,7 @@ const styles = StyleSheet.create({
     img: {
         width: 70,
         height: 70
-      },
+    },
     comanda: {
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         elevation: 2,
