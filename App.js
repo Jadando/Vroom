@@ -33,6 +33,7 @@ import DadosEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa/DadosEmpresa'
 import EditarPerfil from './src/pages/Empresa/Perfil/ConfigEmpresa/EditarPerfil';
 import AlterarEmpresa from './src/pages/Empresa/Perfil/ConfigEmpresa/AlterarEmpresa';
 import Entregadores from './src/pages/Empresa/Perfil/Entregadores';
+import VisualizarPedidoEmpresa from './src/pages/Empresa/VisualizarPedido';
 
 // Imports relacionados ao Entregador
 import AceitarEntrega from './src/pages/Entregador/AceitarEntrega';
@@ -121,6 +122,7 @@ export default function App() {
             <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
             <Stack.Screen name='AlterarEmpresa' component={AlterarEmpresa} />
             <Stack.Screen name='Entregadores' component={Entregadores} />
+            <Stack.Screen name='VisualizarPedidoEmpresa' component={VisualizarPedidoEmpresa} />
           </Stack.Group>
 
           {/* Telas relacionadas ao Entregador */}

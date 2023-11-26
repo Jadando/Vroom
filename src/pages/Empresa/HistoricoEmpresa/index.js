@@ -50,11 +50,11 @@ export default function HistoricoEmpresa({ route }) {
                                     // const imageUrl = imageUrls.find((img) => img.id === documento.id);
                                     return (
                                         <>
-                                            <TouchableOpacity onPress={() => navigation.navigate('RastrearEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
+                                            <TouchableOpacity onPress={() => navigation.navigate('VisualizarPedidoEmpresa', { nomeCliente: documento.data.nomeCliente, comanda: documento.data.comanda, pagamento: documento.data.tipoPagamento, valor: documento.data.valor })} key={index}>
                                                 <View style={styles.recentsContent}>
                                                     <Text>
-                                                        {documento.data.comanda} {'\n'}
-                                                        {documento.data.status}
+                                                        {documento.data.status} {'\n'}
+                                                        {documento.data.data}
                                                     </Text>
                                                 </View>
                                             </TouchableOpacity>
