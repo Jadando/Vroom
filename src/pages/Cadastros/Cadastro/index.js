@@ -16,6 +16,22 @@ export default function Cadastro() {
   const [Identificador, setIdentificador] = useState();
   const auth = getAuth();
   const [modalVisible, setModalVisible] = useState(false);
+  const [efeitoExecutado, setEfeitoExecutado] = useState(false);
+  
+  useEffect(() => {
+    if (!efeitoExecutado) {
+      const delay = 20000; // 15 segundos em milissegundos
+
+      const timeoutId = setTimeout(() => {
+        setModalVisible(true);
+        setEfeitoExecutado(true);
+      }, delay);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [efeitoExecutado]);
 
   const closeModal = () => {
     setModalVisible(false);
@@ -35,7 +51,7 @@ export default function Cadastro() {
             sendEmailVerification(user).then(() => {
               console.log("Verificação de e-mail enviada com sucesso!");
               setIsLoading(false)
-              //setIdentificador(user.uid)
+              setIdentificador(user.uid)
               //setModalVisible(true);
             }).catch((error) => {
               const errorCode = error.code;
@@ -62,18 +78,6 @@ export default function Cadastro() {
       }
     }
   }
-  onAuthStateChanged(auth, (user) => {
-    if (user && user.emailVerified) {
-      console.log("Aprovado com sucesso", "seu email foi aprovado com sucesso");
-      console.log(user.emailVerified)
-      console.log(user.uid)
-      //setModalVisible(true);
-    } else {
-      console.log("Reprovado", "seu email foi reprovado");
-      console.log(user.emailVerified)
-      console.log(user.uid)
-    }
-  });
   return (
     <View style={styles.container}>
       <View style={styles.logoTop}>

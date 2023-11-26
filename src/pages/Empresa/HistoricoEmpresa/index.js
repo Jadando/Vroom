@@ -86,21 +86,29 @@ export default function HistoricoEmpresa({ route }) {
                             <View style={styles.recentsContainer}>
                                 {resultados.map((documento, index) => {
                                     // const imageUrl = imageUrls.find((img) => img.id === documento.id);
-                                    return (
-                                        <>
-                                            <TouchableOpacity onPress={() => navigation.navigate('RastrearEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
-                                                <View style={styles.recentsContent}>
-                                                <View style={styles.recentsImages}>
-                                                        {/* <Image source={{ uri: imageUrl.url }} key={documento.id} style={styles.image} /> */}
+                                    if (documento.data.status === "concluido") {
+                                        return (
+                                            <>
+                                                <TouchableOpacity onPress={() => navigation.navigate('RastrearEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
+                                                    <View style={styles.recentsContent}>
+                                                        <View style={styles.recentsImages}>
+                                                            {/* <Image source={{ uri: imageUrl.url }} key={documento.id} style={styles.image} /> */}
+                                                        </View>
+                                                        <Text>
+                                                            {documento.data.comanda} {'\n'}
+                                                            {documento.data.status}
+                                                        </Text>
                                                     </View>
-                                                    <Text>
-                                                        {documento.data.nome} {'\n'}
-                                                        {documento.data.pendentes}
-                                                    </Text>
-                                                </View>
-                                            </TouchableOpacity>
-                                        </>
-                                    );
+                                                </TouchableOpacity>
+                                            </>
+                                        );
+                                    }else{
+                                        return (
+                                            <View style={styles.container}>
+                                                <Text style={styles.Text}> Nenhum Pedido em andamento {'\n'}</Text>
+                                            </View>
+                                        );
+                                    }
                                 })}
                             </View>
                         </View>
@@ -109,7 +117,7 @@ export default function HistoricoEmpresa({ route }) {
             } else {
                 return (
                     <View style={styles.container}>
-                        <Text style={styles.Text}> Nenhum Pedido em andamento {'\n'}</Text>
+                        <Text style={styles.Text}> faz seu primeiro pedido {'\n'}</Text>
                     </View>
                 );
             }
@@ -118,11 +126,7 @@ export default function HistoricoEmpresa({ route }) {
     useEffect(() => {
         // Chama PesquisarHistorico apenas quando o componente é montado
         PesquisarHistorico();
-    }, [IdentificadorEmpresa]);
-
- 
-
-
+    }, []);
 
     return (
         <View style={styles.container}>

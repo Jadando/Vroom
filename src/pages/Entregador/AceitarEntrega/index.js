@@ -3,27 +3,32 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView,
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export default function AceitarEntrega() {
+export default function AceitarEntrega({ route }) {
     const [modalVisible, setModalVisible] = useState(false);
-    const [order, setOrder] = useState("1kg Gelo");
-    const [value, setValue] = useState("R$ 19,99");
-    const [payment, setPayment] = useState("Dinheiro");
+    const [IdentificadorEmpresa, setIdentificadorEmpresa] = useState(route.params?.IdentificadorEmpresa || '')
+    const [nomeCliente, setNomeCliente] = useState(route.params?.nomeCliente || '')
+    const [endereco, setEndereco] = useState(route.params?.endereco || 'rua penis')
+    const [codPedido, setcodPedido] = useState(route.params?.codPedido || '')
+    const [order, setOrder] = useState(route.params?.comanda || '');
+    const [value, setValue] = useState(route.params?.valor || '');
+    const [payment, setPayment] = useState(route.params?.tipoPagamento || '');
     const navigation = useNavigation();
+
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
             overScrollMode='never'
         >
             <View style={styles.container}>
-            <View style={styles.header}>
-            <TouchableOpacity
-                    onPress={() => navigation.pop(1)}>
-                    <Icon name='chevron-back' size={30} color='#000' style={{marginLeft:30}}/>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Icon name='notifications' size={30} color='#ffc000' />
-                </TouchableOpacity>
-            </View>
+                <View style={styles.header}>
+                    <TouchableOpacity
+                        onPress={() => navigation.pop(1)}>
+                        <Icon name='chevron-back' size={30} color='#000' style={{ marginLeft: 30 }} />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Icon name='notifications' size={30} color='#ffc000' />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.pedidos}>
                     <Text style={styles.pedidosText}>Entregas pendentes</Text>
                     <View style={styles.pedidosClock}>
@@ -32,21 +37,15 @@ export default function AceitarEntrega() {
                 </View>
                 <View style={styles.card}>
                     <View style={styles.recentsContent}>
-                        <View style={styles.recentsImages}>
-                        <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img}/>
-                        </View>
                         <Text>
-                            SF Refrigeração {'\n'}
-                            Cd pedido: 04
+                            Nome do cliente: {nomeCliente}{'\n'}
+                            Cd pedido: {codPedido}
                         </Text>
                     </View>
                     <View style={styles.recentsContent}>
-                        <View style={styles.recentsImages}>
-                        <Image source={require('../../../img/logo_luisa.jpg')} style={styles.img}/>
-                        </View>
                         <Text>
-                            Nome do cliente {'\n'}
-                            Luísa Oliveira
+                            Endereço {'\n'}
+                            {endereco}
                         </Text>
                     </View>
                     <View style={styles.comanda}>
@@ -83,7 +82,7 @@ export default function AceitarEntrega() {
                     </View>
                 </View>
                 <TouchableOpacity
-                onPress={()=>navigation.navigate('FinalizarEntrega')}
+                    onPress={() => navigation.navigate('FinalizarEntrega', { IdentificadorEmpresa: IdentificadorEmpresa, nomeCliente: nomeCliente, codPedido: codPedido, comanda: order, valor: value, tipoPagamento: payment })}
                     style={styles.button}>
                     <Text style={styles.buttonText}>Iniciar entrega</Text>
                 </TouchableOpacity>
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
     img: {
         width: 70,
         height: 70
-      },
+    },
     comanda: {
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         elevation: 2,

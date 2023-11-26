@@ -113,7 +113,7 @@ export default function LocalCliente({ route }) {
     };
     useEffect(() => {
         PesquisarEntrega()
-    }, [IdentificadorCliente])
+    }, [])
     const renderizarResultados = () => {
         if (mostrarResultados) {
             return (
@@ -126,7 +126,7 @@ export default function LocalCliente({ route }) {
                     <View style={styles.wrapper}>
 
                         {resultados.map((documento, index) => {
-                            if (documento.data.status === "andamento") {
+                            if (documento.data.status === "pendente") {
                                 return (
                                     <>
                                         <View style={styles.container}>
@@ -184,9 +184,9 @@ export default function LocalCliente({ route }) {
                                                     </Mapbox.MapView>
                                                 </View>
                                                 <View style={styles.deliveryTime}>
-                                                    {/* <Text>
+                                                    <Text>
                                                             Iniciou a entrega à: {formatTime(seconds)}
-                                                        </Text> */}
+                                                        </Text>
                                                 </View>
                                                 <View style={styles.recentsContent}>
                                                     <View style={styles.recentsImages}>
@@ -240,24 +240,24 @@ export default function LocalCliente({ route }) {
                                         </Modal>
                                     </>
                                 );
-                            } else if(documento.data.status === "concluido"){
-                                return (
-                                    <View style={styles.container}>
-                                        <View style={styles.header}>
-                                            <TouchableOpacity
-                                                onPress={() => setModalVisible(!modalVisible)}
-                                                style={styles.headerBell}>
-                                                <Icon name='notifications' size={30} color='#ffc000' />
-                                                <Icon name='alert-circle' size={20} color='#cf2e2e' style={styles.alertIcon} />
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={styles.pedidos}>
-                                            <Text style={styles.pedidosText}>Nenhum Pedido a Caminho</Text>
-                                            <View style={styles.pedidosClock}>
-                                            </View>
-                                        </View>
-                                    </View>
-                                );
+                            } else {
+                                // return (
+                                //     <View style={styles.container}>
+                                //         <View style={styles.header}>
+                                //             <TouchableOpacity
+                                //                 onPress={() => setModalVisible(!modalVisible)}
+                                //                 style={styles.headerBell}>
+                                //                 <Icon name='notifications' size={30} color='#ffc000' />
+                                //                 <Icon name='alert-circle' size={20} color='#cf2e2e' style={styles.alertIcon} />
+                                //             </TouchableOpacity>
+                                //         </View>
+                                //         <View style={styles.pedidos}>
+                                //             <Text style={styles.pedidosText}>Nenhum Pedido a Caminho</Text>
+                                //             <View style={styles.pedidosClock}>
+                                //             </View>
+                                //         </View>
+                                //     </View>
+                                // );
                             }
                         })}
                     </View>

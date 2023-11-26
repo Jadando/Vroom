@@ -19,14 +19,14 @@ export default function VisualizarPedido({ route }) {
 
         console.log("Iniciando pesquisa");
         const DocRef = collection(db, 'users', IdentificadorCliente, 'Pedidos');
-        const q = query(DocRef,where('id','==',documento.data.id));
-        
+        const q = query(DocRef, where('id', '==', documento.data.id));
+
         try {
             const querySnapshot = await getDocs(q);
 
             querySnapshot.forEach((doc) => {
                 const documentoComID = { id: doc.id, data: doc.data() };
-               // console.log(documentoComID)
+                // console.log(documentoComID)
                 setNome(documentoComID.data.nomeEmpresa)
                 setOrder(documentoComID.data.comanda)
                 setItems(documentoComID.data.pagamento)
@@ -69,6 +69,7 @@ export default function VisualizarPedido({ route }) {
                         <TextInput
                             style={{ fontSize: 16 }}
                             value={nome}
+                            editable={false}
                         >
                         </TextInput>
                     </View>
@@ -79,6 +80,7 @@ export default function VisualizarPedido({ route }) {
                                 multiline={true}
                                 numberOfLines={4}
                                 value={order}
+                                editable={false}
                             />
                         </View>
                         <Text style={styles.comandaTitle}>Forma de pagamento:</Text>
@@ -99,6 +101,7 @@ export default function VisualizarPedido({ route }) {
                         ]}>
                             <TextInput
                                 value={inputValue}
+                                editable={false}
                                 onChangeText={text => {
                                     // Atualize o valor de inputValue diretamente
                                     setInputValue(text);

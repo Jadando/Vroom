@@ -3,16 +3,20 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal,
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as Clipboard from 'expo-clipboard';
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
-export default function IniciarEntrega() {
+export default function IniciarEntrega({ route }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [nome, setNome] = useState('');
-  const [endereco, setEndereco] = useState('');
-  const [order, setOrder] = useState("");
+  const [nomeEmpresa, setNomeEmpresa] = useState(route.params?.nomeEmpresa);
+  const [nome, setNome] = useState('dona nene');
+  const [endereco, setEndereco] = useState('rua ali');
+  const [order, setOrder] = useState("2kg de frango");
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(0.0);
-  const [inputValue, setInputValue] = useState('R$ 0,00');
+  const [inputValue, setInputValue] = useState('R$ 10,00');
+  const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
   const status = "pendente"
+  const db = getFirestore();
   const [items, setItems] = useState([
     { label: 'Dinheiro', value: 'dinheiro' },
     { label: 'Cartão débito ou crédito', value: 'cartao' },
@@ -30,13 +34,36 @@ export default function IniciarEntrega() {
 
 
   const linkGeneration = async () => {
-    await Clipboard.setStringAsync(`https://vroom-401401.firebaseapp.com/${encodeURIComponent(nome)}/${encodeURIComponent(endereco)}/${encodeURIComponent(order)}/${encodeURIComponent(value)}/${encodeURIComponent(inputValue)}/${encodeURIComponent(status)}`);
+    await Clipboard.setStringAsync(`https://vroom-401401.firebaseapp.com/${encodeURIComponent(nome)}/${encodeURIComponent(nomeEmpresa)}/${encodeURIComponent(endereco)}/${encodeURIComponent(order)}/${encodeURIComponent(value)}/${encodeURIComponent(inputValue)}/${encodeURIComponent(status)}`);
   }
-  function handleOpenURL(event) {
-    console.log(event.url);
-    // Aqui você pode navegar para uma determinada tela ou fazer outra ação conforme o URL
+  function gerarCodigoUnico() {
+    // Obtém o timestamp atual em milissegundos
+    const timestamp = new Date().getTime() % 1;
+
+    // Gera um número aleatório entre 0 e 9999
+    const numeroAleatorio = Math.floor(Math.random() * 850);
+
+    // Combina o timestamp com o número aleatório para criar um código único
+    const codigoUnico = `${timestamp}${numeroAleatorio}`;
+
+    return codigoUnico;
   }
 
+  const IniciarPedido = () => {
+    //console.log("estive aqui")
+    const codigoGerado = gerarCodigoUnico();
+    const usersRefs = collection(db, 'users', IdentificadorEmpresa, 'Pedidos');
+    const data = {
+      nomeCliente: nome,
+      endereco: endereco,
+      comanda: order,
+      tipoPagamento: value,
+      valor: inputValue,
+      status: status,
+      codPedido: codigoGerado
+    }
+    addDoc(usersRefs, data)
+  }
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -186,7 +213,7 @@ export default function IniciarEntrega() {
               </View>
             </View>
             <TouchableOpacity
-              onPress={() => {setModalVisible(!modalVisible) }}
+              onPress={() => { setModalVisible(!modalVisible); IniciarPedido(); }}
               style={styles.modalButton}>
               <Text>Ok entendi</Text>
             </TouchableOpacity>

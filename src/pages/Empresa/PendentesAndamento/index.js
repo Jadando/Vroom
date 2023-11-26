@@ -85,23 +85,31 @@ export default function PendentesAndamento({ route }) {
                             <View style={styles.recentsContainer}>
                                 {resultados.map((documento, index) => {
                                     // const imageUrl = imageUrls.find((img) => img.id === documento.id);
-                                    return (
-                                        <>
-                                            <TouchableOpacity onPress={() => navigation.navigate('RastrearEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
-                                                <View style={styles.recentsContent}>
-                                                    <Text>
-                                                        {documento.data.nome} {'\n'}
-                                                        {documento.data.pendentes}
-                                                    </Text>
-                                                    <View style={styles.recentsImages}>
-                                                        <View style={styles.ongoing}>
-                                                            <Icon name='bicycle-outline' size={40} color='#000' style={{ transform: [{ rotate: '-30deg' }] }} />
+                                    if (documento.data.status === "pendente") {
+                                        return (
+                                            <>
+                                                <TouchableOpacity onPress={() => navigation.navigate('RastrearEmpresa', { IdentificadorEmpresa: documento.id })} key={index}>
+                                                    <View style={styles.recentsContent}>
+                                                        <Text>
+                                                            {documento.data.comanda} {'\n'}
+                                                            {documento.data.status}
+                                                        </Text>
+                                                        <View style={styles.recentsImages}>
+                                                            <View style={styles.ongoing}>
+                                                                <Icon name='bicycle-outline' size={40} color='#000' style={{ transform: [{ rotate: '-30deg' }] }} />
+                                                            </View>
                                                         </View>
                                                     </View>
-                                                </View>
-                                            </TouchableOpacity>
-                                        </>
-                                    );
+                                                </TouchableOpacity>
+                                            </>
+                                        );
+                                    } else {
+                                        return (
+                                            <View style={styles.container}>
+                                                <Text style={styles.Text}> nenhum a caminho pedido {'\n'}</Text>
+                                            </View>
+                                        );
+                                    }
                                 })}
                             </View>
                         </View>
@@ -110,16 +118,15 @@ export default function PendentesAndamento({ route }) {
             } else {
                 return (
                     <View style={styles.container}>
-                        <Text style={styles.Text}> Nenhum Pedido em andamento {'\n'}</Text>
+                        <Text style={styles.Text}> Você ainda não fez nenhum pedido {'\n'}</Text>
                     </View>
                 );
             }
         }
     };
     useEffect(() => {
-        // Chama PesquisarHistorico apenas quando o componente é montado
         PesquisarHistorico();
-    }, [IdentificadorEmpresa]);
+    }, []);
 
     return (
         <View style={styles.container}>

@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Home from '../../pages/Cliente/Home';
 import Search from '../../pages/Cliente/Search';
@@ -110,7 +111,7 @@ export function Tabs({ route }) {
                 },
             })}
         >
-            <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente,cep: documentoComID.data.cep  }} />
+            <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente, cep: documentoComID.data.cep }} />
             <Tab.Screen name="Buscar" component={Search} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente, cep: documentoComID.data.cep }} />
             <Tab.Screen name="Pedidos" component={LocalCliente} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente }} />
             <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} initialParams={{ IdentificadorCliente: IdentificadorCliente }} />
@@ -120,10 +121,28 @@ export function Tabs({ route }) {
 
 
 export function TabsEntregador({ route }) {
-
     const [IdentificadorEntregador, setIdentificador] = useState(route.params?.IdentificadorEntregador || '');
-    //   console.log(IdentificadorEntregador+ " UIDE ENTREGADOR")
+    const [documentoComID, setDocumentoComID] = useState(null);
     const tema = useTheme();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const db = getFirestore();
+            const q = query(collection(db, "users"), where("id", "==", IdentificadorEntregador));
+            const querySnapshot = await getDocs(q);
+
+            querySnapshot.forEach((doc) => {
+                setDocumentoComID({ data: doc.data() });
+            });
+        };
+
+        fetchData();
+    }, [IdentificadorEntregador]);
+
+    if (!documentoComID) {
+        // Se os dados ainda não foram carregados, você pode renderizar algo de carregamento ou null
+        return null;
+    }
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -158,8 +177,8 @@ export function TabsEntregador({ route }) {
                 },
             })}
         >
-            <Tab.Screen name="Pendentes" component={Pendentes} options={{ headerShown: false }} initialParams={{ IdentificadorEntregador: IdentificadorEntregador }} />
-            <Tab.Screen name="Histórico" component={Historico} options={{ headerShown: false }} initialParams={{ IdentificadorEntregador: IdentificadorEntregador }} />
+            <Tab.Screen name="Pendentes" component={Pendentes} options={{ headerShown: false }} initialParams={{ IdentificadorEntregador: IdentificadorEntregador, IdentificadorEmpresa: documentoComID.data.idEmpresa }} />
+            <Tab.Screen name="Histórico" component={Historico} options={{ headerShown: false }} initialParams={{ IdentificadorEntregador: IdentificadorEntregador, IdentificadorEmpresa: documentoComID.data.idEmpresa }} />
             <Tab.Screen name="Perfil" component={PerfilEntregador} options={{ headerShown: false }} initialParams={{ IdentificadorEntregador: IdentificadorEntregador }} />
         </Tab.Navigator>
 
@@ -168,8 +187,26 @@ export function TabsEntregador({ route }) {
 }
 export function TabsEmpresa({ route }) {
     const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
-    //   console.log(IdentificadorEmpresa + " UIDE DA EMPRESA")
+    const [documentoComID, setDocumentoComID] = useState(null);
     const tema = useTheme();
+    useEffect(() => {
+        const fetchData = async () => {
+            const db = getFirestore();
+            const q = query(collection(db, "users"), where("id", "==", IdentificadorEmpresa));
+            const querySnapshot = await getDocs(q);
+
+            querySnapshot.forEach((doc) => {
+                setDocumentoComID({ data: doc.data() });
+            });
+        };
+
+        fetchData();
+    }, [IdentificadorEmpresa]);
+
+    if (!documentoComID) {
+        // Se os dados ainda não foram carregados, você pode renderizar algo de carregamento ou null
+        return null;
+    }
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -204,7 +241,7 @@ export function TabsEmpresa({ route }) {
                 },
             })}
         >
-            <Tab.Screen name="IniciarﾠEntrega" component={IniciarEntrega} options={{ headerShown: false }} initialParams={{ IdentificadorEmpresa: IdentificadorEmpresa }} />
+            <Tab.Screen name="IniciarﾠEntrega" component={IniciarEntrega} options={{ headerShown: false }} initialParams={{ IdentificadorEmpresa: IdentificadorEmpresa, nomeEmpresa: documentoComID.data.nome }} />
             <Tab.Screen name="Pendentes" component={PendentesAndamento} options={{ headerShown: false }} initialParams={{ IdentificadorEmpresa: IdentificadorEmpresa }} />
             <Tab.Screen name="Histórico" component={HistoricoEmpresa} options={{ headerShown: false }} initialParams={{ IdentificadorEmpresa: IdentificadorEmpresa }} />
             <Tab.Screen name="Perfil" component={PerfilEmpresa} options={{ headerShown: false }} initialParams={{ IdentificadorEmpresa: IdentificadorEmpresa }} />

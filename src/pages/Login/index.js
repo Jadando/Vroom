@@ -1,57 +1,24 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
-import { getFirestore, getDocs, collection, where, query } from "firebase/firestore";
+import { signInWithEmailAndPassword, getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, getDocs, collection, where, query, setDoc, doc } from "firebase/firestore";
 import { useTheme } from 'styled-components';
-// import * as WebBrowser from 'expo-web-browser';
-// import * as Google from 'expo-auth-session/providers/google';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as App from "../../firebaseConnection";
 import LoadingModal from '../../components/loadingModal';
-//WebBrowser.maybeCompleteAuthSession()
+import { salvarDadosLocalmente, carregarDadosLocalmente } from '../../components/async-storage';
 
 export default function Login() {
     const navigation = useNavigation();
     const tema = useTheme();
     const styles = getstyles(tema);
     const [isLoading, setIsLoading] = useState(false);
-    const [email, setEmail] = useState('empresa@gmail.com');
+    const [email, setEmail] = useState('joao.adriano20056@gmail.com');
     const [senha, setSenha] = useState('123456');
-    const [UserGoogle, SetUserGoogle] = React.useState(null);
+    const [tipoUser, setTipoUser] = useState(null)
+    const auth = getAuth();
+    const db = getFirestore();
 
-
-    // useEffect(() => {
-    //     handledSingInWithGoogle()
-    // }, [response])
-
-    // async function handledSingInWithGoogle() {
-    //     const user = await AsyncStorage.getItem("@user");
-    //     if (!user) {
-    //         if (response?.type === "success") {
-    //             await getUserInfo(response.authentication.accessToken);
-    //         }
-    //     } else {
-    //         SetUserGoogle(JSON.parse(user));
-    //     }
-    // }
-
-    // const getUserInfo = async (token) => {
-    //     if (!token) return;
-    //     try {
-    //         const response = await fetch(
-    //             "https://www.googleapis.com/userinfo/v2/me",
-    //             {
-    //                 headers: { Authorization: `Bearer ${token}` },
-    //             }
-    //         );
-    //         const user = await response.json();
-    //         await AsyncStorage.setItem("@user", JSON, stringify(user));
-    //         SetUserGoogle(user);
-    //     } catch (error) {
-    //         console.log("erro")
-    //     }
-    // }
     function validarEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
@@ -62,8 +29,6 @@ export default function Login() {
         if (email !== '' && senha !== '') {
             //   setIsLoading(true);
             if (validarEmail(email)) {
-                const auth = getAuth();
-                const db = getFirestore();
                 signInWithEmailAndPassword(auth, email, senha)
                     .then(async (userCredential) => {
                         setIsLoading(true);
@@ -86,17 +51,25 @@ export default function Login() {
                                         // console.log(`Documento ID: ${doc.id} e tipo: ${tipo}`);
                                         switch (tipo) {
                                             case 'cliente':
-                                                setIsLoading(false);
+                                                //setIsLoading(false);
+                                                setTipoUser(tipo)
+                                                salvarDadosLocalmente('tipoUser', tipo);
                                                 navigation.navigate('Home', {
                                                     IdentificadorCliente: uide
                                                 });
                                                 break;
                                             case 'empresa':
+                                                //setIsLoading(false);
+                                                setTipoUser(tipo)
+                                                salvarDadosLocalmente('tipoUser', tipo);
                                                 navigation.navigate('IniciarEntrega', {
                                                     IdentificadorEmpresa: uide
                                                 });
                                                 break;
                                             case 'entregador':
+                                                //setIsLoading(false);
+                                                setTipoUser(tipo)
+                                                salvarDadosLocalmente('tipoUser', tipo);
                                                 navigation.navigate('Pendentes', {
                                                     IdentificadorEntregador: uide
                                                 });
@@ -137,8 +110,43 @@ export default function Login() {
             setIsLoading(false);
         }
     }
-
-
+    onAuthStateChanged(auth, (user) => {
+        // setIsLoading(true)
+        carregarDadosLocalmente('tipoUser',setTipoUser);
+        if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/auth.user
+            const uid = user.uid;
+            console.log(" id do usuario: " + uid)
+            console.log("Esse eo tipo do usuario: " + tipoUser)
+            switch (tipoUser) {
+                case 'cliente':
+                    setIsLoading(false);
+                    navigation.navigate('Home', {
+                        IdentificadorCliente: uid
+                    });
+                    break;
+                case 'empresa':
+                    navigation.navigate('IniciarEntrega', {
+                        IdentificadorEmpresa: uid
+                    });
+                    break;
+                case 'entregador':
+                    navigation.navigate('Pendentes', {
+                        IdentificadorEntregador: uid
+                    });
+                    break;
+                default:
+                    // alert("Não exite conta com esse email")
+                    break;
+            }
+            //setIsLoading(false)
+            // ...
+        } else {
+            // User is signed out
+            // ...
+        }
+    });
 
     return (
         <View style={styles.container}>
@@ -215,7 +223,6 @@ export default function Login() {
         </View>
     );
 };
-
 const getstyles = (tema) => StyleSheet.create({
     container: {
         flex: 1,

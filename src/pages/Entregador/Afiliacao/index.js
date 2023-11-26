@@ -13,7 +13,7 @@ export default function EmpresasAfiliadas({ route }) {
     const [Gambiarra, setGambiarra] = useState("ABcH9bNye3SS6tpbHqKqItMREn72")
 
     const Gambi = () => {
-        if (Gambiarra !== IdentificadorEntregador) {
+        if (Gambiarra !== Gambiarra) {
             return (
                 <View style={styles.container}>
                     <View style={styles.header}>

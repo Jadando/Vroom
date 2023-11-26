@@ -3,10 +3,10 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
-import axios from 'axios';
+import {collection, query, where, getFirestore, onSnapshot, addDoc } from 'firebase/firestore';
+import * as Linking from 'expo-linking';
 import { Alert } from 'react-native';
+import queryString from 'query-string';
 
 
 export default function Home({ route }) {
@@ -22,89 +22,75 @@ export default function Home({ route }) {
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
-//   // function enviarDadosParaAPI(valores) {
-//   //   axios.post('http://vroom-401401.web.app/api/enviarDados', valores)
-//   //     .then(response => {
-//   //       const { url } = response.data;
-//   //       console.log(url+ " teste")
-//   //       alert(`Valores enviados com sucesso! Abra o link: ${url}`);
-//   //     })
-//   //     .catch(error => {
-//   //       console.error('Erro ao enviar dados para a API', error);
-//   //     });
-//   // }
-  
-//   // Exemplo de uso
-//   const valores = {
-//     nomeEmpresa: 'penis',
-//     endereco: 'enderecoDaEmpresa',
-//     comanda: 'comanda123',
-//     pagamento: 'cartao',
-//     valor: '100.00',
-//     status: 'pendente'
-//   };
-//   console.log(valores.comanda)
-//  //enviarDadosParaAPI(valores);
-  const CarregarHistorico = async () => {
-    setIsLoading(true);
+  useEffect(() => {
+    // Adiciona um manipulador para lidar com deep linking
+    const manipularDeepLinking = async (evento) => {
+      // Extrai a query string da URL do deep link
+      const url = evento.url;
 
+      // Extrai os valores da query string
+      const params = url ? queryString.parse(url.replace('vroom://?', '')) : null;
+
+      const nomeEmpresa = params && params.empresa;
+      const endereco = params && params.endereco;
+      const comanda = params && params.comanda;
+      const pagamento = params && params.pagamento;
+      const valor = params && params.valor;
+      const status = params && params.status;
+
+      // Exibe um alerta com as informações
+      if (nomeEmpresa && endereco && comanda && pagamento && valor && status) {
+        const mensagem = `Nome da Empresa: ${nomeEmpresa}\nEndereço: ${endereco}\nComanda: ${comanda}\nPagamento: ${pagamento}\nValor: ${valor}\nStatus: ${status}`;
+        Alert.alert("Detalhes do Pedido", mensagem);
+        const pedidosRef = collection(db, "users", IdentificadorCliente, "Pedidos");
+
+        try {
+          const novoPedidoDoc = await addDoc(pedidosRef, {
+            nomeEmpresa: nomeEmpresa,
+            comanda: comanda,
+            pagamento: pagamento,
+            valor: valor,
+            status: status,
+          });
+
+          console.log("Pedido adicionado com sucesso. ID do documento:", novoPedidoDoc.id);
+        } catch (error) {
+          console.error('Erro ao adicionar o pedido:', error);
+        }
+
+      }
+    }
+
+    // Adiciona o manipulador ao evento de deep linking
+    const linkEvento = Linking.addEventListener('url', manipularDeepLinking);
+
+    // Remove o manipulador quando o componente é desmontado
+    return () => {
+      linkEvento.remove();
+    };
+  }, []);
+  useEffect(() => {
     const HistoricoRef = collection(db, 'users', IdentificadorCliente, 'Pedidos');
 
-    const q = query(HistoricoRef,where('status','==','concluido'));
+    // Adicione seu filtro usando 'where'
+    const q = query(HistoricoRef, where('status', '==', 'pendente')); // Substitua 'campo' e 'valor' pelos seus critérios de filtro
 
-    try {
-      const querySnapshot = await getDocs(q);
-      const documentosEncontrados = [];
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const documentosEncontrados = [];
 
-      querySnapshot.forEach((doc) => {
-        const documentoComID = { id: doc.id, data: doc.data() };
-        documentosEncontrados.push(documentoComID);
-      });
+        querySnapshot.forEach((doc) => {
+            const documentoComID = { id: doc.id, data: doc.data() };
+            documentosEncontrados.push(documentoComID);
+        });
 
-      return documentosEncontrados;
-    } catch (error) {
-      console.error('Erro ao consultar o Firestore:', error);
-      throw error; // Adicione um throw para que o erro seja propagado para quem chamou a função
-    }
-  }
+        setResultados(documentosEncontrados);
+        setIsLoading(false);
+        setMostrarResultados(true);
+    });
 
-  // async function DonwloadImg(documento) {
-  //   try {
-  //     const storage = getStorage();
-  //     const imageRef = ref(storage, `images/users/empresa/${documento.id}/${documento.id}_profile_picture`);
-  //     const url = await getDownloadURL(imageRef);
-  //     const response = await fetch(url);
-  //     const data = await response.text();
-  //     const numericArray = data.split(",");
-  //     const asciiString = numericArray.map((numericValue) => String.fromCharCode(parseInt(numericValue))).join("");
-  //     const imageUrl = {
-  //       id: documento.id,
-  //       url: 'data:image/jpeg;base64,' + asciiString
-  //     };
-
-  //     setImageUrls((prevImageUrls) => [...prevImageUrls, imageUrl]);
-  //   } catch (error) {
-  //     console.error('Erro ao recuperar a URL da imagem:', error);
-  //   }
-  // }
-
-  const PesquisarHistorico = async () => {
-    try {
-      const resultadoDaConsulta = await CarregarHistorico();
-      setImageUrls([]);
-      resultadoDaConsulta.forEach(async (documento) => {
-        // Vou adicionar uma função assíncrona aqui para baixar a imagem, se necessário
-        // await DonwloadImg(documento);
-        // Adicione a lógica necessária para baixar a imagem, se necessário
-      });
-      setResultados(resultadoDaConsulta);
-      setIsLoading(false);
-      setMostrarResultados(true);
-    } catch (error) {
-      setIsLoading(false);
-      console.error('Erro ao consultar o Firestore:', error);
-    }
-  };
+    // Limpe a assinatura quando o componente for desmontado ou quando necessário
+    return () => unsubscribe();
+}, []);
   const renderizarResultados = () => {
     if (mostrarResultados) {
       if (resultados.length > 0) {
@@ -113,14 +99,10 @@ export default function Home({ route }) {
             <Text style={styles.recentsTitle}>Pedidos recentemente</Text>
             <View style={styles.recentsContainer}>
               {resultados.map((documento, index) => {
-                // const imageUrl = imageUrls.find((img) => img.id === documento.id);
                 return (
                   <>
                     <TouchableOpacity onPress={() => navigation.navigate('VisualizarPedido', { IdentificadorCliente, Documento: documento })} key={index}>
                       <View style={styles.recentsContent}>
-                        <View style={styles.recentsImages}>
-                          {/* <Image source={{ uri: imageUrl.url }} key={documento.id} style={styles.image} /> */}
-                        </View>
                         <Text style={styles.Text}>
                           {documento.data.status} {'\n'}
                           {documento.data.data}
@@ -144,10 +126,6 @@ export default function Home({ route }) {
       }
     }
   };
-  useEffect(() => {
-    // Chama PesquisarHistorico apenas quando o componente é montado
-    PesquisarHistorico();
-  }, [IdentificadorCliente]);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
