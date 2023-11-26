@@ -8,7 +8,6 @@ export default function VisualizarPedidoEmpresa({ route }) {
     const navigation = useNavigation()
 
     const [nome, setNome] = useState(route.params?.nomeCliente || '');
-    const [endereco, setEndereco] = useState(route.params?.nomeEmpresa || '');
     const [order, setOrder] = useState(route.params?.comanda || '');
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0.0);
@@ -17,7 +16,7 @@ export default function VisualizarPedidoEmpresa({ route }) {
     const db = getFirestore();
 
 
-    
+
     const formatToCurrency = (num) => {
         return "R$ " + num.toFixed(2).replace('.', ',');
     };
@@ -30,7 +29,7 @@ export default function VisualizarPedidoEmpresa({ route }) {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => navigation.pop(1)}>
-                    <Icon name='chevron-back' size={30} color='#000' />
+                        <Icon name='chevron-back' size={30} color='#000' />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
                 </View>
@@ -42,7 +41,7 @@ export default function VisualizarPedidoEmpresa({ route }) {
                 <View style={styles.card}>
                     <View style={styles.recentsContent}>
                         <Text>
-                            Nome da Empresa:
+                            Cliente:
                         </Text>
                         <TextInput
                             style={{ fontSize: 16 }}
