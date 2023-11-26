@@ -8,12 +8,12 @@ import { getFirestore, collection, addDoc } from "firebase/firestore";
 export default function IniciarEntrega({ route }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [nomeEmpresa, setNomeEmpresa] = useState(route.params?.nomeEmpresa);
-  const [nome, setNome] = useState('dona nene');
-  const [endereco, setEndereco] = useState('rua ali');
-  const [order, setOrder] = useState("2kg de frango");
+  const [nome, setNome] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [order, setOrder] = useState('');
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(0.0);
-  const [inputValue, setInputValue] = useState('R$ 10,00');
+  const [inputValue, setInputValue] = useState('');
   const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
   const db = getFirestore();
   const [items, setItems] = useState([
@@ -84,7 +84,7 @@ export default function IniciarEntrega({ route }) {
         <View style={styles.card}>
           <View style={styles.recentsContent}>
             <Text>
-              Nome do cliente:
+              Nome do cliente
             </Text>
             <TextInput
               style={{ fontSize: 16 }}
@@ -96,7 +96,7 @@ export default function IniciarEntrega({ route }) {
           </View>
           <View style={styles.recentsContent}>
             <Text>
-              Endereço:
+              Endereço
             </Text>
             <TextInput
               style={{ fontSize: 16 }}
@@ -106,7 +106,7 @@ export default function IniciarEntrega({ route }) {
             />
           </View>
           <View style={styles.comanda}>
-            <Text style={styles.comandaTitle}>Comanda do pedido:</Text>
+            <Text style={styles.comandaTitle}>Comanda do pedido</Text>
             <View style={styles.comandaDescription}>
               <TextInput
                 placeholder='Descrição do pedido'
@@ -116,7 +116,7 @@ export default function IniciarEntrega({ route }) {
                 value={order}
               />
             </View>
-            <Text style={styles.comandaTitle}>Forma de pagamento:</Text>
+            <Text style={styles.comandaTitle}>Forma de pagamento</Text>
             <View style={styles.comandaPayment}>
               <DropDownPicker
                 open={open}

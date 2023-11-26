@@ -30,9 +30,6 @@ export default function VisualizarHistorico({ route }) {
                 </View>
                 <View style={styles.pedidos}>
                     <Text style={styles.pedidosText}>Historico entrega</Text>
-                    <View style={styles.pedidosClock}>
-                        <Icon name='time-outline' size={30} color='#000' />
-                    </View>
                 </View>
                 <View style={styles.card}>
                     <View style={styles.recentsContent}>

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { getFirestore, getDocs, where, collection, query } from "firebase/firestore";
+import { useNavigation } from '@react-navigation/native';
 
 export default function VisualizarPedido({ route }) {
+    const navigation = useNavigation()
 
     const [nome, setNome] = useState(route.params?.nomeEmpresa || 'Pizzaria do Morro');
     const [endereco, setEndereco] = useState(route.params?.nomeEmpresa || '');
@@ -27,15 +29,15 @@ export default function VisualizarPedido({ route }) {
         >
             <View style={styles.container}>
                 <View style={styles.header}>
+                    <TouchableOpacity onPress={() => navigation.pop(1)}>
+                    <Icon name='chevron-back' size={30} color='#000' />
+                    </TouchableOpacity>
                     <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
                 </View>
 
 
                 <View style={styles.pedidos}>
-                    <Text style={styles.pedidosText}>Historico Pedido</Text>
-                    <View style={styles.pedidosClock}>
-                        <Icon name='timer' size={30} color='#000' />
-                    </View>
+                    <Text style={styles.pedidosText}>Detalhes do pedido</Text>
                 </View>
                 <View style={styles.card}>
                     <View style={styles.recentsContent}>
@@ -60,7 +62,7 @@ export default function VisualizarPedido({ route }) {
                             />
                         </View>
                         <Text style={styles.comandaTitle}>Forma de pagamento:</Text>
-                        <View style={styles.comandaPayment}>
+                        <View style={styles.comandaPaymentValue}>
                             <Text>{items}</Text>
                         </View>
                         <Text style={[
