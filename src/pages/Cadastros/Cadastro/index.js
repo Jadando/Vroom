@@ -17,6 +17,7 @@ export default function Cadastro() {
   const auth = getAuth();
   const [modalVisible, setModalVisible] = useState(false);
   const [efeitoExecutado, setEfeitoExecutado] = useState(false);
+  
   useEffect(() => {
     if (!efeitoExecutado) {
       const delay = 20000; // 15 segundos em milissegundos
@@ -31,6 +32,7 @@ export default function Cadastro() {
       };
     }
   }, [efeitoExecutado]);
+
   const closeModal = () => {
     setModalVisible(false);
   }

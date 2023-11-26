@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth, onAuthStateChanged } from "firebase/auth";
@@ -6,8 +6,7 @@ import { getFirestore, getDocs, collection, where, query, setDoc, doc } from "fi
 import { useTheme } from 'styled-components';
 import * as App from "../../firebaseConnection";
 import LoadingModal from '../../components/loadingModal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { salvarDadosLocalmente, carregarDadosLocalmente } from '../../components/async-storage';
 
 export default function Login() {
     const navigation = useNavigation();
@@ -19,24 +18,7 @@ export default function Login() {
     const [tipoUser, setTipoUser] = useState(null)
     const auth = getAuth();
     const db = getFirestore();
-    const salvarDadosLocalmente = async (chave, valor) => {
-        try {
-            await AsyncStorage.setItem(chave, valor);
-        } catch (error) {
-            console.error('Erro ao salvar dados localmente:', error);
-        }
-    };
 
-    const carregarDadosLocalmente = async (chave) => {
-        try {
-            const valor = await AsyncStorage.getItem(chave);
-            if (valor !== null) {
-                setTipoUser(valor);
-            }
-        } catch (error) {
-            console.error('Erro ao carregar dados localmente:', error);
-        }
-    };
     function validarEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
@@ -128,43 +110,43 @@ export default function Login() {
             setIsLoading(false);
         }
     }
-    // onAuthStateChanged(auth, (user) => {
-    //     // setIsLoading(true)
-    //     carregarDadosLocalmente('tipoUser');
-    //     if (user) {
-    //         // User is signed in, see docs for a list of available properties
-    //         // https://firebase.google.com/docs/reference/js/auth.user
-    //         const uid = user.uid;
-    //         console.log(" id do usuario: " + uid)
-    //         console.log("Esse eo tipo do usuario: " + tipoUser)
-    //         switch (tipoUser) {
-    //             case 'cliente':
-    //                 setIsLoading(false);
-    //                 navigation.navigate('Home', {
-    //                     IdentificadorCliente: uid
-    //                 });
-    //                 break;
-    //             case 'empresa':
-    //                 navigation.navigate('IniciarEntrega', {
-    //                     IdentificadorEmpresa: uid
-    //                 });
-    //                 break;
-    //             case 'entregador':
-    //                 navigation.navigate('Pendentes', {
-    //                     IdentificadorEntregador: uid
-    //                 });
-    //                 break;
-    //             default:
-    //                 // alert("Não exite conta com esse email")
-    //                 break;
-    //         }
-    //         //setIsLoading(false)
-    //         // ...
-    //     } else {
-    //         // User is signed out
-    //         // ...
-    //     }
-    // });
+    onAuthStateChanged(auth, (user) => {
+        // setIsLoading(true)
+        carregarDadosLocalmente('tipoUser',setTipoUser);
+        if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/auth.user
+            const uid = user.uid;
+            console.log(" id do usuario: " + uid)
+            console.log("Esse eo tipo do usuario: " + tipoUser)
+            switch (tipoUser) {
+                case 'cliente':
+                    setIsLoading(false);
+                    navigation.navigate('Home', {
+                        IdentificadorCliente: uid
+                    });
+                    break;
+                case 'empresa':
+                    navigation.navigate('IniciarEntrega', {
+                        IdentificadorEmpresa: uid
+                    });
+                    break;
+                case 'entregador':
+                    navigation.navigate('Pendentes', {
+                        IdentificadorEntregador: uid
+                    });
+                    break;
+                default:
+                    // alert("Não exite conta com esse email")
+                    break;
+            }
+            //setIsLoading(false)
+            // ...
+        } else {
+            // User is signed out
+            // ...
+        }
+    });
 
     return (
         <View style={styles.container}>
@@ -241,7 +223,6 @@ export default function Login() {
         </View>
     );
 };
-
 const getstyles = (tema) => StyleSheet.create({
     container: {
         flex: 1,

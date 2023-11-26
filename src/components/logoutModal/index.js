@@ -2,18 +2,20 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Modal } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { getAuth, signOut } from "firebase/auth";
+import { excluirDadosLocalmente } from '../async-storage';
 
 export default function LogoutModal({ modalVisible, setModalVisible }) {
   const navigation = useNavigation();
   const closeModal = () => {
     setModalVisible(false);
   }
-  const SignOut = () => {
+  const SignOut = async () => {
+    await excluirDadosLocalmente('tipoUser');
     const auth = getAuth();
     signOut(auth).then(() => {
       navigation.dispatch(StackActions.popToTop())
-      console.log("ocorreu com sucesso")
       // Sign-out successful.
+      console.log("funciono")
     }).catch((error) => {
       // An error happened.
       console.log("ouve um erro")
