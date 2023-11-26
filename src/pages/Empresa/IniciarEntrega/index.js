@@ -15,6 +15,8 @@ export default function IniciarEntrega({ route }) {
   const [value, setValue] = useState(0.0);
   const [inputValue, setInputValue] = useState('R$ 10,00');
   const [IdentificadorEmpresa, setIdentificador] = useState(route.params?.IdentificadorEmpresa || '');
+  const timeElapsed = Date.now();
+  const today = new Date(timeElapsed);
   const db = getFirestore();
   const [items, setItems] = useState([
     { label: 'Dinheiro', value: 'dinheiro' },
@@ -58,7 +60,8 @@ export default function IniciarEntrega({ route }) {
       tipoPagamento: value,
       valor: inputValue,
       status: "pendente",
-      codPedido: codigoGerado
+      codPedido: codigoGerado,
+      data: today.toLocaleDateString(),
     }
     addDoc(usersRefs, data)
   }
