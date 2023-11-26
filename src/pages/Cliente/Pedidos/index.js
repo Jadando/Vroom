@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Mapbox from '@rnmapbox/maps';
 import * as Location from 'expo-location';
-import { getDocs, collection, query, where, getFirestore } from 'firebase/firestore';
+import { onSnapshot, collection, query, where, getFirestore } from 'firebase/firestore';
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
 export default function LocalCliente({ route }) {
@@ -12,6 +12,7 @@ export default function LocalCliente({ route }) {
     const [resultados, setResultados] = useState([]);
     const navigation = useNavigation();
     const [iconRotation, setIconRotation] = useState(0);
+    //const [nomeEmpresa, setNomeEmpresa] = useState()
     const [IdentificadorCliente, setIdentificador] = useState(route.params?.IdentificadorCliente || '');
     const db = getFirestore();
     useEffect(() => {
@@ -78,15 +79,14 @@ export default function LocalCliente({ route }) {
     };
 
 
-    const CarregarEntrega = async () => {
-        // setIsLoading(true);
 
+    useEffect(() => {
         const HistoricoRef = collection(db, 'users', IdentificadorCliente, 'Pedidos');
 
-        const q = query(HistoricoRef);
+        // Adicione seu filtro usando 'where'
+        const q = query(HistoricoRef, where('status', '==', 'pendente')); // Substitua 'campo' e 'valor' pelos seus critérios de filtro
 
-        try {
-            const querySnapshot = await getDocs(q);
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const documentosEncontrados = [];
 
             querySnapshot.forEach((doc) => {
@@ -94,26 +94,14 @@ export default function LocalCliente({ route }) {
                 documentosEncontrados.push(documentoComID);
             });
 
-            return documentosEncontrados;
-        } catch (error) {
-            console.error('Erro ao consultar o Firestore:', error);
-        }
-    };
-
-    const PesquisarEntrega = async () => {
-        try {
-            const resultadoDaConsulta = await CarregarEntrega();
-            setResultados(resultadoDaConsulta);
+            setResultados(documentosEncontrados);
             // setIsLoading(false);
             setMostrarResultados(true);
-        } catch (error) {
-            //   setIsLoading(false);
-            console.error('Erro ao consultar o Firestore:', error);
-        }
-    };
-    useEffect(() => {
-        PesquisarEntrega()
-    }, [])
+        });
+
+        // Limpe a assinatura quando o componente for desmontado ou quando necessário
+        return () => unsubscribe();
+    }, []);
     const renderizarResultados = () => {
         if (mostrarResultados) {
             return (
@@ -150,8 +138,8 @@ export default function LocalCliente({ route }) {
                                                         <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img} />
                                                     </View>
                                                     <Text>
-                                                        SF Refrigeração {'\n'}
-                                                        Cd pedido: 04
+                                                        {documento.data.nomeEmpresa} {'\n'}
+                                                        Cd pedido: {documento.data.codPedido}
                                                     </Text>
                                                 </View>
                                                 <View style={styles.locTitle}>
@@ -185,10 +173,10 @@ export default function LocalCliente({ route }) {
                                                 </View>
                                                 <View style={styles.deliveryTime}>
                                                     <Text>
-                                                            Iniciou a entrega à: {formatTime(seconds)}
-                                                        </Text>
+                                                        Iniciou a entrega à: {formatTime(seconds)}
+                                                    </Text>
                                                 </View>
-                                                <View style={styles.recentsContent}>
+                                                {/* <View style={styles.recentsContent}>
                                                     <View style={styles.recentsImages}>
                                                         <Image source={require('../../../img/entregador.jpg')} style={styles.img} />
                                                     </View>
@@ -196,7 +184,7 @@ export default function LocalCliente({ route }) {
                                                         Nome do entregador {'\n'}
                                                         Daniel Oliveira da Silva
                                                     </Text>
-                                                </View>
+                                                </View> */}
                                             </View>
                                         </View>
                                         <Modal
@@ -241,23 +229,22 @@ export default function LocalCliente({ route }) {
                                     </>
                                 );
                             } else {
-                                // return (
-                                //     <View style={styles.container}>
-                                //         <View style={styles.header}>
-                                //             <TouchableOpacity
-                                //                 onPress={() => setModalVisible(!modalVisible)}
-                                //                 style={styles.headerBell}>
-                                //                 <Icon name='notifications' size={30} color='#ffc000' />
-                                //                 <Icon name='alert-circle' size={20} color='#cf2e2e' style={styles.alertIcon} />
-                                //             </TouchableOpacity>
-                                //         </View>
-                                //         <View style={styles.pedidos}>
-                                //             <Text style={styles.pedidosText}>Nenhum Pedido a Caminho</Text>
-                                //             <View style={styles.pedidosClock}>
-                                //             </View>
-                                //         </View>
-                                //     </View>
-                                // );
+                                return (
+                                    <View style={styles.container}>
+                                        <View style={styles.header}>
+                                            <TouchableOpacity
+                                                onPress={() => setModalVisible(!modalVisible)}
+                                                style={styles.headerBell}>
+                                                <Icon name='notifications' size={30} color='#ffc000' />
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={styles.pedidos}>
+                                            <Text style={styles.pedidosText}>Nenhum Pedido a Caminho</Text>
+                                            <View style={styles.pedidosClock}>
+                                            </View>
+                                        </View>
+                                    </View>
+                                );
                             }
                         })}
                     </View>
