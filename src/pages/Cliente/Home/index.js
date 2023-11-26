@@ -22,6 +22,8 @@ export default function Home({ route }) {
   const tema = useTheme();
   const styles = getstyles(tema);
   const navigation = useNavigation();
+  const timeElapsed = Date.now();
+  const today = new Date(timeElapsed);
   useEffect(() => {
     // Adiciona um manipulador para lidar com deep linking
     const manipularDeepLinking = async (evento) => {
@@ -42,6 +44,7 @@ export default function Home({ route }) {
       if (nomeEmpresa && endereco && comanda && pagamento && valor && status) {
         const mensagem = `Nome da Empresa: ${nomeEmpresa}\nEndereço: ${endereco}\nComanda: ${comanda}\nPagamento: ${pagamento}\nValor: ${valor}\nStatus: ${status}`;
         Alert.alert("Detalhes do Pedido", mensagem);
+
         const pedidosRef = collection(db, "users", IdentificadorCliente, "Pedidos");
 
         try {
@@ -51,6 +54,7 @@ export default function Home({ route }) {
             pagamento: pagamento,
             valor: valor,
             status: status,
+            data:today.toLocaleDateString()
           });
 
           console.log("Pedido adicionado com sucesso. ID do documento:", novoPedidoDoc.id);
@@ -73,7 +77,7 @@ export default function Home({ route }) {
     const HistoricoRef = collection(db, 'users', IdentificadorCliente, 'Pedidos');
 
     // Adicione seu filtro usando 'where'
-    const q = query(HistoricoRef, where('status', '==', 'pendente')); // Substitua 'campo' e 'valor' pelos seus critérios de filtro
+    const q = query(HistoricoRef, where('status', '==', 'concluido')); // Substitua 'campo' e 'valor' pelos seus critérios de filtro
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const documentosEncontrados = [];
@@ -105,7 +109,7 @@ export default function Home({ route }) {
                       <View style={styles.recentsContent}>
                         <Text style={styles.Text}>
                           {documento.data.status} {'\n'}
-                          {documento.data.data}
+                          {documento.data.valor}
                         </Text>
                       </View>
                     </TouchableOpacity>
