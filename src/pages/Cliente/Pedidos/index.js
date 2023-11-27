@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Mapbox from '@rnmapbox/maps';
 import * as Location from 'expo-location';
-import { onSnapshot, collection, query, where, getFirestore } from 'firebase/firestore';
+import { onSnapshot, collection, query, where, getFirestore,getDocs,updateDoc } from 'firebase/firestore';
 Mapbox.setAccessToken('pk.eyJ1IjoiZGF0YWV4cGxvcmVycyIsImEiOiJjbG1qOWc5MzMwMWZuMnNyeDZwczdibTdmIn0.xyo6WcixY-D5MiT2SfZj5Q');
 
 export default function LocalCliente({ route }) {
@@ -52,7 +52,7 @@ export default function LocalCliente({ route }) {
         setIsMapExpanded(!isMapExpanded);
     };
 
-    const [seconds, setSeconds] = useState(300);
+    const [seconds, setSeconds] = useState(1);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -102,81 +102,101 @@ export default function LocalCliente({ route }) {
         // Limpe a assinatura quando o componente for desmontado ou quando necessário
         return () => unsubscribe();
     }, []);
+
+
+    const FinalizarPedido = async () => {
+        //console.log("estive aqui")
+        const collectionRef = collection(db, "users", IdentificadorCliente, "Pedidos");
+        const q = query(collectionRef);
+        try {
+            const querySnapshot = await getDocs(q);
+
+            querySnapshot.forEach(async (doc) => {
+                // Para cada documento que corresponde à condição where
+                await updateDoc(doc.ref, {
+                    status: "concluido",
+                });
+                console.log(`Documento atualizado com sucesso: ${doc.id}`);
+            });
+        } catch (error) {
+            console.error('Erro ao atualizar documentos:', error);
+        }
+    }
     const renderizarResultados = () => {
         if (mostrarResultados) {
-            return (
-                <ScrollView
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    showsVerticalScrollIndicator={false}
-                    overScrollMode='never'
-                    scrollEnabled={!isMapExpanded}
-                >
-                    <View style={styles.wrapper}>
-
-                        {resultados.map((documento, index) => {
-                            if (documento.data.status === "pendente") {
-                                return (
-                                    <>
-                                        <View style={styles.container}>
-                                            <View style={styles.header}>
-                                                <TouchableOpacity
-                                                    onPress={() => setModalVisible(!modalVisible)}
-                                                    style={styles.headerBell}>
-                                                    <Icon name='notifications' size={30} color='#ffc000' />
-                                                    <Icon name='alert-circle' size={20} color='#cf2e2e' style={styles.alertIcon} />
-                                                </TouchableOpacity>
-                                            </View>
-                                            <View style={styles.pedidos} key={index}>
-                                                <Text style={styles.pedidosText}>Entregas a caminho</Text>
-                                                <View style={styles.pedidosClock}>
-                                                    <Icon name='bicycle' size={30} color='#000' />
+            if (resultados.length > 0) {
+                return (
+                    <ScrollView
+                        contentContainerStyle={{ flexGrow: 1 }}
+                        showsVerticalScrollIndicator={false}
+                        overScrollMode='never'
+                        scrollEnabled={!isMapExpanded}
+                    >
+                        <View style={styles.wrapper}>
+                            {resultados.map((documento, index) => {
+                                if (documento.data.status === "pendente") {
+                                    return (
+                                        <>
+                                            <View style={styles.container}>
+                                                <View style={styles.header}>
+                                                    <TouchableOpacity
+                                                        onPress={() => setModalVisible(!modalVisible)}
+                                                        style={styles.headerBell}>
+                                                        <Icon name='notifications' size={30} color='#ffc000' />
+                                                        <Icon name='alert-circle' size={20} color='#cf2e2e' style={styles.alertIcon} />
+                                                    </TouchableOpacity>
                                                 </View>
-                                            </View>
-                                            <View style={styles.card}>
-                                                <View style={styles.recentsContent}>
-                                                    {/* <View style={styles.recentsImages}>
+                                                <View style={styles.pedidos} key={index}>
+                                                    <Text style={styles.pedidosText}>Entregas a caminho</Text>
+                                                    <View style={styles.pedidosClock}>
+                                                        <Icon name='bicycle' size={30} color='#000' />
+                                                    </View>
+                                                </View>
+                                                <View style={styles.card}>
+                                                    <View style={styles.recentsContent}>
+                                                        {/* <View style={styles.recentsImages}>
                                                         <Image source={require('../../../img/logo_sf.jpeg')} style={styles.img} />
                                                     </View> */}
-                                                    <Text>
-                                                        Empresa:{'\n'}
-                                                        {documento.data.nomeEmpresa}
-                                                    </Text>
-                                                </View>
-                                                <View style={styles.locTitle}>
-                                                    <Text style={{ fontSize: 18 }}>Ver localização do entregador</Text>
-                                                    <Icon name='location-sharp' size={30} color='#000' />
-                                                </View>
-                                                <View style={[styles.map, isMapExpanded ? styles.expandedMap : {}]}>
-                                                    <Mapbox.MapView
-                                                        styleURL="mapbox://styles/dataexplorers/cln3p09nw06mh01ma53j17ayq"
-                                                        style={styles.mapMap}
-                                                        scrollEnabled={isMapExpanded}
-                                                        onPress={handleMapPress}
-                                                    >
-                                                        <Mapbox.Camera
-                                                            zoomLevel={14}
-                                                            centerCoordinate={location ? [location.coords.longitude, location.coords.latitude] : [-46.678747, -24.122155]}
-                                                            followUserMode="normal"
-                                                        />
-                                                        {location && (
-                                                            <Mapbox.PointAnnotation
-                                                                id="userLocation"
-                                                                coordinate={[location.coords.longitude, location.coords.latitude]}
-                                                            >
-                                                                <View style={[styles.customMarker, { transform: [{ rotate: `${iconRotation}deg` }] }]}>
-                                                                    <Icon name="bicycle" size={30} color="#ffc000" />
-                                                                </View>
-                                                                <Mapbox.Callout title="Minha localização" />
-                                                            </Mapbox.PointAnnotation>
-                                                        )}
-                                                    </Mapbox.MapView>
-                                                </View>
-                                                <View style={styles.deliveryTime}>
-                                                    <Text>
-                                                        Iniciou a entrega à: {formatTime(seconds)}
-                                                    </Text>
-                                                </View>
-                                                {/* <View style={styles.recentsContent}>
+                                                        <Text>
+                                                            Empresa:{'\n'}
+                                                            {documento.data.nomeEmpresa}
+                                                        </Text>
+                                                    </View>
+                                                    <View style={styles.locTitle}>
+                                                        <Text style={{ fontSize: 18 }}>Ver localização do entregador</Text>
+                                                        <Icon name='location-sharp' size={30} color='#000' />
+                                                    </View>
+                                                    <View style={[styles.map, isMapExpanded ? styles.expandedMap : {}]}>
+                                                        <Mapbox.MapView
+                                                            styleURL="mapbox://styles/dataexplorers/cln3p09nw06mh01ma53j17ayq"
+                                                            style={styles.mapMap}
+                                                            scrollEnabled={isMapExpanded}
+                                                            onPress={handleMapPress}
+                                                        >
+                                                            <Mapbox.Camera
+                                                                zoomLevel={14}
+                                                                centerCoordinate={location ? [location.coords.longitude, location.coords.latitude] : [-46.678747, -24.122155]}
+                                                                followUserMode="normal"
+                                                            />
+                                                            {location && (
+                                                                <Mapbox.PointAnnotation
+                                                                    id="userLocation"
+                                                                    coordinate={[location.coords.longitude, location.coords.latitude]}
+                                                                >
+                                                                    <View style={[styles.customMarker, { transform: [{ rotate: `${iconRotation}deg` }] }]}>
+                                                                        <Icon name="bicycle" size={30} color="#ffc000" />
+                                                                    </View>
+                                                                    <Mapbox.Callout title="Minha localização" />
+                                                                </Mapbox.PointAnnotation>
+                                                            )}
+                                                        </Mapbox.MapView>
+                                                    </View>
+                                                    <View style={styles.deliveryTime}>
+                                                        <Text>
+                                                            Iniciou a entrega à: {formatTime(seconds)}
+                                                        </Text>
+                                                    </View>
+                                                    {/* <View style={styles.recentsContent}>
                                                     <View style={styles.recentsImages}>
                                                         <Image source={require('../../../img/entregador.jpg')} style={styles.img} />
                                                     </View>
@@ -185,77 +205,80 @@ export default function LocalCliente({ route }) {
                                                         Daniel Oliveira da Silva
                                                     </Text>
                                                 </View> */}
-                                            </View>
-                                        </View>
-                                        <Modal
-                                            visible={modalVisible}
-                                            transparent={true}
-                                            animationType='slide'
-                                            onRequestClose={closeModal}
-                                        >
-                                            <View style={styles.modalContainer}>
-                                                <View style={styles.modalHeader}>
-                                                    <Text style={styles.modalHeaderTitle}>Aviso</Text>
-                                                    <TouchableOpacity
-                                                        style={styles.modalHeaderClose}
-                                                        onPress={() => setModalVisible(!modalVisible)} >
-                                                        <Image source={require('../../../img/close.png')} style={{ width: 30, height: 30 }} />
-                                                    </TouchableOpacity>
                                                 </View>
-
-                                                <View>
-                                                    <Text style={styles.modalContentTitle}>
-                                                        Você confirma que recebeu sua entrega?
-                                                    </Text>
-                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                                            </View>
+                                            <Modal
+                                                visible={modalVisible}
+                                                transparent={true}
+                                                animationType='slide'
+                                                onRequestClose={closeModal}
+                                            >
+                                                <View style={styles.modalContainer}>
+                                                    <View style={styles.modalHeader}>
+                                                        <Text style={styles.modalHeaderTitle}>Aviso</Text>
                                                         <TouchableOpacity
-                                                            onPress={() => setModalVisible(!modalVisible)}
-                                                            style={styles.modalBtn}>
-                                                            <Text style={styles.modalContent}>
-                                                                Não
-                                                            </Text>
-                                                        </TouchableOpacity>
-                                                        <TouchableOpacity
-                                                            onPress={() => navigation.navigate('Pedidos')}
-                                                            style={styles.modalBtn}>
-                                                            <Text style={styles.modalContent}>
-                                                                Sim
-                                                            </Text>
+                                                            style={styles.modalHeaderClose}
+                                                            onPress={() => setModalVisible(!modalVisible)} >
+                                                            <Image source={require('../../../img/close.png')} style={{ width: 30, height: 30 }} />
                                                         </TouchableOpacity>
                                                     </View>
+
+                                                    <View>
+                                                        <Text style={styles.modalContentTitle}>
+                                                            Você confirma que recebeu sua entrega?
+                                                        </Text>
+                                                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                                                            <TouchableOpacity
+                                                                onPress={() => setModalVisible(!modalVisible)}
+                                                                style={styles.modalBtn}>
+                                                                <Text style={styles.modalContent}>
+                                                                    Não
+                                                                </Text>
+                                                            </TouchableOpacity>
+                                                            <TouchableOpacity
+                                                                onPress={() => FinalizarPedido()}
+                                                                style={styles.modalBtn}>
+                                                                <Text style={styles.modalContent}>
+                                                                    Sim
+                                                                </Text>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </View>
                                                 </View>
-                                            </View>
-                                        </Modal>
-                                    </>
-                                );
-                            } else {
-                                return (
-                                    <View style={styles.container}>
-                                        <View style={styles.header}>
-                                            <TouchableOpacity
-                                                onPress={() => setModalVisible(!modalVisible)}
-                                                style={styles.headerBell}>
-                                                <Icon name='notifications' size={30} color='#ffc000' />
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={styles.pedidos}>
-                                            <Text style={styles.pedidosText}>Nenhum Pedido a Caminho</Text>
-                                            <View style={styles.pedidosClock}>
-                                            </View>
-                                        </View>
-                                    </View>
-                                );
-                            }
-                        })}
+                                            </Modal>
+                                        </>
+                                    );
+                                }
+                            })}
+                        </View>
+                    </ScrollView>
+                );
+            } else {
+                return (
+                    <View style={styles.container}>
+                        <View style={styles.header}>
+                            <TouchableOpacity
+                                onPress={() => setModalVisible(!modalVisible)}
+                                style={styles.headerBell}>
+                                <Icon name='notifications' size={30} color='#ffc000' />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.pedidos}>
+                            <Text style={styles.pedidosText}>Nenhum Pedido a Caminho</Text>
+                            <View style={styles.pedidosClock}>
+                            </View>
+                        </View>
                     </View>
-                </ScrollView >
-            );
+                );
+            }
         }
     };
 
 
     return (
-        renderizarResultados()
+        <>
+            {renderizarResultados()}
+        </>
     );
 }
 

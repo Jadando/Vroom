@@ -13,8 +13,8 @@ export default function Login() {
     const tema = useTheme();
     const styles = getstyles(tema);
     const [isLoading, setIsLoading] = useState(false);
-    const [email, setEmail] = useState('joao.adriano20056@gmail.com');
-    const [senha, setSenha] = useState('123456');
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
     const [tipoUser, setTipoUser] = useState(null)
     const auth = getAuth();
     const db = getFirestore();
@@ -110,43 +110,45 @@ export default function Login() {
             setIsLoading(false);
         }
     }
-    onAuthStateChanged(auth, (user) => {
-        // setIsLoading(true)
-        carregarDadosLocalmente('tipoUser',setTipoUser);
-        if (user) {
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/auth.user
-            const uid = user.uid;
-            console.log(" id do usuario: " + uid)
-            console.log("Esse eo tipo do usuario: " + tipoUser)
-            switch (tipoUser) {
-                case 'cliente':
-                    setIsLoading(false);
-                    navigation.navigate('Home', {
-                        IdentificadorCliente: uid
-                    });
-                    break;
-                case 'empresa':
-                    navigation.navigate('IniciarEntrega', {
-                        IdentificadorEmpresa: uid
-                    });
-                    break;
-                case 'entregador':
-                    navigation.navigate('Pendentes', {
-                        IdentificadorEntregador: uid
-                    });
-                    break;
-                default:
-                    // alert("Não exite conta com esse email")
-                    break;
-            }
-            //setIsLoading(false)
-            // ...
-        } else {
-            // User is signed out
-            // ...
-        }
-    });
+    // onAuthStateChanged(auth, (user) => {
+    //     // setIsLoading(true)
+    //     carregarDadosLocalmente('tipoUser', setTipoUser);
+    //     if (user) {
+    //         // User is signed in, see docs for a list of available properties
+    //         // https://firebase.google.com/docs/reference/js/auth.user
+    //         const uid = user.uid;
+    //         // console.log(" id do usuario: " + uid)
+    //         //console.log("Esse eo tipo do usuario: " + tipoUser)
+    //         switch (tipoUser) {
+    //             case 'cliente':
+    //                 setIsLoading(false);
+    //                 navigation.navigate('Home', {
+    //                     IdentificadorCliente: uid
+    //                 });
+    //                 break;
+    //             case 'empresa':
+    //                 setIsLoading(false);
+    //                 navigation.navigate('IniciarEntrega', {
+    //                     IdentificadorEmpresa: uid
+    //                 });
+    //                 break;
+    //             case 'entregador':
+    //                 setIsLoading(false);
+    //                 navigation.navigate('Pendentes', {
+    //                     IdentificadorEntregador: uid
+    //                 });
+    //                 break;
+    //             default:
+    //                 // alert("Não exite conta com esse email")
+    //                 break;
+    //         }
+    //         //setIsLoading(false)
+    //         // ...
+    //     } else {
+    //         // User is signed out
+    //         // ...
+    //     }
+    // });
 
     return (
         <View style={styles.container}>

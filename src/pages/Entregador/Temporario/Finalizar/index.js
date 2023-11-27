@@ -44,7 +44,7 @@ export default function FinalizarEntrega({ route }) {
                     setLocation(newLocation);
 
                     //console.log('entrou')
-                    updateRouteCoordinates();
+                    //updateRouteCoordinates();
                 });
 
             return () => subscription.remove();

@@ -50,7 +50,9 @@ export default function IniciarEntrega({ route }) {
     await Clipboard.setStringAsync(`https://vroom-401401.firebaseapp.com/${encodeURIComponent(nome)}/${encodeURIComponent(nomeEmpresa)}/${encodeURIComponent(endereco)}/${encodeURIComponent(order)}/${encodeURIComponent(value)}/${encodeURIComponent(inputValue)}/`);
   }
   const IniciarPedido = () => {
+
     //console.log("estive aqui")
+    
     const usersRefs = collection(db, 'users', IdentificadorEmpresa, 'Pedidos');
     const data = {
       nomeCliente: nome,

@@ -7,17 +7,16 @@ import { useNavigation } from '@react-navigation/native';
 export default function VisualizarPedido({ route }) {
     const navigation = useNavigation()
 
-    const [nome, setNome] = useState(route.params?.nomeEmpresa || 'Pizzaria do Morro');
+    const [nome, setNome] = useState(route.params?.nomeEmpresa || '');
     const [endereco, setEndereco] = useState(route.params?.nomeEmpresa || '');
-    const [order, setOrder] = useState(route.params?.comanda || "1x calabresa e 2x coca-cola");
+    const [order, setOrder] = useState(route.params?.comanda || "");
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0.0);
     const [inputValue, setInputValue] = useState(route.params?.valor || "");
-    const [items, setItems] = useState(route.params?.pagamento || "dinheiro");
+    const [items, setItems] = useState(route.params?.tipoPagamento || "");
     const db = getFirestore();
 
 
-    
     const formatToCurrency = (num) => {
         return "R$ " + num.toFixed(2).replace('.', ',');
     };
@@ -30,7 +29,7 @@ export default function VisualizarPedido({ route }) {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => navigation.pop(1)}>
-                    <Icon name='chevron-back' size={30} color='#000' />
+                        <Icon name='chevron-back' size={30} color='#000' />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.headerBell}><Icon name='notifications' size={30} color='#ffc000' /></TouchableOpacity>
                 </View>
@@ -63,7 +62,11 @@ export default function VisualizarPedido({ route }) {
                         </View>
                         <Text style={styles.comandaTitle}>Forma de pagamento:</Text>
                         <View style={styles.comandaPaymentValue}>
-                            <Text>{items}</Text>
+                            <TextInput
+                                value={items}
+                                editable={false}
+                            >
+                            </TextInput>
                         </View>
                         <Text style={[
                             styles.comandaTitle,

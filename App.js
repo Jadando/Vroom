@@ -63,23 +63,22 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const Tema = useTema()
-  // useEffect(() => {
-  //   (async () => {
-  //     const locationPermission = await Location.requestForegroundPermissionsAsync();
-  //     if (locationPermission.status !== 'granted') {
-  //       console.error('A permissão para acessar o local foi negada');
-  //       alert("A permissão para acessar o local foi negada")
-  //       return;
-  //     }
-  //     const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  //     if (galleryPermission.status !== 'granted') {
-  //       console.error('A permissão para acessar a galeria foi negada');
-  //       alert("A permissão para acessar a galeria foi negada")
-  //       return;
-  //     }
-
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      const locationPermission = await Location.requestForegroundPermissionsAsync();
+      if (locationPermission.status !== 'granted') {
+        console.error('A permissão para acessar o local foi negada');
+        alert("A permissão para acessar o local foi negada")
+        return;
+      }
+      const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (galleryPermission.status !== 'granted') {
+        console.error('A permissão para acessar a galeria foi negada');
+        alert("A permissão para acessar a galeria foi negada")
+        return;
+      }
+    })();
+  }, []);
   return (
     <ThemeProvider theme={Tema}>
       <NavigationContainer>

@@ -5,8 +5,8 @@ import { getFirestore, getDocs, where, collection, query } from "firebase/firest
 import { useNavigation } from '@react-navigation/native';
 
 export default function VisualizarPedidoEmpresa({ route }) {
-    const navigation = useNavigation()
 
+    const navigation = useNavigation()
     const [nome, setNome] = useState(route.params?.nomeCliente || '');
     const [order, setOrder] = useState(route.params?.comanda || '');
     const [open, setOpen] = useState(false);
@@ -14,8 +14,6 @@ export default function VisualizarPedidoEmpresa({ route }) {
     const [inputValue, setInputValue] = useState(route.params?.valor || "");
     const [items, setItems] = useState(route.params?.pagamento || "");
     const db = getFirestore();
-
-
 
     const formatToCurrency = (num) => {
         return "R$ " + num.toFixed(2).replace('.', ',');
@@ -80,6 +78,7 @@ export default function VisualizarPedidoEmpresa({ route }) {
                                 value={inputValue}
                                 editable={false}
                                 onChangeText={text => {
+
                                     // Atualize o valor de inputValue diretamente
                                     setInputValue(text);
 

@@ -47,14 +47,14 @@ export default function Home({ route }) {
           const novoPedidoDoc = await addDoc(pedidosRef, {
             nomeEmpresa: nomeEmpresa,
             comanda: comanda,
-            pagamento: pagamento,
+            tipoPagamento: pagamento,
             valor: valor,
             status: "pendente",
-            codPedido: codPedido,
             data: today.toLocaleDateString(),
-          }).then(navigation.navigate("Pedidos"))
-          console.log("Pedido adicionado com sucesso. ID do documento:", novoPedidoDoc.id);
-          console.log(codPedido + "penis")
+          }).then(
+            navigation.navigate("Pedidos")
+          )
+
         } catch (error) {
           console.error('Erro ao adicionar o pedido:', error);
         }
@@ -101,16 +101,14 @@ export default function Home({ route }) {
             <View style={styles.recentsContainer}>
               {resultados.map((documento, index) => {
                 return (
-                  <>
-                    <TouchableOpacity onPress={() => navigation.navigate('VisualizarPedido', { nomeEmpresa: documento.data.nomeEmpresa, comanda: documento.data.comanda, pagamento: documento.data.tipoPagamento, valor: documento.data.valor })} key={index}>
-                      <View style={styles.recentsContent}>
-                        <Text style={styles.Text}>
-                          {documento.data.nomeEmpresa} {'\n'}
-                          {documento.data.data}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </>
+                  <TouchableOpacity onPress={() => navigation.navigate('VisualizarPedido', { nomeEmpresa: documento.data.nomeEmpresa, comanda: documento.data.comanda, tipoPagamento: documento.data.tipoPagamento, valor: documento.data.valor })} key={index}>
+                    <View style={styles.recentsContent}>
+                      <Text style={styles.Text}>
+                        {documento.data.nomeEmpresa} {'\n'}
+                        {documento.data.data}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 );
               })}
             </View>

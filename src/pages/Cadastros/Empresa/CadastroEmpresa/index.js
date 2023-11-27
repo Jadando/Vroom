@@ -12,10 +12,10 @@ export default function CadastroEmpresa({ route }) {
   const [open, setOpen] = useState(false);
   const styles = getstyles(tema);
   const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
-  const [cnpj, setCnpj] = useState('95.250.873/0001-69');
+  const [cnpj, setCnpj] = useState('');
   const [cnpjValido, setCnpjValido] = useState(true);
-  const [nomeEmpresa, setNomeEmpresa] = useState('a');
-  const [categoria, setCategoria] = useState('a');
+  const [nomeEmpresa, setNomeEmpresa] = useState('');
+  const [categoria, setCategoria] = useState('');
   const [items, setItems] = useState([
     { label: 'Restaurante', value: 'restaurante' },
     { label: 'Fármacia', value: 'farmacia' },
@@ -24,14 +24,14 @@ export default function CadastroEmpresa({ route }) {
     { label: 'Jardinagem', value: 'jardinagem' },
     { label: 'Outros', value: 'outros' }
   ]);
-  const [celular, setCelular] = useState('12345522222');
-  const [telefone, setTelefone] = useState('1212121212');
-  const [cep, setCep] = useState('11730000');
-  const [estado, setEstado] = useState('sp');
-  const [cidade, setCidade] = useState('ppp');
-  const [bairro, setBairro] = useState('ppp');
-  const [endereco, setEndereco] = useState('ppp');
-  const [numero, setNumero] = useState('pppp');
+  const [celular, setCelular] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [cep, setCep] = useState('');
+  const [estado, setEstado] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [numero, setNumero] = useState('');
 
   const handleChangeCNPJ = (text) => {
     if (text.length === 18) {

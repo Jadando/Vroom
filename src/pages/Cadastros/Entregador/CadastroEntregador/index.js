@@ -9,17 +9,17 @@ export default function CadastroEntregador({ route }) {
   const tema = useTheme();
   const styles = getstyles(tema);
   const [Identificador, setIdentificador] = useState(route.params?.Identificador || '');
-  const [cpf, setCpf] = useState('72059157080');
+  const [cpf, setCpf] = useState('');
   const [cpfValido, setCpfValido] = useState(true);
-  const [nome, setNome] = useState('b');
-  const [dtNasc, setDtNasc] = useState('12/10/1990');
-  const [telefone, setTelefone] = useState('12345678911');
-  const [cep, setCep] = useState('11730000');
-  const [estado, setEstado] = useState('b');
-  const [cidade, setCidade] = useState('b');
-  const [bairro, setBairro] = useState('b');
-  const [endereco, setEndereco] = useState('b');
-  const [numero, setNumero] = useState('12');
+  const [nome, setNome] = useState('');
+  const [dtNasc, setDtNasc] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [cep, setCep] = useState('');
+  const [estado, setEstado] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [numero, setNumero] = useState('');
 
   const handleChangeCPF = (text) => {
     if (text.length === 14) {
