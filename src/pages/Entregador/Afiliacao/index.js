@@ -10,8 +10,8 @@ export default function EmpresasAfiliadas({ route }) {
     const closeModal = () => {
         setModalVisible(false);
     }
-    const [Gambiarra, setGambiarra] = useState("ABcH9bNye3SS6tpbHqKqItMREn72")
-    
+    const [Gambiarra, setGambiarra] = useState(null)
+
     const Gambi = () => {
         if (Gambiarra !== null) {
             return (

@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { getDocs, collection, query, where, getFirestore, onSnapshot } from 'firebase/firestore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Pendentes({ route }) {
 
@@ -15,6 +14,7 @@ export default function Pendentes({ route }) {
     const [mostrarResultados, setMostrarResultados] = useState(false);
     const [IdentificadorEmpresa, setIdentificadorEmpresa] = useState(route.params?.IdentificadorEmpresa || '')
     const db = getFirestore();
+
     useEffect(() => {
         const HistoricoRef = collection(db, 'users', IdentificadorEmpresa, 'Pedidos');
 
@@ -79,7 +79,7 @@ export default function Pendentes({ route }) {
             } else {
                 return (
                     <View style={styles.container}>
-                        <Text style={styles.Text}>Nenhum resultado feito</Text>
+                        <Text style={styles.Text}>Nenhum resultado no momento</Text>
                     </View>
                 );
             }

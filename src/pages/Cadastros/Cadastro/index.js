@@ -17,21 +17,8 @@ export default function Cadastro() {
   const auth = getAuth();
   const [modalVisible, setModalVisible] = useState(false);
   const [efeitoExecutado, setEfeitoExecutado] = useState(false);
+
   
-  useEffect(() => {
-    if (!efeitoExecutado) {
-      const delay = 20000; // 15 segundos em milissegundos
-
-      const timeoutId = setTimeout(() => {
-        setModalVisible(true);
-        setEfeitoExecutado(true);
-      }, delay);
-
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }
-  }, [efeitoExecutado]);
 
   const closeModal = () => {
     setModalVisible(false);
@@ -52,7 +39,7 @@ export default function Cadastro() {
               console.log("Verificação de e-mail enviada com sucesso!");
               setIsLoading(false)
               setIdentificador(user.uid)
-              //setModalVisible(true);
+              setModalVisible(true);
             }).catch((error) => {
               const errorCode = error.code;
               const errorMessage = error.message;

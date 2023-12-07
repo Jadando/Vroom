@@ -86,8 +86,8 @@ export default function PerfilEntregador({ route }) {
         try {
             uploadString(storageRef, imageUrl).then((snapshot) => {
                 console.log('Imagem upada com sucesso');
-            },
                 DonwloadImage()
+            },
             );
         } catch (error) {
             console.error('Erro ao enviar o arquivo:', error);

@@ -10,7 +10,11 @@
     "splash": {
       "image": "./assets/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "updates": {
+        "enabled": true,
+        "fallbackToCacheTimeout": 0
+      }
     },
     "assetBundlePatterns": [
       "**/*"
